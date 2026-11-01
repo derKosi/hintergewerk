@@ -44,6 +44,10 @@ Datenmodell, Persistenz, Snap-/Korridor-/Warn-Mathematik und PDF-Export sind fer
 Szenen-Arbeit. M2 (07.11.) bleibt realistisch. Neues Risiko R8: Setup-Tag-Verlust — mitigation:
 Zeitbox 90 min + Abbruchkriterien im Guide + MCP-Fallback R6.
 
+Zweite Vorbereitungsrunde (01.11., ohne Unity): **EditMode-Tests + asmdef-Struktur** (Runtime/Editor/Tests —
+macht den Kern im Test Runner prüfbar), **AGENTS.md** (Konventionen für jede Session), **ADRs 0001–0004**
+für die großen Weichen, **Szenen-Spec** (docs/11) und **Devpost-Feldvorlage** (docs/12).
+
 ## 4. Risiko-Register
 
 | # | Risiko | Impact | Gegenmaß | Entscheidung bis |

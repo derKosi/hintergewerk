@@ -48,7 +48,11 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 | [docs/08-video-voiceover.md](docs/08-video-voiceover.md) | Video-Sprechtext v1 (EN, 2:40) + Dreh-Checkliste |
 | [docs/09-submission-text-entwurf.md](docs/09-submission-text-entwurf.md) | Devpost-Text v1 (EN, ~430 Wörter, bis Feature-Freeze pflegen) |
 | [docs/10-windows-buildserver.md](docs/10-windows-buildserver.md) | Windows-Zweitmaschine (3090): Git, OpenSSH, Remote-Build, Fernsteuerung, Security |
-| [unity/Assets/Hintergewerk/](unity/Assets/Hintergewerk/README.md) | **C#-Kern, SDK-frei** (Datenmodell, Persistenz, Snap, Korridor, PDF) + Selbsttest |
+| [docs/11-szene-spec-smoketest.md](docs/11-szene-spec-smoketest.md) | Exakte Szenen-Spec für M0/M1: Hierarchy, Verhalten, Pass-Kriterien |
+| [docs/12-devpost-felder.md](docs/12-devpost-felder.md) | Formularfelder fertig zum Einfügen (17.11.) + Hand-Interactions-Text |
+| [docs/adr/](docs/adr/README.md) | ADRs 0001–0004: die großen Weichen im Detail |
+| [AGENTS.md](AGENTS.md) | Konventionen für jede Agent-Session: Invarianten, Struktur, Verifikation |
+| [unity/Assets/Hintergewerk/](unity/Assets/Hintergewerk/README.md) | **C#-Kern, SDK-frei** (Runtime/Editor/Tests, asmdefs) + Selbsttest |
 | [testdata/beispielhaus.json](testdata/beispielhaus.json) | Beispieldaten im Schema v1 (für Import-/Export-Tests) |
 
 ## Kernidee in drei Sätzen

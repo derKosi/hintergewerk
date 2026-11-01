@@ -17,13 +17,14 @@ Kein WebXR-Umweg: Die riskanteste Annahme ist **Anker-Persistenz**, nicht Zeichn
 
 ```
 Assets/Hintergewerk/
-├── Core/        AppState (Capture/Recall), Bootstrap, Modus-Wechsel
-├── Anchoring/   AnchorManager, AnchorRegistry (lokal speichern/laden)
-├── Capture/     DrawController, SnapEngine, DepthGesturer, TypeSelector, EvidenceCapture
-├── Data/        HouseModel, ObjectRepository, JsonSerializer, Migration
-├── Recall/      OverlayRenderer, CorridorFactory, WarningSystem
-├── Export/      JsonExport, MapRenderer, PdfEmitter (Fallback: PNG)
-└── UI/          HandMenu, RadialTyp, Toast/Hinweise
+├── Runtime/                 SDK-freier Kern (asmdef Hintergewerk.Runtime)
+│   ├── Core/                Interfaces (IAnchorProvider, IHandSource, IWallProvider), AppState
+│   ├── Capture/             SnapEngine; morgen: DrawController, DepthGesturer, TypeSelector
+│   ├── Data/                HouseModel, SimpleJson, HouseDataStore
+│   ├── Recall/              CorridorFactory, WarningSystem
+│   └── Export/              PdfEmitter, MapRenderer
+├── Editor/                  Selbsttest-Menü + Batch-Build (asmdef Hintergewerk.Editor)
+└── Tests/EditMode/          NUnit-Tests (asmdef Hintergewerk.Tests)
 ```
 
 | Klasse | Verantwortung |
