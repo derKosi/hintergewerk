@@ -3,6 +3,8 @@
 Ziel: Zwei minimale Szenen, per MCP gebaut, die M0 (Pipeline) und M1 (Anker-Persistenz) abdecken. Kein UI, keine Features — nur die zwei Unbekannten des Projekts. Ablauf/Beweise: `docs/07-smoketest-protokoll.md`.
 
 > API-Check 01.11.: Pinch-API offiziell bestätigt (Meta-Tutorial „unity-tutorial-basic-hand-training": `GetFingerIsPinching(OVRHand.HandFinger.Index)`); Spatial-Anchors-Tutorial existiert („unity-spatial-anchors-basic-tutorial"); SDK-Referenz **v207** ist online. Exakte Namen am 02.11. gegen die installierte SDK-Version prüfen — TODOs im Code.
+> Ohne Gerät iterierbar: Die Mocks in `Runtime/Mocks/` + der `CaptureDriver` testen den kompletten Flow im Editor (EditMode-Tests), bevor der erste echte Adapter läuft.
+> Ohne GerÃ¤t iterierbar: Die Mocks in `Runtime/Mocks/` + der `CaptureDriver` testen den kompletten Flow im Editor (EditMode-Tests), bevor der erste echte Adapter lÃ¤uft.
 
 ## Szene 1 — `01_Smoketest.unity` (M0)
 

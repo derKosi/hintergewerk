@@ -19,13 +19,15 @@ Kein WebXR-Umweg: Die riskanteste Annahme ist **Anker-Persistenz**, nicht Zeichn
 Assets/Hintergewerk/
 ├── Runtime/                 SDK-freier Kern (asmdef Hintergewerk.Runtime)
 │   ├── Core/                Interfaces (IAnchorProvider, IHandSource, IWallProvider), AppState
-│   ├── Capture/             SnapEngine; morgen: DrawController, DepthGesturer, TypeSelector
+│   ├── Capture/             SnapEngine, CaptureSession, CaptureDriver, UndoStack
 │   ├── Data/                HouseModel, SimpleJson, HouseDataStore
 │   ├── Recall/              CorridorFactory, WarningSystem
+│   ├── Localization/        Strings (DE/EN)
+│   ├── Mocks/               InMemory-Implementierungen der Interfaces (Editor-Iteration ohne Gerät)
+│   ├── Demo/                AnchorTestController (M1-Demo, fliegt nach M1 raus)
 │   └── Export/              PdfEmitter, MapRenderer
 ├── Editor/                  Selbsttest-Menü + Batch-Build (asmdef Hintergewerk.Editor)
-├── Tests/EditMode/          NUnit-Tests (asmdef Hintergewerk.Tests)
-├── Demo/                    AnchorTestController (M1-Demo, fliegt nach M1 raus)
+├── Tests/EditMode/          NUnit-Tests (asmdef Hintergewerk.Tests) + Fixtures
 └── Adapters/                OVR*-Implementierungen der Interfaces (Assembly-CSharp — bewusst außerhalb der Runtime-asmdef)
 ```
 

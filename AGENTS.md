@@ -17,7 +17,7 @@ Der Einstieg für jede (neue) Session — Mensch oder Agent. Vor der ersten Änd
 
 ## Struktur
 
-- `unity/Assets/Hintergewerk/Runtime/` — SDK-freier Kern: `Data/`, `Capture/`, `Recall/`, `Export/`, `Core/` (Interfaces), `Localization/`, `Demo/` — asmdef `Hintergewerk.Runtime`
+- `unity/Assets/Hintergewerk/Runtime/` — SDK-freier Kern: `Data/`, `Capture/`, `Recall/`, `Export/`, `Core/` (Interfaces), `Localization/`, `Demo/`, `Mocks/` — asmdef `Hintergewerk.Runtime`
 - `unity/Assets/Hintergewerk/Adapters/` — OVR*-Adapter der Interfaces (Assembly-CSharp, außerhalb der asmdef)
 - `unity/Assets/Hintergewerk/Editor/` — Selbsttest-Menü + Batch-Build — asmdef `Hintergewerk.Editor`
 - `unity/Assets/Hintergewerk/Tests/EditMode/` — NUnit-Tests + Fixtures — asmdef `Hintergewerk.Tests`
