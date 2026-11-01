@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bau-toolz.de/hintergewerk/schema/v1.json",
+  "title": "Hintergewerk HausData v1",
+  "description": "Vertrag für den Export: maschinenlesbar, überlebt Jahre. Parser überspringen unbekannte Keys (Forward-Kompatibilität).",
+  "type": "object",
+  "required": ["schema_version", "rooms", "anchors", "objects"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "rooms": { "type": "array", "items": { "$ref": "#/$defs/room" } },
+    "anchors": { "type": "array", "items": { "$ref": "#/$defs/anchor" } },
+    "objects": { "type": "array", "items": { "$ref": "#/$defs/object" } }
+  },
+  "$defs": {
+    "room": {
+      "type": "object",
+      "required": ["id", "label", "floor"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "label": { "type": "string" },
+        "floor": { "type": "integer" }
+      }
+    },
+    "anchor": {
+      "type": "object",
+      "required": ["id", "room_id", "confidence"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "room_id": { "type": "string" },
+        "confidence": { "enum": ["high", "medium", "low"] },
+        "created_at": { "type": "string" }
+      }
+    },
+    "object": {
+      "type": "object",
+      "required": ["id", "type", "room_id", "anchor_id", "geometry", "confidence", "safety_corridor_cm", "evidence", "meta"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["power", "water", "heating", "stud", "no_drill_zone"] },
+        "room_id": { "type": "string" },
+        "anchor_id": { "type": "string" },
+        "geometry": {
+          "type": "object",
+          "required": ["points_lokal", "depth_cm", "diameter_cm"],
+          "properties": {
+            "points_lokal": {
+              "type": "array",
+              "items": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+            },
+            "depth_cm": { "type": "number", "minimum": 0, "maximum": 100 },
+            "diameter_cm": { "type": "number", "minimum": 0 }
+          }
+        },
+        "confidence": { "enum": ["measured", "estimated", "scanner"] },
+        "safety_corridor_cm": { "type": "number", "minimum": 0 },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "photos": { "type": "array", "items": { "type": "string" } },
+            "voice_note": { "type": ["string", "null"] }
+          }
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "created_at": { "type": "string" },
+            "author": { "type": "string" },
+            "note": { "type": ["string", "null"] }
+          }
+        }
+      }
+    }
+  }
+}

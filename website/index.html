@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<!--
+  Hintergewerk — Landingpage (statisch, ohne Dependencies)
+  Deploy: Datei auf den bau-toolz-Server legen (z. B. unter /hintergewerk/index.html)
+  oder als eigene Domain nutzen (hintergewerk.de war am 01.11.2026 frei — Registrierung offen).
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hintergewerk — das Wissen hinter der Oberfläche</title>
+<meta name="description" content="VR-Werkzeug für Handwerk und Umbau: Was die Wand einmal gezeigt hat, bleibt wiederfindbar. Mit den Händen erfasst, räumlich verankert, mit Beweis.">
+<meta property="og:title" content="Hintergewerk — the work behind the surface">
+<meta property="og:description" content="Was die Wand einmal gezeigt hat, bleibt wiederfindbar. Mit den Händen erfasst, räumlich verankert, mit Beweis.">
+<meta property="og:type" content="website">
+<style>
+  :root { --bg:#0e1116; --fg:#e8ecf1; --dim:#9aa7b4; --line:#2a313b; --acc:#4fd1c5; --warn:#f6ad55; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:880px; margin:0 auto; padding:0 24px; }
+  header { padding:72px 0 40px; border-bottom:1px solid var(--line); }
+  h1 { font-size:clamp(2rem, 6vw, 3.2rem); line-height:1.1; letter-spacing:-.02em; }
+  h1 .thin { color:var(--acc); }
+  .claim { margin-top:18px; font-size:1.15rem; color:var(--dim); max-width:38em; }
+  .en { margin-top:8px; font-size:.95rem; color:var(--dim); font-style:italic; }
+  section { padding:48px 0; border-bottom:1px solid var(--line); }
+  h2 { font-size:1.05rem; text-transform:uppercase; letter-spacing:.12em; color:var(--acc); margin-bottom:20px; }
+  .steps { display:grid; gap:20px; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); }
+  .step { border:1px solid var(--line); border-radius:10px; padding:20px; }
+  .step b { display:block; margin-bottom:8px; }
+  .step span { color:var(--dim); font-size:.95rem; }
+  .quote { border-left:3px solid var(--acc); padding:12px 18px; color:var(--fg); font-size:1.05rem; background:#131920; border-radius:0 8px 8px 0; }
+  .grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); }
+  .card { border:1px solid var(--line); border-radius:10px; padding:16px 18px; color:var(--dim); font-size:.95rem; }
+  .card b { color:var(--fg); display:block; margin-bottom:6px; }
+  ul { list-style:none; }
+  li { padding:6px 0 6px 22px; position:relative; color:var(--dim); }
+  li::before { content:"→"; position:absolute; left:0; color:var(--acc); }
+  footer { padding:40px 0 80px; color:var(--dim); font-size:.9rem; }
+  a { color:var(--acc); text-decoration:none; }
+  .badge { display:inline-block; border:1px solid var(--acc); color:var(--acc); border-radius:999px; padding:2px 12px; font-size:.8rem; margin-bottom:20px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="badge">In Entwicklung · Meta VR Start Developer Competition 2026</span>
+    <h1>Hinter<span class="thin">gewerk</span></h1>
+    <p class="claim">Das Wissen hinter der Oberfläche: Was deine Wände einmal gezeigt haben, bleibt wiederfindbar — räumlich verankert, mit Tiefe, Typ, Zeitstempel und Monteur.</p>
+    <p class="en">Hintergewerk — the work behind the surface. What your walls once showed, they will always remember.</p>
+  </header>
+
+  <section>
+    <h2>Das Problem</h2>
+    <p>Jede Wand verrät die Wahrheit genau einmal: solange sie offen ist. Danach liegt das Wissen in ein paar verstreuten Fotos — oder nirgends. Bis der Bohrer die Leitung trifft.</p>
+  </section>
+
+  <section>
+    <h2>So funktioniert es</h2>
+    <div class="steps">
+      <div class="step"><b>1 · Aufnehmen</b><span>Wand ist offen? Mit der Hand die Leitung nachziehen, Tiefe per Zwei-Hand-Geste, Foto anhängen. Unter 30 Sekunden.</span></div>
+      <div class="step"><b>2 · Wiederfinden</b><span>Monate später blendet die App das Gedächtnis der Wand ein — als Sicherheitskorridor statt dünner Linie. Die Hand nähert sich, die Warnung eskaliert.</span></div>
+      <div class="step"><b>3 · Weitergeben</b><span>Ein Gesten-Export erzeugt Grundriss als PDF mit Legende und Maßstab — das Dokument, das Bauherr und Folgefirma annehmen.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Unsere Regel</h2>
+    <p class="quote">Wir behaupten nicht, durch Wände zu sehen. Wir erinnern, was dokumentiert wurde.<br>„Nicht gefunden" heißt nie „nicht vorhanden".</p>
+  </section>
+
+  <section>
+    <h2>Eigenschaften</h2>
+    <div class="grid">
+      <div class="card"><b>Hands-first</b>Fünf Gesten — pinch, Zwei-Hand-Distanz, Handfläche, Wischen, Blick+Pinch. Kein Controller, keine Tastatur.</div>
+      <div class="card"><b>Räumlich verankert</b>Spatial Anchors halten das Gedächtnis an Ort und Stelle — über App-Neustarts und Wochen hinweg.</div>
+      <div class="card"><b>Sicherheitskorridor</b>Keine Haarlinie, die lügt: ±5 cm ehrlich dargestellt, mit Warnung bei Annäherung.</div>
+      <div class="card"><b>Beweis inklusive</b>Foto, Tiefe, Konfidenz, Monteur, Zeitstempel — jedes Objekt trägt seine Herkunft.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Für wen</h2>
+    <ul>
+      <li>Handwerker &amp; Elektriker — die eigenen Leitungen des Kunden wiederfinden</li>
+      <li>Renovierer &amp; Selbstbauer — keine bösen Überraschungen beim nächsten Bohrer</li>
+      <li>Hausverwaltung &amp; Handwerksbetriebe — dokumentierter Bestand statt Wissen im Kopf</li>
+    </ul>
+  </section>
+
+  <footer>
+    Hintergewerk — ein Projekt von <a href="https://bau-toolz.de">bau-toolz</a> · Teilnahme an der Meta VR Start Developer Competition 2026<br>
+    Kontakt über bau-toolz.de · Impressum folgt mit dem Release
+  </footer>
+</main>
+</body>
+</html>

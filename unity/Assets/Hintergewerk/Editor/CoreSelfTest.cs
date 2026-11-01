@@ -72,11 +72,11 @@ namespace Hintergewerk.EditorTools
                     new Vector3(1.0f, 0f, 1.5f), new Vector3(3.0f, 0f, 1.5f)),
             };
 
-            var doc = MapRenderer.BuildDoc("Bad EG (Beispiel)", HouseDataStore.DefaultAuthor, walls, objects, out float scale);
+            var doc = MapRenderer.BuildDoc("Bad EG (Beispiel)", HouseDataStore.DefaultAuthor, walls, objects, out float scale, out int ratio);
             var bytes = MapRenderer.EmitPdf(doc);
             var outPath = Path.Combine(Application.temporaryCachePath, "hintergewerk_beispiel.pdf");
             File.WriteAllBytes(outPath, bytes);
-            Debug.Log($"[Selbsttest] PDF geschrieben ({bytes.Length} Bytes, {scale:0.##} pt/m): {outPath}");
+            Debug.Log($"[Selbsttest] PDF geschrieben ({bytes.Length} Bytes, 1:{ratio}, {scale:0.##} pt/m): {outPath}");
             EditorUtility.RevealInFinder(outPath);
         }
 

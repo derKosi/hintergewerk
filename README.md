@@ -50,6 +50,8 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 | [docs/10-windows-buildserver.md](docs/10-windows-buildserver.md) | Windows-Zweitmaschine (3090): Git, OpenSSH, Remote-Build, Fernsteuerung, Security |
 | [docs/11-szene-spec-smoketest.md](docs/11-szene-spec-smoketest.md) | Exakte Szenen-Spec für M0/M1: Hierarchy, Verhalten, Pass-Kriterien |
 | [docs/12-devpost-felder.md](docs/12-devpost-felder.md) | Formularfelder fertig zum Einfügen (17.11.) + Hand-Interactions-Text |
+| [docs/13-vorjahres-analyse.md](docs/13-vorjahres-analyse.md) | Was die Vorjahres-Referenzen gewinnen ließ — Muster + Ableitungen für Video/Text |
+| [website/index.html](website/index.html) | Landingpage-Entwurf (statisch, deploy-ready für bau-toolz) |
 | [docs/adr/](docs/adr/README.md) | ADRs 0001–0004: die großen Weichen im Detail |
 | [AGENTS.md](AGENTS.md) | Konventionen für jede Agent-Session: Invarianten, Struktur, Verifikation |
 | [unity/Assets/Hintergewerk/](unity/Assets/Hintergewerk/README.md) | **C#-Kern, SDK-frei** (Runtime/Editor/Tests, asmdefs) + Selbsttest |

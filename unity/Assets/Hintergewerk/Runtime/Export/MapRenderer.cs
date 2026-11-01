@@ -38,7 +38,7 @@ namespace Hintergewerk.Export
         /// darf null sein (dann nur Rahmen). Rückgabe: scale = Punkte pro Meter für den Balken.
         /// </summary>
         public static PdfDoc BuildDoc(string roomLabel, string author, List<Vector2> wallOutline,
-                                      List<MappedObject> objects, out float scale)
+                                      List<MappedObject> objects, out float scale, out int scaleRatio)
         {
             var doc = new PdfDoc();
 
@@ -52,9 +52,25 @@ namespace Hintergewerk.Export
             float aw = doc.Width - MarginL - MarginR;
             float ah = doc.Height - MarginT - MarginB;
             float w = Mathf.Max(maxx - minx, 0.01f), d = Mathf.Max(maxz - minz, 0.01f);
-            scale = Mathf.Min(aw / w, ah / d);
+            float fit = Mathf.Min(aw / w, ah / d);
 
-            Vector2 M(Vector3 p) => new Vector2(MarginL + (p.x - minx) * scale, MarginB + (p.z - minz) * scale);
+            // Normblätter: größte Norm, die noch passt (1 pt = 1/72 Zoll → 1 m = 2834,65 pt bei 1:1)
+            float[] norms = { 20f, 25f, 50f, 100f, 200f };
+            scaleRatio = 0;
+            scale = fit;
+            foreach (var n in norms)
+            {
+                float s = 2834.65f / n;
+                if (s <= fit + 1e-3f) { scale = s; scaleRatio = (int)n; break; }
+            }
+
+            float offX = (aw - w * scale) / 2f; // zentrieren
+            float offZ = (ah - d * scale) / 2f;
+
+            float MX(float x) => MarginL + offX + (x - minx) * scale;
+            float MZ(float z) => MarginB + offZ + (z - minz) * scale;
+            Vector2 M(Vector3 p) => new Vector2(MX(p.x), MZ(p.z));
+            Vector2 M2(Vector2 p) => new Vector2(MX(p.x), MZ(p.y));
 
             // ---- Wände (geschlossener Zug) ----
             var wallCol = new Color(0.25f, 0.25f, 0.25f);
@@ -62,10 +78,9 @@ namespace Hintergewerk.Export
             {
                 for (int i = 0; i < wallOutline.Count; i++)
                 {
-                    var a = wallOutline[i];
-                    var b = wallOutline[(i + 1) % wallOutline.Count];
-                    Line(doc, MarginL + (a.x - minx) * scale, MarginB + (a.y - minz) * scale,
-                                MarginL + (b.x - minx) * scale, MarginB + (b.y - minz) * scale, 1.4f, wallCol);
+                    var a = M2(wallOutline[i]);
+                    var b = M2(wallOutline[(i + 1) % wallOutline.Count]);
+                    Line(doc, a.x, a.y, b.x, b.y, 1.4f, wallCol);
                 }
             }
             else
@@ -116,13 +131,24 @@ namespace Hintergewerk.Export
             Line(doc, MarginL, barY, MarginL + scale, barY, 1.2f, Color.black);
             Line(doc, MarginL, barY - 3f, MarginL, barY + 3f, 1f, Color.black);
             Line(doc, MarginL + scale, barY - 3f, MarginL + scale, barY + 3f, 1f, Color.black);
-            Text(doc, MarginL + scale + 6, barY - 2f, 7.5f, "1 m", Color.black);
+            Text(doc, MarginL + scale + 6, barY - 2f, 7.5f,
+                 scaleRatio > 0 ? $"1 m · Maßstab 1:{scaleRatio}" : "1 m", Color.black);
 
-            // ---- Titel ----
+            // ---- Titel + Schriftfeld (rechts oben, wie am Plan) ----
             Text(doc, MarginL, doc.Height - 34f, 15f, "Hintergewerk — " + (roomLabel ?? "Raum"), true, Color.black);
             Text(doc, MarginL, doc.Height - 50f, 8.5f,
-                 $"Grundriss mit dokumentierten Objekten · erfasst von {author ?? "unbekannt"} · {DateTime.UtcNow:yyyy-MM-dd} · Schema v{Schema.Version}",
+                 $"Grundriss mit dokumentierten Objekten · Schema v{Schema.Version}",
                  Color.gray);
+            float bx = doc.Width - MarginR - 190f, by = doc.Height - MarginT + 6f;
+            Line(doc, bx, by, doc.Width - MarginR, by, 0.8f, Color.black);
+            Line(doc, bx, by, bx, by + 26f, 0.8f, Color.black);
+            Line(doc, doc.Width - MarginR, by, doc.Width - MarginR, by + 26f, 0.8f, Color.black);
+            Line(doc, bx, by + 26f, doc.Width - MarginR, by + 26f, 0.8f, Color.black);
+            Line(doc, bx, by + 13f, doc.Width - MarginR, by + 13f, 0.5f, Color.black);
+            Text(doc, bx + 5f, by + 17f, 7.5f, "Hintergewerk · Grundriss · Blatt 1/1", true, Color.black);
+            Text(doc, bx + 5f, by + 4f, 7f,
+                 $"Erfasst: {author ?? "unbekannt"} · {DateTime.UtcNow:yyyy-MM-dd} · 1:{(scaleRatio > 0 ? scaleRatio.ToString() : "~" + Mathf.RoundToInt(2834.65f / scale))}",
+                 Color.black);
 
             // ---- Legende ----
             float ly = MarginB - 44f;

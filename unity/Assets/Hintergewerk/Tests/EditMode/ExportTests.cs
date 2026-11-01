@@ -54,14 +54,35 @@ namespace Hintergewerk.Tests
                 }
             };
 
-            float scale;
-            var doc = MapRenderer.BuildDoc("Bad EG", "Mathias", walls, objs, out scale);
+            float scale; int ratio;
+            var doc = MapRenderer.BuildDoc("Bad EG", "Mathias", walls, objs, out scale, out ratio);
             Assert.Greater(doc.Lines.Count, 0);
             Assert.Greater(doc.Texts.Count, 0);
             Assert.Greater(scale, 0f);
+            Assert.AreEqual(25, ratio); // 4×3-m-Raum: 1:20 passt nicht mehr, 1:25 schon
 
             var bytes = PdfEmitter.Emit(doc);
             Assert.Greater(bytes.Length, 500);
+        }
+
+        [Test]
+        public void Normblatt_KleinerRaum_Nimmt120()
+        {
+            var walls = new List<Vector2> { new Vector2(0f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0.5f), new Vector2(0f, 0.5f) };
+            float scale; int ratio;
+            MapRenderer.BuildDoc("Tiny", "T", walls, new List<MappedObject>(), out scale, out ratio);
+            Assert.AreEqual(20, ratio);
+            Assert.AreEqual(141.73f, scale, 0.5f);
+        }
+
+        [Test]
+        public void Normblatt_RiesigerRaum_FreierMassstab()
+        {
+            var walls = new List<Vector2> { new Vector2(0f, 0f), new Vector2(40f, 0f), new Vector2(40f, 30f), new Vector2(0f, 30f) };
+            float scale; int ratio;
+            MapRenderer.BuildDoc("Halle", "T", walls, new List<MappedObject>(), out scale, out ratio);
+            Assert.AreEqual(0, ratio); // größer als 1:200 → freier Maßstab
+            Assert.Less(scale, 2834.65f / 200f);
         }
     }
 }

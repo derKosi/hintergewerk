@@ -17,9 +17,11 @@ Der Einstieg für jede (neue) Session — Mensch oder Agent. Vor der ersten Änd
 
 ## Struktur
 
-- `unity/Assets/Hintergewerk/Runtime/` — SDK-freier Kern: `Data/`, `Capture/`, `Recall/`, `Export/`, `Core/` (Interfaces) — asmdef `Hintergewerk.Runtime`
+- `unity/Assets/Hintergewerk/Runtime/` — SDK-freier Kern: `Data/`, `Capture/`, `Recall/`, `Export/`, `Core/` (Interfaces), `Localization/`, `Demo/` — asmdef `Hintergewerk.Runtime`
+- `unity/Assets/Hintergewerk/Adapters/` — OVR*-Adapter der Interfaces (Assembly-CSharp, außerhalb der asmdef)
 - `unity/Assets/Hintergewerk/Editor/` — Selbsttest-Menü + Batch-Build — asmdef `Hintergewerk.Editor`
-- `unity/Assets/Hintergewerk/Tests/EditMode/` — NUnit-Tests — asmdef `Hintergewerk.Tests`
+- `unity/Assets/Hintergewerk/Tests/EditMode/` — NUnit-Tests + Fixtures — asmdef `Hintergewerk.Tests`
+- `website/` — statische Landingpage (deploy auf bau-toolz-Server)
 - `docs/01–12` — Planung, Architektur, Interaktion, Submission, Entscheidungslog, Setup, Smoketest, Video, Text, Windows-Buildserver, Szenen-Spec, Devpost-Felder
 - `docs/adr/` — die großen Weichen im Detail (0001–0004)
 - `testdata/` — Beispieldaten im Schema v1

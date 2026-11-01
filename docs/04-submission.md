@@ -52,6 +52,8 @@ Regeln: kein Copyright-Musik, keine fremden Marken, Geräte-Footage zuerst, Musi
 | **Technical Implementation** | Anker-Persistenz (Neustart bewiesen), Snap-Engine, Korridor-Volumen, FoV + Audio-Warnung |
 | **Polish & Presentation** | Typfarben-System, Sound-Design, schnittiges Video |
 
+Analyse der Vorjahres-Referenzen (AnExplorer, Hands Physics Lab, Table Troopers) mit Ableitungen: **docs/13**. Video-Opener-Entscheidung: **D21** (Problem-Beat vor Feature-Demo).
+
 ## 6. Special Awards (mitgebaut, ohne Streuverluste)
 
 | Award | Hebel |

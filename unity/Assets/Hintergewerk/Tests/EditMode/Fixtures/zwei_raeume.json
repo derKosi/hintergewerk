@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "rooms": [
+    { "id": "raum_eg_bad", "label": "Bad EG", "floor": 0 },
+    { "id": "raum_keller_flur", "label": "Kellerflur", "floor": -1 }
+  ],
+  "anchors": [
+    { "id": "anc_tuerzarge", "room_id": "raum_eg_bad", "confidence": "high", "created_at": "2026-11-02T09:14:00Z" },
+    { "id": "anc_zaehlerschrank", "room_id": "raum_eg_bad", "confidence": "high", "created_at": "2026-11-02T09:16:00Z" },
+    { "id": "anc_keller_fenster", "room_id": "raum_keller_flur", "confidence": "medium", "created_at": "2026-11-02T10:02:00Z" },
+    { "id": "anc_keller_treppe", "room_id": "raum_keller_flur", "confidence": "high", "created_at": "2026-11-02T10:05:00Z" },
+    { "id": "anc_keller_verteilung", "room_id": "raum_keller_flur", "confidence": "low", "created_at": "2026-11-02T10:08:00Z" }
+  ],
+  "objects": [
+    {
+      "id": "obj_20261102091501_a1b2",
+      "type": "power",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_tuerzarge",
+      "geometry": { "points_lokal": [[0.1, 1.2, 0.0], [0.85, 1.2, 0.0], [0.85, 2.05, 0.0]], "depth_cm": 4.5, "diameter_cm": 2.5 },
+      "confidence": "measured",
+      "safety_corridor_cm": 5.0,
+      "evidence": { "photos": ["photos/obj_a1b2_1.jpg"], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T09:15:01Z", "author": "Mathias", "note": "Steigeinleitung, Wand offen" }
+    },
+    {
+      "id": "obj_20261102091844_c3d4",
+      "type": "water",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_zaehlerschrank",
+      "geometry": { "points_lokal": [[0.0, 0.35, 0.1], [1.6, 0.35, 0.1]], "depth_cm": 6.0, "diameter_cm": 4.0 },
+      "confidence": "estimated",
+      "safety_corridor_cm": 6.0,
+      "evidence": { "photos": [], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T09:18:44Z", "author": "Mathias", "note": "" }
+    },
+    {
+      "id": "obj_20261102092110_e5f6",
+      "type": "stud",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_tuerzarge",
+      "geometry": { "points_lokal": [[1.2, 0.0, 0.0], [1.2, 2.4, 0.0]], "depth_cm": 0.0, "diameter_cm": 6.0 },
+      "confidence": "measured",
+      "safety_corridor_cm": 3.0,
+      "evidence": { "photos": ["photos/obj_e5f6_1.jpg"], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T09:21:10Z", "author": "Mathias", "note": "CW-Ständer, Distanz 62.5" }
+    },
+    {
+      "id": "obj_20261102092500_f7a8",
+      "type": "no_drill_zone",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_zaehlerschrank",
+      "geometry": { "points_lokal": [[0.2, 0.0, 0.2], [1.4, 0.0, 0.2], [1.4, 0.0, 1.1], [0.2, 0.0, 1.1]], "depth_cm": 0.0, "diameter_cm": 0.0 },
+      "confidence": "measured",
+      "safety_corridor_cm": 10.0,
+      "evidence": { "photos": [], "voice_note": "Bodenheizung Verteilerzone" },
+      "meta": { "created_at": "2026-11-02T09:25:00Z", "author": "Mathias", "note": "Fläche, kein Strang" }
+    },
+    {
+      "id": "obj_20261102100300_b9c1",
+      "type": "power",
+      "room_id": "raum_keller_flur",
+      "anchor_id": "anc_keller_verteilung",
+      "geometry": { "points_lokal": [[0.0, 1.5, 0.0], [2.4, 1.5, 0.0]], "depth_cm": 3.0, "diameter_cm": 2.0 },
+      "confidence": "estimated",
+      "safety_corridor_cm": 5.0,
+      "evidence": { "photos": [], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T10:03:00Z", "author": "Mathias", "note": "Verkabelung Verteiler → Flur" }
+    },
+    {
+      "id": "obj_20261102100600_d2e3",
+      "type": "heating",
+      "room_id": "raum_keller_flur",
+      "anchor_id": "anc_keller_treppe",
+      "geometry": { "points_lokal": [[0.3, 0.4, 0.05], [0.3, 2.2, 0.05]], "depth_cm": 8.0, "diameter_cm": 2.2 },
+      "confidence": "estimated",
+      "safety_corridor_cm": 6.0,
+      "evidence": { "photos": [], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T10:06:00Z", "author": "Mathias", "note": "Steigleitung Heizung" }
+    },
+    {
+      "id": "obj_20261102100900_f4a5",
+      "type": "water",
+      "room_id": "raum_keller_flur",
+      "anchor_id": "anc_keller_fenster",
+      "geometry": { "points_lokal": [[0.1, 0.3, 0.15], [1.9, 0.3, 0.15], [1.9, 0.3, 0.9]], "depth_cm": 6.0, "diameter_cm": 4.0 },
+      "confidence": "scanner",
+      "safety_corridor_cm": 6.0,
+      "evidence": { "photos": ["photos/obj_f4a5_1.jpg", "photos/obj_f4a5_2.jpg"], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T10:09:00Z", "author": "Mathias", "note": "Sucher-Ergebnis übernommen" }
+    },
+    {
+      "id": "obj_20261102101200_a6b7",
+      "type": "power",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_tuerzarge",
+      "geometry": { "points_lokal": [[2.1, 1.0, 0.0], [2.1, 0.4, 0.0]], "depth_cm": 2.0, "diameter_cm": 2.0 },
+      "confidence": "estimated",
+      "safety_corridor_cm": 5.0,
+      "evidence": { "photos": [], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T10:12:00Z", "author": "Mathias", "note": "" }
+    }
+  ]
+}

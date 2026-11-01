@@ -48,6 +48,12 @@ Zweite Vorbereitungsrunde (01.11., ohne Unity): **EditMode-Tests + asmdef-Strukt
 macht den Kern im Test Runner prüfbar), **AGENTS.md** (Konventionen für jede Session), **ADRs 0001–0004**
 für die großen Weichen, **Szenen-Spec** (docs/11) und **Devpost-Feldvorlage** (docs/12).
 
+Dritte Runde (01.11., weiter ohne Unity): **SDK-Adapter-Skelette** (OvrAnchorProvider/OvrHandSource/SceneWallProvider,
+gegen Doku + Tutorial, TODOs für v207), **Anker-Test-Demo** (AnchorTestController, nur Interfaces),
+**Capture-State-Machine + Undo-Stack** mit Tests, **Strings-Tabelle DE/EN** (Runtime/Localization),
+**Normblatt-PDF** (1:20–1:200 + Schriftfeld), **JSON-Schema-Vertrag + Fixtures-Matrix**,
+**Vorjahres-Analyse** (docs/13) und **Landingpage-Entwurf** (website/).
+
 ## 4. Risiko-Register
 
 | # | Risiko | Impact | Gegenmaß | Entscheidung bis |
