@@ -1,0 +1,33 @@
+/* Hintergewerk — Promo-Site (statisch, ohne Dependencies) */
+:root { --bg:#0e1116; --fg:#e8ecf1; --dim:#9aa7b4; --line:#2a313b; --acc:#4fd1c5; --warn:#f6ad55; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width:880px; margin:0 auto; padding:0 24px; }
+header { padding:56px 0 40px; border-bottom:1px solid var(--line); }
+h1 { font-size:clamp(2rem, 6vw, 3.2rem); line-height:1.1; letter-spacing:-.02em; }
+h1 .thin { color:var(--acc); }
+.claim { margin-top:18px; font-size:1.15rem; color:var(--dim); max-width:38em; }
+.en { margin-top:8px; font-size:.95rem; color:var(--dim); font-style:italic; }
+.lang { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+.lang a { border:1px solid var(--line); padding:4px 12px; border-radius:999px; color:var(--dim); font-size:.85rem; text-decoration:none; }
+.lang a:hover { border-color:var(--acc); }
+.lang a.on { border-color:var(--acc); color:var(--acc); }
+section { padding:48px 0; border-bottom:1px solid var(--line); }
+h2 { font-size:1.05rem; text-transform:uppercase; letter-spacing:.12em; color:var(--acc); margin-bottom:20px; }
+.steps { display:grid; gap:20px; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); }
+.step { border:1px solid var(--line); border-radius:10px; padding:20px; }
+.step b { display:block; margin-bottom:8px; }
+.step span { color:var(--dim); font-size:.95rem; }
+.quote { border-left:3px solid var(--acc); padding:12px 18px; color:var(--fg); font-size:1.05rem; background:#131920; border-radius:0 8px 8px 0; }
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); }
+.card { border:1px solid var(--line); border-radius:10px; padding:16px 18px; color:var(--dim); font-size:.95rem; }
+.card b { color:var(--fg); display:block; margin-bottom:6px; }
+ul { list-style:none; }
+li { padding:6px 0 6px 22px; position:relative; color:var(--dim); }
+li::before { content:"→"; position:absolute; left:0; color:var(--acc); }
+.log article { border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:14px; }
+.log time { color:var(--acc); font-size:.85rem; }
+.log p { color:var(--dim); font-size:.95rem; margin-top:6px; }
+footer { padding:40px 0 80px; color:var(--dim); font-size:.9rem; }
+a { color:var(--acc); text-decoration:none; }
+.badge { display:inline-block; border:1px solid var(--acc); color:var(--acc); border-radius:999px; padding:2px 12px; font-size:.8rem; margin-bottom:20px; }
