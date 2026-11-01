@@ -10,7 +10,7 @@ Der Einstieg für jede (neue) Session — Mensch oder Agent. Vor der ersten Änd
 
 1. **Ehrlichkeitsregel:** Wir behaupten nicht, durch Wände zu sehen. Jedes Objekt trägt sichtbare Konfidenz (`measured | estimated | scanner`). „Nicht gefunden" heißt nie „nicht vorhanden". Verwaiste Objekte (Anker weg) werden als „nicht verortbar" geführt, nie gelöscht.
 2. **Anker-lokale Geometrie:** Punkte werden relativ zum Anker gespeichert (`Punkt_world = AnchorPose × Punkt_lokal`). Nie world-space persistieren.
-3. **Kein Meta-SDK im Runtime-Kern:** Alles unter `Runtime/` kennt kein `OVR*`. SDK-Zugriff ausschließlich über die Interfaces in `Runtime/Core/Interfaces.cs`; Adapter-Implementierungen kommen in `Runtime/Adapters/`.
+3. **Kein Meta-SDK im Runtime-Kern:** Alles unter `Runtime/` kennt kein `OVR*`. SDK-Zugriff ausschließlich über die Interfaces in `Runtime/Core/Interfaces.cs`; Adapter-Implementierungen liegen in `Assets/Hintergewerk/Adapters/` (außerhalb der Runtime-asmdef → Assembly-CSharp, dort ist OVR* erlaubt).
 4. **schema_version:** Datenmodell-Änderung → `Schema.Version` erhöhen + Migration. Der Parser überspringt unbekannte Keys (Forward-Kompatibilität).
 5. **Auto-Save:** Jede Mutation persisted sofort — es gibt keinen Save-Button.
 6. **Keine Secrets** (Keystores, Tokens) im Repo. Keine erfundenen Screenshots, Testimonials oder Messwerte. Keine echten Gebäudedaten in der Demo (Testraum mit Fantasieadresse).

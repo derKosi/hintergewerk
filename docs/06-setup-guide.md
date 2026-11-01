@@ -21,6 +21,7 @@ Menünamen können je nach Version leicht abweichen — dann in Package Manager 
 - [ ] Window → Package Manager → (Dropdown: Unity Registry) → **Meta XR All-in-One** → Install
   (Falls nicht gelistet: über „Add package by name": `com.meta.xr.sdk.all` — Wettbewerbsvorgabe v207+)
 - [ ] Nach Installation öffnet sich ggf. der Meta-Setup-Wizard: **Build Target auf Android** umstellen lassen
+- [ ] Quellen verifiziert (01.11.): Hands-Tutorial („unity-tutorial-basic-hand-training") und Spatial-Anchors-Tutorial auf developers.meta.com — SDK-Referenz für **v207** existiert
 - [ ] Window → Package Manager → **Meta XR Simulator** installieren (Editor-Tests ohne Gerät)
 - [ ] Project Settings → XR Plug-in Management → Android-Tab → **OpenXR** anhaken
 - [ ] OpenXR (Android) → Meta Quest Support anhaken; **Hand Tracking** → Interaction Profile „Meta Quest Hand Interaction" hinzufügen

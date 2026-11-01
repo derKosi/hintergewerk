@@ -118,6 +118,17 @@ namespace Hintergewerk.Data
         public List<TrackedObject> ObjectsInRoom(string roomId) =>
             Data.objects.FindAll(o => o.room_id == roomId);
 
+        /// <summary>Fügt ein bereits vollständiges Objekt ein (z. B. aus CaptureSession.Confirm).</summary>
+        public TrackedObject AddTracked(TrackedObject o)
+        {
+            if (string.IsNullOrEmpty(o.id))
+                o.id = "obj_" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff") + "_" + Guid.NewGuid().ToString("N").Substring(0, 4);
+            Data.objects.Add(o);
+            RebuildOrphans();
+            Save();
+            return o;
+        }
+
         /// <summary>Objekte, deren Anker fehlt → „nicht verortbar" (Ehrlichkeitsregel).</summary>
         public List<TrackedObject> OrphanedObjects() =>
             Data.objects.FindAll(o => o.orphaned);
@@ -132,6 +143,15 @@ namespace Hintergewerk.Data
         }
 
         static string Now() => DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+
+        public static double DefaultDepthCm(ObjectType t) => t switch
+        {
+            ObjectType.Power => 4.0,
+            ObjectType.Water => 6.0,
+            ObjectType.Heating => 5.0,
+            ObjectType.Stud => 0.0,
+            _ => 0.0
+        };
 
         public static double DefaultCorridorCm(ObjectType t) => t switch
         {

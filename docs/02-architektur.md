@@ -24,7 +24,9 @@ Assets/Hintergewerk/
 │   ├── Recall/              CorridorFactory, WarningSystem
 │   └── Export/              PdfEmitter, MapRenderer
 ├── Editor/                  Selbsttest-Menü + Batch-Build (asmdef Hintergewerk.Editor)
-└── Tests/EditMode/          NUnit-Tests (asmdef Hintergewerk.Tests)
+├── Tests/EditMode/          NUnit-Tests (asmdef Hintergewerk.Tests)
+├── Demo/                    AnchorTestController (M1-Demo, fliegt nach M1 raus)
+└── Adapters/                OVR*-Implementierungen der Interfaces (Assembly-CSharp — bewusst außerhalb der Runtime-asmdef)
 ```
 
 | Klasse | Verantwortung |

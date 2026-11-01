@@ -2,6 +2,8 @@
 
 Ziel: Zwei minimale Szenen, per MCP gebaut, die M0 (Pipeline) und M1 (Anker-Persistenz) abdecken. Kein UI, keine Features — nur die zwei Unbekannten des Projekts. Ablauf/Beweise: `docs/07-smoketest-protokoll.md`.
 
+> API-Check 01.11.: Pinch-API offiziell bestätigt (Meta-Tutorial „unity-tutorial-basic-hand-training": `GetFingerIsPinching(OVRHand.HandFinger.Index)`); Spatial-Anchors-Tutorial existiert („unity-spatial-anchors-basic-tutorial"); SDK-Referenz **v207** ist online. Exakte Namen am 02.11. gegen die installierte SDK-Version prüfen — TODOs im Code.
+
 ## Szene 1 — `01_Smoketest.unity` (M0)
 
 **Hierarchy:**
@@ -36,9 +38,9 @@ Ziel: Zwei minimale Szenen, per MCP gebaut, die M0 (Pipeline) und M1 (Anker-Pers
 
 | Datei | Zweck |
 |---|---|
-| `Runtime/Adapters/OvrAnchorProvider.cs` | `IAnchorProvider` via OVRSpatialAnchor (Create/Save/Load) |
-| `Runtime/Adapters/OvrHandSource.cs` | `IHandSource` via OVRHand (Pinch, Pointer-Pose) |
-| `Runtime/Adapters/SceneWallProvider.cs` | `IWallProvider` via Scene API — erst nach M1 |
-| `Runtime/Demo/AnchorTestController.cs` | Nur für die Testszene; fliegt nach M1 wieder raus |
+| `Adapters/OvrAnchorProvider.cs` | `IAnchorProvider` via OVRSpatialAnchor (Create/Save/Load) — Skeleton steht, TODOs gegen v207 |
+| `Adapters/OvrHandSource.cs` | `IHandSource` via OVRHand — Pinch-API verifiziert, Bone-IDs am Gerät tunen |
+| `Adapters/SceneWallProvider.cs` | `IWallProvider` via Scene API — Skeleton, erst nach M1 |
+| `Runtime/Demo/AnchorTestController.cs` | Nutzt nur Interfaces (bleibt SDK-frei); fliegt nach M1 wieder raus |
 
 **Regel:** Erst wenn beide Szenen ihre Pass-Kriterien erfüllen, wird am Capture-Flow gebaut.

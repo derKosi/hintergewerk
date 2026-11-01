@@ -37,7 +37,7 @@ Menünamen im Dashboard können abweichen — das Ziel zählt, nicht der Pfad.
 
 ## M1 — Anker-Persistenz (die riskanteste Produkt-Annahme)
 
-Vorbereitung: Ich baue via MCP eine zweite Minimal-Szene:
+Vorbereitung: Die Adapter liegen bereits als Skeleton vor (`Adapters/OvrAnchorProvider` — prov→UUID-Map in „anker_map.json", LoadAll lädt per UUID). Ich baue via MCP eine zweite Minimal-Szene:
 - Beim Pinch: Spatial Anchor an der Handposition erzeugen + roter Würfel 50 cm daneben (anker-lokal versetzt)
 - Anchor speichern (`OVRSpatialAnchor.Save`), Log mit anchor-UUID
 - Beim App-Start: Anker laden, Würfel platzieren; On-Screen-Text: „Anker geladen: <n>"

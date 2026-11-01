@@ -1,9 +1,9 @@
 // Hintergewerk — Nahtstellen (Seams) zwischen SDK-freiem Kern und Meta XR SDK.
-// Der komplette Kern (Data/Capture/Recall/Export) kennt kein OVR*-API. Morgen werden
-// genau diese drei Interfaces von dünnen SDK-Adaptern implementiert:
-//   Anchoring/OvrAnchorProvider   → OVRSpatialAnchor (erzeugen, speichern, laden)
-//   Capture/OvrHandSource         → Meta XR Hands (Pinch, Fingerspitzen)
-//   Capture/SceneWallProvider     → Scene API (Wandebenen für SnapEngine)
+// Der komplette Kern (Data/Capture/Recall/Export) kennt kein OVR*-API. Die dünnen SDK-Adapter
+// liegen in Assets/Hintergewerk/Adapters/ (Assembly-CSharp, außerhalb dieser asmdef):
+//   Adapters/OvrAnchorProvider   → OVRSpatialAnchor (erzeugen, speichern, laden)
+//   Adapters/OvrHandSource       → Meta XR Hands (Pinch, Fingerspitzen)
+//   Adapters/SceneWallProvider   → Scene API (Wandebenen für SnapEngine)
 // Solange die Adapter fehlen, lassen sich alle Kern-Module mit Fake-Implementierungen
 // im Editor/XR Simulator testen.
 using System;
@@ -28,6 +28,7 @@ namespace Hintergewerk.Core
         public Vector3 PalmCenter; // Handfläche (Menü-Geste)
         public bool Pinching;      // Pinch (Daumen+Zeigefinger) aktiv
         public float PinchStrength;
+        public Vector3 PalmNormal; // für PalmFacingBody (Menü-Geste)
     }
 
     public interface IHandSource
@@ -46,6 +47,9 @@ namespace Hintergewerk.Core
         void PersistAll();
         /// <summary>Anker asynchron laden (App-Start). onDone(false) = Fallback-Weg einschlagen.</summary>
         void LoadAll(Action<bool> onDone);
+
+        /// <summary>Bekannte (geladene oder erzeugte) Anker-Ids — für Demo, Store-Abgleich und Debug.</summary>
+        IEnumerable<string> KnownAnchorIds { get; }
     }
 
     public interface IWallProvider
