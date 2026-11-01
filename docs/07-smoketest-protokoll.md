@@ -9,7 +9,7 @@ Menünamen im Dashboard können abweichen — das Ziel zählt, nicht der Pfad.
 ### A. Dashboard vorbereiten (~10 min)
 
 - [ ] developers.meta.com → Manage Apps → **Create App**
-      Name „Hausgedaechtnis", Typ App/API — wie angeboten (Single-App reicht)
+      Name „Hintergewerk", Typ App/API — wie angeboten (Single-App reicht)
 - [ ] In der App: **Builds / Release Channels** → neuen Channel **„Competition"** anlegen
       (genau dieser Name — die Wettbewerbs-richtlinie verlangt ihn)
 - [ ] Tester hinzufügen: eigener Meta-Account (E-Mail der Quest)
@@ -17,7 +17,7 @@ Menünamen im Dashboard können abweichen — das Ziel zählt, nicht der Pfad.
 ### B. Build (~15 min)
 
 - [ ] Ich baue die Minimal-Szene via MCP: Würfel 1 m vor Kamera-Start + Hand-Tracking-Skeleton-Visuals, sonst nichts
-- [ ] File → Build Settings (Android) → Szene hinzu → **Build** → `hausgedaechtnis-smoketest.apk`
+- [ ] File → Build Settings (Android) → Szene hinzu → **Build** → `hintergewerk-smoketest.apk`
 - [ ] Build-Log abspeichern (Beweis)
 
 ### C. Upload + Invite-URL (~10 min)
@@ -52,7 +52,7 @@ Vorbereitung: Ich baue via MCP eine zweite Minimal-Szene:
 
 **M1-Pass =** Run 1+2 deckungsgleich, Run 3 maximal leicht versetzt (≤ 5 cm).
 **M1-Fail ⇒** Entscheidung D6 (Fallback): Re-Lock über Scene-Mesh-Ebenen + manuellen Bestätigungs-Flow;
-Produkt-Story „Hausgedächtnis mit Bestätigung statt blinder Anker-Gläubigkeit" — ehrlich, machbar, aber anders.
+Produkt-Story „Hintergewerk mit Bestätigung statt blinder Anker-Gläubigkeit" — ehrlich, machbar, aber anders.
 
 ## Nach bestandenem M0+M1
 

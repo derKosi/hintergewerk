@@ -1,10 +1,10 @@
-// Hausgedächtnis — Korridore statt Haarlinien (03-interaktion.md §2.5).
+// Hintergewerk — Korridore statt Haarlinien (03-interaktion.md §2.5).
 // Baut ein leuchtendes Ribbon entlang der Polylinie, Breite = Sicherheitskorridor (± cm).
 // Rein Unity (Mesh-API), kein SDK — Material wird vom Aufrufer zugewiesen (UI-Farbsystem).
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hausgedächtnis.Recall
+namespace Hintergewerk.Recall
 {
     public static class CorridorFactory
     {

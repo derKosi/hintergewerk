@@ -1,13 +1,13 @@
-// Hausgedächtnis — SnapEngine: macht Handtracking-Präzision (1–2 cm Zittern) irrelevant.
+// Hintergewerk — SnapEngine: macht Handtracking-Präzision (1–2 cm Zittern) irrelevant.
 // Reine Mathematik, kein SDK. Dreistufige Kette (03-interaktion.md §2):
 //   1. Ebene: Punkt auf Wand-/Deckenebene projizieren
 //   2. Raster: 5-cm-Einrasten in der Ebene
 //   3. Magnet: bestehende Endpunkte/Anschlüsse ziehen den Punkt an
 using System.Collections.Generic;
 using UnityEngine;
-using Hausgedächtnis.Core;
+using Hintergewerk.Core;
 
-namespace Hausgedächtnis.Capture
+namespace Hintergewerk.Capture
 {
     public class SnapResult
     {

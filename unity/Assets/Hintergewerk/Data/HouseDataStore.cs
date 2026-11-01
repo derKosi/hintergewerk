@@ -1,4 +1,4 @@
-// Hausgedächtnis — Persistenz-Speicher (CRUD + Auto-Save).
+// Hintergewerk — Persistenz-Speicher (CRUD + Auto-Save).
 // Nutzt nur UnityEngine (Pfad/Logging), kein Meta SDK. Atomares Schreiben über .tmp;
 // korrupte Dateien werden NIEMALS überschrieben, sondern als .corrupt-<ts> gesichert.
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Hausgedächtnis.Data
+namespace Hintergewerk.Data
 {
     public class HouseDataStore
     {
@@ -27,7 +27,7 @@ namespace Hausgedächtnis.Data
         }
 
         public static string DefaultPath() =>
-            System.IO.Path.Combine(Application.persistentDataPath, "hausgedaechtnis.json");
+            System.IO.Path.Combine(Application.persistentDataPath, "hintergewerk.json");
 
         // ---------------- Laden / Speichern ----------------
 

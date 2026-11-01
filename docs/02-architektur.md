@@ -1,4 +1,4 @@
-# Architektur — Hausgedächtnis
+# Architektur — Hintergewerk
 
 ## 1. Stack (D4, GO 01.11.)
 
@@ -16,7 +16,7 @@ Kein WebXR-Umweg: Die riskanteste Annahme ist **Anker-Persistenz**, nicht Zeichn
 ## 2. Module
 
 ```
-Assets/Hausgedächtnis/
+Assets/Hintergewerk/
 ├── Core/        AppState (Capture/Recall), Bootstrap, Modus-Wechsel
 ├── Anchoring/   AnchorManager, AnchorRegistry (lokal speichern/laden)
 ├── Capture/     DrawController, SnapEngine, DepthGesturer, TypeSelector, EvidenceCapture

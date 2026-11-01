@@ -1,4 +1,4 @@
-// Hausgedächtnis — minimaler JSON-Writer/Parser für genau das HouseData-Schema.
+// Hintergewerk — minimaler JSON-Writer/Parser für genau das HouseData-Schema.
 // Bewusst handgeschrieben statt JsonUtility: stabiles menschenlesbares Format, Enums als
 // Strings, nulls bleiben erhalten, Invariant Culture (Dezimalpunkt, auch auf deutschen Systemen!),
 // unbekannte Keys werden beim Lesen übersprungen (Forward-Kompatibilität für schema_version > 1).
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace Hausgedächtnis.Data
+namespace Hintergewerk.Data
 {
     public static class SimpleJson
     {

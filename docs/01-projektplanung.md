@@ -1,10 +1,10 @@
-# Projektplanung — Hausgedächtnis
+# Projektplanung — Hintergewerk
 
 **Stand:** 31.10.2026 · **Deadline:** Mi 18.11.2026, 21:00 CET · **Budget:** 18 Tage, 1 Person + Agent
 
 ## 1. Ziel
 
-Eingereichte, vollständige Submission beim Meta VR Start Developer Competition (Productivity / New Experience) mit einem ehrlichen, hands-first „Hausgedächtnis". Stretch: Top-3 im Productivity-Track.
+Eingereichte, vollständige Submission beim Meta VR Start Developer Competition (Productivity / New Experience) mit einem ehrlichen, hands-first „Hintergewerk". Stretch: Top-3 im Productivity-Track.
 
 Erfolg ist **nicht** „viel gebaut", sondern: **ein runder Flow, der auf dem Gerät läuft, über die Invite-URL für die Jury erreichbar ist, und in ≤ 3 Minuten Video überzeugt.**
 
@@ -39,7 +39,7 @@ Erfolg ist **nicht** „viel gebaut", sondern: **ein runder Flow, der auf dem Ge
 
 Der Setup-Tag ist entfallen (Zeit). **Der Plan hält trotzdem**, weil die SDK-freie Arbeit vorgezogen wurde:
 Datenmodell, Persistenz, Snap-/Korridor-/Warn-Mathematik und PDF-Export sind fertig geschrieben
-(`unity/Assets/Hausgedaechtnis/`, ungetestet bis zur ersten Kompilierung am 02.11.). Die Tage 03.–04.11.
+(`unity/Assets/Hintergewerk/`, ungetestet bis zur ersten Kompilierung am 02.11.). Die Tage 03.–04.11.
 ("Objektmodell + Persistenz") verlieren dadurch ihre Kernlast — dort bleibt nur Adapter- und
 Szenen-Arbeit. M2 (07.11.) bleibt realistisch. Neues Risiko R8: Setup-Tag-Verlust — mitigation:
 Zeitbox 90 min + Abbruchkriterien im Guide + MCP-Fallback R6.

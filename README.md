@@ -1,7 +1,9 @@
-# Hausgedächtnis (Arbeitstitel)
+# Hintergewerk
 
-> **Das Gedächtnis deiner Wände.** Was einmal sichtbar war, bleibt wiederfindbar —
+> **Das Wissen hinter der Oberfläche.** Was einmal sichtbar war, bleibt wiederfindbar —
 > räumlich verankert, mit Tiefe, Typ, Zeitstempel und Monteur.
+>
+> Englisch gelesen: *the work behind the surface* — der Name trägt in beiden Sprachen.
 
 | | |
 |---|---|
@@ -46,7 +48,7 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 | [docs/08-video-voiceover.md](docs/08-video-voiceover.md) | Video-Sprechtext v1 (EN, 2:40) + Dreh-Checkliste |
 | [docs/09-submission-text-entwurf.md](docs/09-submission-text-entwurf.md) | Devpost-Text v1 (EN, ~430 Wörter, bis Feature-Freeze pflegen) |
 | [docs/10-windows-buildserver.md](docs/10-windows-buildserver.md) | Windows-Zweitmaschine (3090): Git, OpenSSH, Remote-Build, Fernsteuerung, Security |
-| [unity/Assets/Hausgedaechtnis/](unity/Assets/Hausgedaechtnis/README.md) | **C#-Kern, SDK-frei** (Datenmodell, Persistenz, Snap, Korridor, PDF) + Selbsttest |
+| [unity/Assets/Hintergewerk/](unity/Assets/Hintergewerk/README.md) | **C#-Kern, SDK-frei** (Datenmodell, Persistenz, Snap, Korridor, PDF) + Selbsttest |
 | [testdata/beispielhaus.json](testdata/beispielhaus.json) | Beispieldaten im Schema v1 (für Import-/Export-Tests) |
 
 ## Kernidee in drei Sätzen

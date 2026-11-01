@@ -3,6 +3,7 @@
 > Sprache: Englisch (internationale Jury). Langsam und klar sprechen; Tech-Begriffe sauber
 > aussprechen („anchor", „passthrough"). Musik: frei (Meta/YouTube Audio Library), leise unter dem VO.
 > Regel: Die ersten 40 Sekunden müssen allein funktionieren (First-Five-Minutes-Award).
+> Aussprache im VO: einmal langsam einführen („HIN-ter-guh-verk — the work behind the surface"), danach normal weitersprechen.
 
 ## Szene 1 — The golden hour (0:00–0:40)
 
@@ -13,7 +14,7 @@
 - 0:06 — *(Schnitt zur offenen Wand, Leitung sichtbar)*
   **VO:** „But the one moment a wall tells the truth — is the moment it's open. We capture that moment."
 - 0:14 — *(Hand flach → Menü, radialer Typ-Wahl „Elektro")*
-  **VO:** "Hausgedächtnis. The house's memory. No controllers, no tablet — just hands."
+  **VO:** "Hintergewerk — the work behind the surface. No controllers, no tablet — just hands."
 - 0:22 — *(Pinch am Startpunkt: Snap-Puls; Linie entlang der Leitung ziehen, Punkte rasten ein)*
   **VO:** „Draw the run along the open wall. Snap points absorb hand tremor — precision by design, not by luck."
 - 0:32 — *(Zwei-Hand-Distanz → „4,5 cm" schwebt zwischen den Händen; Foto-Anhang)*
@@ -44,7 +45,7 @@
 - 2:05 — *(Falls gebaut: Agenten-Trasse-Vorschlag; sonst „What's next"-Folie)*
   **VO:** „What's next: scanner results join the memory, whole houses, staircases — and agents that suggest new routing around what's already there."
 - 2:18 — *(Endkarte: Logo + Tagline)*
-  **VO:** „Hausgedächtnis. What your walls once showed, they will always remember."
+  **VO:** „Hintergewerk. What your walls once showed, they will always remember."
 
 ## Dreh-Checkliste (14.–15.11.)
 

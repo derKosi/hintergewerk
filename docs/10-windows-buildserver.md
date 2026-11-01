@@ -19,7 +19,7 @@ Die Kiste läuft **Unity 6 — dieselbe Version wie der Mac**, kein Unreal. Grü
 
 ## 2. A — Git + GitHub (~15 Min)
 
-1. github.com → **privates Repo** `hausgedaechtnis` anlegen (leer, ohne README)
+1. github.com → **privates Repo** `hintergewerk` anlegen (leer, ohne README)
 2. **Mac-Seite übernehme ich** (siehe §6) — sobald du mir die Repo-URL gibst
 3. Windows: git-scm.com → **Git für Windows** installieren (Standard-Optionen)
 4. Auth für den Clone (eines von beiden):
@@ -27,7 +27,7 @@ Die Kiste läuft **Unity 6 — dieselbe Version wie der Mac**, kein Unreal. Grü
    - **Deploy Key (sauberer, nur lesend):** Repo → Settings → Deploy keys → Public-Key hinterlegen
 5. Clone:
    ```powershell
-   git clone https://github.com/<du>/hausgedaechtnis.git C:\Dev\hausgedaechtnis
+   git clone https://github.com/<du>/hintergewerk.git C:\Dev\hintergewerk
    ```
 
 ## 3. B — OpenSSH-Server auf Windows (~10 Min)
@@ -68,22 +68,22 @@ icacls "$env:ProgramData\ssh\administrators_authorized_keys" /inheritance:r /gra
 
 1. Unity Hub → **Unity 6 LTS in exakt derselben Version wie auf dem Mac** + Module: **Android Build Support, OpenJDK, Android SDK & NDK**
 2. Unity Hub **einmal manuell anmelden** (Personal License) — der Batch-Modus braucht die aktivierte Lizenz
-3. Projekt öffnen: `C:\Dev\hausgedaechtnis\unity`
+3. Projekt öffnen: `C:\Dev\hintergewerk\unity`
 4. Package Manager: **Meta XR All-in-One** + **Meta XR Simulator** (identisch zum Setup-Guide §3)
-5. Menü **Hausgedächtnis → Kern-Selbsttest** → muss „bestanden" melden
+5. Menü **Hintergewerk → Kern-Selbsttest** → muss „bestanden" melden
 
 ## 5. D — Remote-Build (~5 Min, das eigentliche Ziel)
 
 Im Repo-Root liegt `build.cmd` (geliefert). Es findet Unity selbst, macht `git pull` und baut die APK im Batch-Modus. Von der Mac-Seite ist der komplette Build dann EIN Befehl, den ich fahre:
 
 ```bash
-ssh <windows-user>@<ip> "C:\Dev\hausgedaechtnis\build.cmd"
+ssh <windows-user>@<ip> "C:\Dev\hintergewerk\build.cmd"
 ```
 
 APK zurück auf den Mac:
 
 ```bash
-scp <windows-user>@<ip>:C:/Dev/hausgedaechtnis/unity/Builds/hausgedaechtnis.apk ~/Downloads/
+scp <windows-user>@<ip>:C:/Dev/hintergewerk/unity/Builds/hintergewerk.apk ~/Downloads/
 ```
 
 (Beachte die Schrägstriche im Windows-Pfad bei scp — `C:/...` statt `C:\...`.)
@@ -95,7 +95,7 @@ Stolperfallen:
 ## 6. Mac-Seite — übernehme ich (~5 Min)
 
 ```bash
-cd <workspace>/hausgedaechtnis
+cd <workspace>/hintergewerk
 git init
 git add -A && git commit -m "Kern: SDK-freier C#-Kern, Docs, Pläne, Build-Runner"
 git remote add origin <repo-url>
@@ -121,7 +121,7 @@ Für Code: **nie** — dafür ist Git da. Einziger sinnvoller Fall: großer Bin�
 | Code schreiben, committen, pushen | Mac, direkt | ✅ |
 | Windows pullen lassen | `build.cmd` macht `git pull` mit | ✅ |
 | APK-Build anstoßen | `ssh … build.cmd` → Unity batch mode | ✅ |
-| Build-Log lesen | `ssh … type C:\Dev\hausgedaechtnis\unity\build.log` | ✅ |
+| Build-Log lesen | `ssh … type C:\Dev\hintergewerk\unity\build.log` | ✅ |
 | APK zurückholen | `scp` | ✅ |
 | Unity-Editor interaktiv steuern | via SSH nicht möglich | ❌ → du (Parsec/RDP) oder ich auf dem **Mac** via MCP |
 

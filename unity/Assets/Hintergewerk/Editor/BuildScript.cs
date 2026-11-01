@@ -1,6 +1,6 @@
-// Hausgedächtnis — Batch-Build für SSH/Remote (Windows-Buildserver oder Mac-Terminal).
+// Hintergewerk — Batch-Build für SSH/Remote (Windows-Buildserver oder Mac-Terminal).
 // Aufruf: Unity.exe -batchmode -quit -projectPath <pfad-zu-unity-ordner>
-//         -executeMethod Hausgedaechtnis.EditorTools.BuildScript.BuildAndroid -logFile build.log
+//         -executeMethod Hintergewerk.EditorTools.BuildScript.BuildAndroid -logFile build.log
 // Kein MenuItem: dieses Skript ist ausschließlich für den Batch-Modus gedacht
 // (EditorApplication.Exit würde sonst einen offenen Editor schließen!).
 #if UNITY_EDITOR
@@ -9,11 +9,11 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Hausgedächtnis.EditorTools
+namespace Hintergewerk.EditorTools
 {
     public static class BuildScript
     {
-        const string ApkName = "hausgedaechtnis.apk";
+        const string ApkName = "hintergewerk.apk";
 
         public static void BuildAndroid()
         {
@@ -22,7 +22,7 @@ namespace Hausgedächtnis.EditorTools
             Directory.CreateDirectory(outDir);
             var apk = Path.Combine(outDir, ApkName);
 
-            // Szenen: erst Build Settings, sonst alle unter Assets/Hausgedaechtnis (deterministisch sortiert)
+            // Szenen: erst Build Settings, sonst alle unter Assets/Hintergewerk (deterministisch sortiert)
             var scenes = EditorBuildSettings.scenes
                 .Where(s => s.enabled)
                 .Select(s => s.path)
@@ -30,7 +30,7 @@ namespace Hausgedächtnis.EditorTools
 
             if (scenes.Length == 0)
             {
-                scenes = AssetDatabase.FindAssets("t:SceneAsset", new[] { "Assets/Hausgedaechtnis" })
+                scenes = AssetDatabase.FindAssets("t:SceneAsset", new[] { "Assets/Hintergewerk" })
                     .Select(AssetDatabase.GUIDToAssetPath)
                     .OrderBy(p => p)
                     .ToArray();
@@ -40,7 +40,7 @@ namespace Hausgedächtnis.EditorTools
                     EditorApplication.Exit(2);
                     return;
                 }
-                Debug.LogWarning("[Build] Build Settings leer — baue alle Szenen unter Assets/Hausgedaechtnis: "
+                Debug.LogWarning("[Build] Build Settings leer — baue alle Szenen unter Assets/Hintergewerk: "
                                  + string.Join(", ", scenes));
             }
 

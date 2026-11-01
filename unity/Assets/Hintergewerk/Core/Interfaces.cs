@@ -1,4 +1,4 @@
-// Hausgedächtnis — Nahtstellen (Seams) zwischen SDK-freiem Kern und Meta XR SDK.
+// Hintergewerk — Nahtstellen (Seams) zwischen SDK-freiem Kern und Meta XR SDK.
 // Der komplette Kern (Data/Capture/Recall/Export) kennt kein OVR*-API. Morgen werden
 // genau diese drei Interfaces von dünnen SDK-Adaptern implementiert:
 //   Anchoring/OvrAnchorProvider   → OVRSpatialAnchor (erzeugen, speichern, laden)
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hausgedächtnis.Core
+namespace Hintergewerk.Core
 {
     /// <summary>Ebene im Raum (Wand/Decke/Boden) aus Scene API oder manueller Kalibrierung.</summary>
     public struct WallPlane

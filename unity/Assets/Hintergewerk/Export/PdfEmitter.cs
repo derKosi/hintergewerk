@@ -1,4 +1,4 @@
-// Hausgedächtnis — minimaler PDF-Emitter (Risiko R4 ausräumen, 02-architektur.md §5).
+// Hintergewerk — minimaler PDF-Emitter (Risiko R4 ausräumen, 02-architektur.md §5).
 // PDF 1.4, A4, Base14 Helvetica (keine externen Assets, keine Dependencies, IL2CPP-sicher).
 // Bewusst simpel: Linien + Text + Farben. Umlaute werden transliteriert (ae/oe/ue/ss),
 // damit WinAnsi/ASCII garantiert passt. Byte-Offsets des xref werden exakt mitgezählt.
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace Hausgedächtnis.Export
+namespace Hintergewerk.Export
 {
     public class PdfLine
     {

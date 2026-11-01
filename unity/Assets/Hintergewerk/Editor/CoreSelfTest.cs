@@ -1,5 +1,5 @@
-// Hausgedächtnis — Editor-Selbsttest: verifiziert den SDK-freien Kern OHNE Gerät.
-// Menü: Hausgedächtnis → Kern-Selbsttest (JSON-Roundtrip) / PDF-Beispiel erzeugen.
+// Hintergewerk — Editor-Selbsttest: verifiziert den SDK-freien Kern OHNE Gerät.
+// Menü: Hintergewerk → Kern-Selbsttest (JSON-Roundtrip) / PDF-Beispiel erzeugen.
 // Damit ist morgen nach dem Import in 10 Sekunden klar, ob Data + Export layer funktionieren,
 // bevor auch nur eine Zeile Meta-SDK-Code existiert.
 #if UNITY_EDITOR
@@ -7,14 +7,14 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using Hausgedächtnis.Data;
-using Hausgedächtnis.Export;
+using Hintergewerk.Data;
+using Hintergewerk.Export;
 
-namespace Hausgedächtnis.EditorTools
+namespace Hintergewerk.EditorTools
 {
     public static class CoreSelfTest
     {
-        [MenuItem("Hausgedächtnis/Kern-Selbsttest (JSON-Roundtrip)")]
+        [MenuItem("Hintergewerk/Kern-Selbsttest (JSON-Roundtrip)")]
         public static void JsonRoundtrip()
         {
             var store = new HouseDataStore(Path.Combine(Application.temporaryCachePath, "hg_selftest.json"));
@@ -47,11 +47,11 @@ namespace Hausgedächtnis.EditorTools
             var nullOk = reloaded.Data.objects[0].evidence.voice_note == null;
 
             Debug.Log($"[Selbsttest] JSON-Roundtrip: {(ok && nullOk ? "BESTANDEN" : "FEHLGESCHLAGEN")}\n{File.ReadAllText(store.Path)}");
-            if (!ok || !nullOk) EditorUtility.DisplayDialog("Hausgedächtnis", "JSON-Roundtrip FEHLGESCHLAGEN — Log ansehen!", "Ok");
-            else EditorUtility.DisplayDialog("Hausgedächtnis", "JSON-Roundtrip bestanden.\n(Objekte, Räume, Anker, null-Erhaltung, Enums)", "Ok");
+            if (!ok || !nullOk) EditorUtility.DisplayDialog("Hintergewerk", "JSON-Roundtrip FEHLGESCHLAGEN — Log ansehen!", "Ok");
+            else EditorUtility.DisplayDialog("Hintergewerk", "JSON-Roundtrip bestanden.\n(Objekte, Räume, Anker, null-Erhaltung, Enums)", "Ok");
         }
 
-        [MenuItem("Hausgedächtnis/PDF-Beispiel erzeugen")]
+        [MenuItem("Hintergewerk/PDF-Beispiel erzeugen")]
         public static void SamplePdf()
         {
             // Fake-Raum: 4×3 m, zwei Wände offene Polygonliste (im Uhrzeigersinn)
@@ -74,7 +74,7 @@ namespace Hausgedächtnis.EditorTools
 
             var doc = MapRenderer.BuildDoc("Bad EG (Beispiel)", HouseDataStore.DefaultAuthor, walls, objects, out float scale);
             var bytes = MapRenderer.EmitPdf(doc);
-            var outPath = Path.Combine(Application.temporaryCachePath, "hausgedaechtnis_beispiel.pdf");
+            var outPath = Path.Combine(Application.temporaryCachePath, "hintergewerk_beispiel.pdf");
             File.WriteAllBytes(outPath, bytes);
             Debug.Log($"[Selbsttest] PDF geschrieben ({bytes.Length} Bytes, {scale:0.##} pt/m): {outPath}");
             EditorUtility.RevealInFinder(outPath);

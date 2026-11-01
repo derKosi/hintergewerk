@@ -30,7 +30,7 @@ Regeln: kein Copyright-Musik, keine fremden Marken, Geräte-Footage zuerst, Musi
 
 1. **Hook** (2 Sätze): Der Moment, in dem die Bohrmaschine die Leitung trifft — weil niemand mehr wusste, wo sie lag.
 2. **Problem**: Lücke zwischen Bautagebuch (Fotos, unsortiert) und BIM (setzt Modell voraus). Der Bestand kennt seine eigenen Wände nicht.
-3. **Lösung**: Hausgedächtnis — Capture in unter 30 s, Recall mit Warnkorridor, Export als Beweis.
+3. **Lösung**: Hintergewerk — Capture in unter 30 s, Recall mit Warnkorridor, Export als Beweis.
 4. **Hands-first**: Grammatik aus 5 Gesten; Snap + Korridor statt Präzisions-Täuschung.
 5. **Technik**: Spatial Anchors mit Persistenz, anker-lokale Geometrie, Schema-Versionierung.
 6. **Ehrlichkeit**: Konfidenz auf jedem Objekt; „nicht gefunden" ≠ „nicht vorhanden".
@@ -38,7 +38,7 @@ Regeln: kein Copyright-Musik, keine fremden Marken, Geräte-Footage zuerst, Musi
 
 ## 4. Tagline-Kandidaten (≤ 140 Zeichen)
 
-1. „Das Gedächtnis deiner Wände: Einmal sichtbar, für immer wiederfindbar — mit den Händen erfasst, räumlich verankert, in unter 30 Sekunden."
+1. „Hintergewerk — das Wissen hinter der Oberfläche: Einmal sichtbar, für immer wiederfindbar — mit den Händen erfasst, räumlich verankert, in unter 30 Sekunden."
 2. „Hände statt Röntgenblick. Dokumentiere verdeckte Leitungen beim Öffnen der Wand — und finde sie Monate später auf den Zentimeter wieder."
 
 (Endgültige Wahl: D13, 13.11.)
@@ -57,5 +57,5 @@ Regeln: kein Copyright-Musik, keine fremden Marken, Geräte-Footage zuerst, Musi
 | Award | Hebel |
 |---|---|
 | **First Five Minutes** | Erste 40 s des Videos = kompletter Capture-Moment |
-| **Reason to Come Back** | Jede Renovierungs-Session füllt das Hausgedächtnis weiter — 1 Satz im Text |
+| **Reason to Come Back** | Jede Renovierungs-Session füllt das Hintergewerk weiter — 1 Satz im Text |
 | **Agentic Interaction** | Nur falls bis 10.11. gebaut & stabil (D10), sonst 1 Satz unter „Next" |

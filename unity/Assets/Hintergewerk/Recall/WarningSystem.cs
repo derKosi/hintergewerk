@@ -1,10 +1,10 @@
-// Hausgedächtnis — Warnsystem: Hand nähert sich Korridor → Eskalation.
+// Hintergewerk — Warnsystem: Hand nähert sich Korridor → Eskalation.
 // Reine Distanzmathematik (Punkt↔Polylinie), der SDK-Adapter füttert nur Handpositionen.
 // FoV-aware-Erweiterung (Rand-Glow + räumlicher Audio-Ping) sitzt im UI-Adapter auf.
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hausgedächtnis.Recall
+namespace Hintergewerk.Recall
 {
     public enum WarningLevel { None, Near, Critical }
 

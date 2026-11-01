@@ -1,13 +1,13 @@
-// Hausgedächtnis — MapRenderer: Grundriss als EXPORT (nicht Input, D15).
+// Hintergewerk — MapRenderer: Grundriss als EXPORT (nicht Input, D15).
 // Projiziert Weltpunkte top-down (x/z) auf A4, zeichnet Wände, Objekte mit Korridor-Halo,
 // Maßstab-Balken, Legende, Titel. Speist den PdfEmitter. Das ist der Teil, den ein
 // Bauherr / die nächste Firma tatsächlich annimmt.
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Hausgedächtnis.Data;
+using Hintergewerk.Data;
 
-namespace Hausgedächtnis.Export
+namespace Hintergewerk.Export
 {
     public class MappedObject
     {
@@ -119,7 +119,7 @@ namespace Hausgedächtnis.Export
             Text(doc, MarginL + scale + 6, barY - 2f, 7.5f, "1 m", Color.black);
 
             // ---- Titel ----
-            Text(doc, MarginL, doc.Height - 34f, 15f, "Hausgedaechtnis — " + (roomLabel ?? "Raum"), true, Color.black);
+            Text(doc, MarginL, doc.Height - 34f, 15f, "Hintergewerk — " + (roomLabel ?? "Raum"), true, Color.black);
             Text(doc, MarginL, doc.Height - 50f, 8.5f,
                  $"Grundriss mit dokumentierten Objekten · erfasst von {author ?? "unbekannt"} · {DateTime.UtcNow:yyyy-MM-dd} · Schema v{Schema.Version}",
                  Color.gray);

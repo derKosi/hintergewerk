@@ -1,11 +1,11 @@
-// Hausgedächtnis — Datenmodell (schema_version 1)
+// Hintergewerk — Datenmodell (schema_version 1)
 // Reines C#, keine Unity-/SDK-Abhängigkeit: Damit ist das Modell überall testbar und überlebt Stack-Wechsel.
 // Koordinaten-Konvention (02-architektur.md §2): Geometrie ist ANKER-LOKAL.
 //   Punkt_world = AnchorPose * Punkt_lokal  — Anker-Drift/Re-Lokalisierung überleben so.
 using System;
 using System.Collections.Generic;
 
-namespace Hausgedächtnis.Data
+namespace Hintergewerk.Data
 {
     public enum ObjectType { Power, Water, Heating, Stud, NoDrillZone }
     public enum Confidence { Estimated, Measured, Scanner }

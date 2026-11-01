@@ -1,6 +1,6 @@
 @echo off
-rem Hausgedaechtnis — Remote-Build-Runner (aufgerufen per SSH vom Mac aus)
-rem Aufruf:  ssh <user>@<ip> "C:\Dev\hausgedaechtnis\build.cmd"
+rem Hintergewerk — Remote-Build-Runner (aufgerufen per SSH vom Mac aus)
+rem Aufruf:  ssh <user>@<ip> "C:\Dev\hintergewerk\build.cmd"
 rem Voraussetzung: Unity Hub mit Unity 6 LTS + Android-Modul, aktivierte Lizenz,
 rem                Editor fuer dieses Projekt GESCHLOSSEN (sonst Projekt-Lock).
 
@@ -29,11 +29,11 @@ if errorlevel 1 (
 )
 
 echo [3/3] Android-APK bauen (Batch-Modus, dauert einige Minuten)...
-"%UNITY_EXE%" -batchmode -quit -projectPath "%~dp0unity" -executeMethod Hausgedaechtnis.EditorTools.BuildScript.BuildAndroid -logFile "%~dp0unity\build.log"
+"%UNITY_EXE%" -batchmode -quit -projectPath "%~dp0unity" -executeMethod Hintergewerk.EditorTools.BuildScript.BuildAndroid -logFile "%~dp0unity\build.log"
 if errorlevel 1 (
   echo [Fehler] Build fehlgeschlagen. Log: unity\build.log
   exit /b 1
 )
 
-echo [OK] APK: unity\Builds\hausgedaechtnis.apk
+echo [OK] APK: unity\Builds\hintergewerk.apk
 exit /b 0

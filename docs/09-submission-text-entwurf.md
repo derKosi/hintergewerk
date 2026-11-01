@@ -6,7 +6,7 @@
 
 ---
 
-## Hausgedächtnis — The House's Memory
+## Hintergewerk — The Work Behind the Surface
 
 **Inspiration**
 
@@ -18,7 +18,7 @@ of buildings has no memory. So we gave it one.
 
 **What it does**
 
-Hausgedächtnis captures what an open wall reveals — directly in VR, with your hands. Pinch to
+Hintergewerk — German for "the work behind" — captures what an open wall reveals, directly in VR, with your hands. Pinch to
 draw a cable run along the open wall. Two hands set the depth. A photo proves it. Under thirty
 seconds per object, the moment becomes permanent: spatially anchored, typed (power, water,
 heating, studs), timestamped, and signed with the installer's name. Weeks later, the overlay
@@ -59,5 +59,5 @@ for planning firms — and agents that propose new routing around what the house
 ---
 
 *Tagline (140 Zeichen, Auswahl D13 am 13.11.):*
-„Hausgedächtnis — the house's memory. Capture what an open wall reveals with your hands,
+„Hintergewerk — the work behind the surface. Capture what an open wall reveals with your hands,
 in 30 seconds. Find it again months later, to the centimeter."

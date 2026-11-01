@@ -1,7 +1,7 @@
-# Unity-Assets — Drop-in für das Hausgedächtnis-Projekt
+# Unity-Assets — Drop-in für das Hintergewerk-Projekt
 
 Dieser Ordner wird **morgen (02.11.) nach dem Projekt-Setup** komplett nach
-`<UnityProjekt>/Assets/Hausgedaechtnis/` kopiert. Alles hier ist **SDK-frei**
+`<UnityProjekt>/Assets/Hintergewerk/` kopiert. Alles hier ist **SDK-frei**
 (kein `OVR*`-Import) und kompiliert unabhängig vom Meta XR SDK.
 
 ## Dateien & Zweck
@@ -17,14 +17,14 @@ Dieser Ordner wird **morgen (02.11.) nach dem Projekt-Setup** komplett nach
 | `Recall/WarningSystem.cs` | Kern | Hand↔Korridor-Distanz, Eskalationsstufen (None/Near/Critical) |
 | `Export/PdfEmitter.cs` | Kern | PDF 1.4 in reinem C# (A4, Base14-Fonts, xref exakt) — Risiko R4 |
 | `Export/MapRenderer.cs` | Kern | Grundriss-Projektion top-down: Wände, Korridor-Halo, Maßstab, Legende |
-| `Editor/CoreSelfTest.cs` | Test | Menü „Hausgedächtnis": JSON-Roundtrip + PDF-Beispiel — **nach dem Import als Erstes laufen lassen** |
+| `Editor/CoreSelfTest.cs` | Test | Menü „Hintergewerk": JSON-Roundtrip + PDF-Beispiel — **nach dem Import als Erstes laufen lassen** |
 
 ## Reihenfolge morgen
 
 1. Unity-Projekt + Meta XR SDK aufsetzen (Guide: `docs/06-setup-guide.md`)
 2. Diesen Ordner nach `Assets/` kopieren → kompilieren lassen
-3. **Menü `Hausgedächtnis → Kern-Selbsttest (JSON-Roundtrip)`** → muss „bestanden" melden
-4. **Menü `Hausgedächtnis → PDF-Beispiel erzeugen`** → PDF im Finder prüfen (öffnen!)
+3. **Menü `Hintergewerk → Kern-Selbsttest (JSON-Roundtrip)`** → muss „bestanden" melden
+4. **Menü `Hintergewerk → PDF-Beispiel erzeugen`** → PDF im Finder prüfen (öffnen!)
 5. Erst DANN: SDK-Adapter implementieren (`OvrAnchorProvider`, `OvrHandSource`, `SceneWallProvider`) und
    die Minimal-Szene für den Smoketest bauen (Protokoll: `docs/07-smoketest-protokoll.md`)
 

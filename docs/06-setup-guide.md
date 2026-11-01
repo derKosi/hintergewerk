@@ -13,7 +13,7 @@ Menünamen können je nach Version leicht abweichen — dann in Package Manager 
 ## 2. Projekt anlegen — ~5 min
 
 - [ ] New Project → **3D (URP)** — Render-Pipeline URP ist der Meta-Empfehlungspfad
-- [ ] Name: `Hausgedaechtnis`, Ort nach Geschmack
+- [ ] Name: `Hintergewerk`, Ort nach Geschmack
 - [ ] Edit → Project Settings → Editor → „Enter Play Mode Options" NICHT aktivieren (Meta SDK verträgt sich schlecht mit Fast-Enter)
 
 ## 3. Meta XR SDK installieren — ~15 min
@@ -25,6 +25,7 @@ Menünamen können je nach Version leicht abweichen — dann in Package Manager 
 - [ ] Project Settings → XR Plug-in Management → Android-Tab → **OpenXR** anhaken
 - [ ] OpenXR (Android) → Meta Quest Support anhaken; **Hand Tracking** → Interaction Profile „Meta Quest Hand Interaction" hinzufügen
 - [ ] Project Settings → Player (Android): Scripting Backend **IL2CPP**, Target Architectures **ARM64** (arme64-v8a), Minimum API Level lt. SDK-Vorgabe (aktuell 29+)
+- [ ] Player Settings → Bundle Identifier: **de.bautoolz.hintergewerk**
 
 ## 4. MCP-Server (damit ich arbeiten kann) — ~10 min
 
@@ -41,10 +42,10 @@ Menünamen können je nach Version leicht abweichen — dann in Package Manager 
 
 ## 6. Kern-Code einziehen + verifizieren — ~10 min
 
-- [ ] `hausgedaechtnis/unity/Assets/Hausgedaechtnis/` → in `<Projekt>/Assets/` kopieren
+- [ ] `hintergewerk/unity/Assets/Hintergewerk/` → in `<Projekt>/Assets/` kopieren
 - [ ] Warten bis Kompilierung durchläuft (Console: keine roten Fehler — sonst mir sagen)
-- [ ] Menü **Hausgedächtnis → Kern-Selbsttest (JSON-Roundtrip)**: muss „bestanden" melden
-- [ ] Menü **Hausgedächtnis → PDF-Beispiel erzeugen**: PDF öffnen und ansehen (Legende, Maßstab, Korridore)
+- [ ] Menü **Hintergewerk → Kern-Selbsttest (JSON-Roundtrip)**: muss „bestanden" melden
+- [ ] Menü **Hintergewerk → PDF-Beispiel erzeugen**: PDF öffnen und ansehen (Legende, Maßstab, Korridore)
 
 ## 7. Repo — ~5 min
 
