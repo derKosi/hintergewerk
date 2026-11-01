@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "rooms": [
+    { "id": "raum_eg_bad", "label": "Bad EG", "floor": 0 }
+  ],
+  "anchors": [
+    { "id": "anc_tuerzarge", "room_id": "raum_eg_bad", "confidence": "high", "created_at": "2026-11-02T09:14:00Z" },
+    { "id": "anc_zaehlerschrank", "room_id": "raum_eg_bad", "confidence": "high", "created_at": "2026-11-02T09:16:00Z" }
+  ],
+  "objects": [
+    {
+      "id": "obj_20261102091501_a1b2",
+      "type": "power",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_tuerzarge",
+      "geometry": {
+        "points_lokal": [[0.1, 1.2, 0.0], [0.85, 1.2, 0.0], [0.85, 2.05, 0.0]],
+        "depth_cm": 4.5,
+        "diameter_cm": 2.5
+      },
+      "confidence": "measured",
+      "safety_corridor_cm": 5.0,
+      "evidence": { "photos": ["photos/obj_20261102091501_a1b2_1.jpg"], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T09:15:01Z", "author": "Mathias", "note": "Steigeinleitung, Wand offen, Tiefe direkt abgelesen" }
+    },
+    {
+      "id": "obj_20261102091844_c3d4",
+      "type": "water",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_zaehlerschrank",
+      "geometry": {
+        "points_lokal": [[0.0, 0.35, 0.1], [1.6, 0.35, 0.1]],
+        "depth_cm": 6.0,
+        "diameter_cm": 4.0
+      },
+      "confidence": "estimated",
+      "safety_corridor_cm": 6.0,
+      "evidence": { "photos": [], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T09:18:44Z", "author": "Mathias", "note": "" }
+    },
+    {
+      "id": "obj_20261102092110_e5f6",
+      "type": "stud",
+      "room_id": "raum_eg_bad",
+      "anchor_id": "anc_tuerzarge",
+      "geometry": {
+        "points_lokal": [[1.2, 0.0, 0.0], [1.2, 2.4, 0.0]],
+        "depth_cm": 0.0,
+        "diameter_cm": 6.0
+      },
+      "confidence": "measured",
+      "safety_corridor_cm": 3.0,
+      "evidence": { "photos": ["photos/obj_20261102092110_e5f6_1.jpg"], "voice_note": null },
+      "meta": { "created_at": "2026-11-02T09:21:10Z", "author": "Mathias", "note": "CW-Ständer, Distanz 62.5" }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+# ===== Unity =====
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+MemoryCaptures/
+Recordings/
+
+# ===== IDE / Editor =====
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.user
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Build-Artefakte & Logs =====
+unity/build.log
+*.apk
+*.aab
+*.unitypackage
+
+# ===== Secrets/Keystores: NIEMALS einchecken =====
+*.keystore
+*.jks
+*.p12
+.env
+
+gitignore.txt
