@@ -51,6 +51,8 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 | [docs/11-szene-spec-smoketest.md](docs/11-szene-spec-smoketest.md) | Exakte Szenen-Spec für M0/M1: Hierarchy, Verhalten, Pass-Kriterien |
 | [docs/12-devpost-felder.md](docs/12-devpost-felder.md) | Formularfelder fertig zum Einfügen (17.11.) + Hand-Interactions-Text |
 | [docs/13-vorjahres-analyse.md](docs/13-vorjahres-analyse.md) | Was die Vorjahres-Referenzen gewinnen ließ — Muster + Ableitungen für Video/Text |
+| [docs/14-timesheet.md](docs/14-timesheet.md) | **Dein Zeitbudget** in Zeitboxen (Blöcke A–G, Notfall-Modus, Ist-Tracking) |
+| [website/impressum.html](website/impressum.html) | Impressum/Datenschutz-Entwurf (Platzhalter vor Deploy ausfüllen) |
 | [website/index.html](website/index.html) | Promo-Site **4-sprachig** (DE / EN / DE-leicht / EN-simple) + Tagebuch, deploy-ready |
 | [docs/adr/](docs/adr/README.md) | ADRs 0001–0004: die großen Weichen im Detail |
 | [AGENTS.md](AGENTS.md) | Konventionen für jede Agent-Session: Invarianten, Struktur, Verifikation |

@@ -79,6 +79,8 @@ gegen Doku + Tutorial, TODOs für v207), **Anker-Test-Demo** (AnchorTestControll
 
 ## 6. Human-Punkte (nur Mathias)
 
+Zeitbudget, Zeitboxen und Ist-Tracking: **docs/14-timesheet.md**.
+
 1. ~~Start-Programm-Antrag~~ ✅ 31.10. bestätigt
 2. 01.11.: Unity 6 + Meta XR SDK + MCP-Server + Repo aufsetzen (Checkliste §7)
 3. Quest 3: Developer Mode, USB, Build installieren

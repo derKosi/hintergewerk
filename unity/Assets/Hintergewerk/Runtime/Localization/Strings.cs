@@ -59,7 +59,18 @@ namespace Hintergewerk.Localization
             // Demo/M1 (Szene 02_AnkerTest)
             ["demo.anchors_loaded"] = ("Geladen: {0} Anker", "Loaded: {0} anchors"),
             ["demo.anchor_placed"] = ("Anker gesetzt: {0}", "Anchor placed: {0}"),
-            ["demo.load_failed"] = ("Laden fehlgeschlagen — Fallback (docs/07)", "Load failed — fallback (docs/07)")
+            ["demo.load_failed"] = ("Laden fehlgeschlagen — Fallback (docs/07)", "Load failed — fallback (docs/07)"),
+
+            // Capture-Phasen
+            ["phase.idle"] = ("Bereit — Handfläche zum Körper öffnet das Menü", "Ready — palm to body opens the menu"),
+            ["phase.typwahl"] = ("Typ wählen", "Choose type"),
+            ["phase.zeichnen"] = ("Zeichnen — Pinch setzt Punkte", "Drawing — pinch places points"),
+            ["phase.tiefe"] = ("Tiefe: {0} cm", "Depth: {0} cm"),
+            ["phase.bestaetigen"] = ("Pinch zum Speichern", "Pinch to save"),
+
+            // Menü
+            ["menu.cycle_hint"] = ("Pinch = nächster Typ", "Pinch = next type"),
+            ["menu.close_hint"] = ("Handfläche weg = Typ wählen", "Palm away = pick type"),
         };
 
         public static string Get(string key)
