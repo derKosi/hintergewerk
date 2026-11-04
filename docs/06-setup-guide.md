@@ -1,6 +1,15 @@
-# Setup-Guide — Di, 02.11. (Zeitbox: 90 Minuten)
+# Setup-Guide (Zeitbox: 90 Minuten) — läuft auf dem Mac oder der Windows-Kiste
 
 Ziel: Unity-Projekt steht, Meta XR SDK ist drin, MCP-Server verbunden, unser Kern-Ordner kompiliert.
+
+## 0. Arbeitskopie auf dem Mac
+
+Die Mac-Arbeitskopie liegt unter **`~/Documents/Dev/hintergewerk`** (Git-Klone, komplette Historie).
+Der Agent arbeitet im geschützten AutoClaw-Arbeitsbereich und hält die Kopie per `git push dev` aktuell;
+Unity Hub öffnet später **`~/Documents/Dev/hintergewerk/unity`**. GitHub kommt als dritte Station dazu,
+sobald das Repo existiert (docs/10 §A). Workflow: Agent commitet → `git push dev` → du ziehst mit `git pull`
+→ du commitest → Agent zieht. Regel: Nie parallel an derselben Datei arbeiten.
+
 **Regel: Bei jedem Schritt, der länger als 20 Minuten hakt → notieren, überspringen, weiter.**
 Menünamen können je nach Version leicht abweichen — dann in Package Manager / Project Settings nach dem Stichwort suchen.
 

@@ -22,6 +22,7 @@ Zweck: Dein Zeitbudget bis zum **18.11.2026, 21:00 CET** — in Zeitboxen geschn
 ### Block B — Setup-Tag · 90 min · Zeitbox! · docs/06
 Unity 6 + SDK + MCP + Quest Dev-Mode + Kern-Ordner rein. Am Ende: Selbsttest grün, Test Runner grün.
 **Abbruchkriterien stehen im Guide — nicht dran kleben bleiben.**
+Mac-Arbeitskopie liegt bereit: `~/Documents/Dev/hintergewerk` (Git-Sync vom Agent); die 3090 klont später von GitHub.
 
 ### Block C — Dashboard + Smoketest M0 · 45 min · docs/07 §A–D
 Dashboard-App anlegen → Channel „Competition" → APK-Upload → Invite-URL → Install auf Quest → Screenrecording als Beweis.
