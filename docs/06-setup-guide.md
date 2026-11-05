@@ -27,15 +27,19 @@ Menünamen können je nach Version leicht abweichen — dann in Package Manager 
 
 ## 3. Meta XR SDK installieren — ~15 min
 
-- [ ] Window → Package Manager → (Dropdown: Unity Registry) → **Meta XR All-in-One** → Install
-  (Falls nicht gelistet: über „Add package by name": `com.meta.xr.sdk.all` — Wettbewerbsvorgabe v207+)
-- [ ] Nach Installation öffnet sich ggf. der Meta-Setup-Wizard: **Build Target auf Android** umstellen lassen
-- [ ] Quellen verifiziert (01.11.): Hands-Tutorial („unity-tutorial-basic-hand-training") und Spatial-Anchors-Tutorial auf developers.meta.com — SDK-Referenz für **v207** existiert
-- [ ] Window → Package Manager → **Meta XR Simulator** installieren (Editor-Tests ohne Gerät)
-- [ ] Project Settings → XR Plug-in Management → Android-Tab → **OpenXR** anhaken
-- [ ] OpenXR (Android) → Meta Quest Support anhaken; **Hand Tracking** → Interaction Profile „Meta Quest Hand Interaction" hinzufügen
-- [ ] Project Settings → Player (Android): Scripting Backend **IL2CPP**, Target Architectures **ARM64** (arme64-v8a), Minimum API Level lt. SDK-Vorgabe (aktuell 29+)
-- [ ] Player Settings → Bundle Identifier: **de.bautoolz.hintergewerk**
+> **06.11. aktualisiert (D26/D27):** Schritte sind auf der Windows-Kiste bereits erledigt
+> (Editor-Werkzeug `Hintergewerk.EditorTools.ProjectSetup.Apply()` reproduziert alles).
+
+- [x] SDK via **Metas NPM-Registry**: `Packages/manifest.json` → scopedRegistries
+      (`https://npm.developer.oculus.com/`, scopes `["com.meta"]`) + `com.meta.xr.sdk.core: 207.0.1`
+      (das Asset-Store-All-in-One-Paket wird nicht benötigt)
+- [x] Project Settings → XR Plug-in Management → Android-Tab → **OpenXR** aktiv
+- [x] OpenXR (Android) → **Meta Quest Support** aktiv + Meta XR Feature Set enabled;
+      Hand Tracking läuft über OVR (OculusProjectConfig: `handTrackingSupport=ControllersAndHands`,
+      `handTrackingFrequency=High`) — kein separater OpenXR-Interaction-Profile-Klick nötig
+- [x] Player (Android): **IL2CPP**, **ARM64**, **minSdk 32** (Meta-Vorgabe), Bundle-ID **de.bautoolz.hintergewerk**
+- [ ] Optional (Editor-Tests ohne Gerät): Meta XR Simulator — MSI liegt in `_hgw_unity_tmp/sim/`,
+      Doppelklick, dann `Window/Meta/Meta XR Simulator/Activate` (D29)
 
 ## 4. MCP-Server (damit ich arbeiten kann) — ~10 min
 
