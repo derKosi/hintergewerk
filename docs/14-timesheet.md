@@ -13,7 +13,7 @@ Zweck: Dein Zeitbudget bis zum **18.11.2026, 21:00 CET** — in Zeitboxen geschn
 
 ## Blöcke (Soll)
 
-### Block A — Repo anlegen · 5 min · jederzeit, dringendster Punkt
+### Block A — Repo anlegen + Push · ✅ ERLEDIGT (04.11. — Mathias hat selbst gepusht)
 1. github.com → privat Repo `hintergewerk` (ohne README)
 2. Settings → SSH keys → Key aus `docs/10 §B` einfügen
 3. Repo-URL an den Agent → Agent pusht
@@ -43,7 +43,7 @@ Dreh-Checkliste: 3 Takes pro Szene, Gerät-Footage zuerst, Musik lizenzfrei. Eng
 
 | Verfügbare Zeit | Was du machst |
 |---|---|
-| 5–15 min | Block A (Repo) — alles andere kann warten |
+| 5–15 min | ~~Block A~~ erledigt — jetzt: **Block B** starten (Setup-Tag) |
 | 30 min | Block A + B-Schritt 1 (Unity-Download starten) |
 | 45–60 min | Block B komplett ODER C+D kompakt hintereinander |
 | 2 h | Block B + C + D an einem Tag = alle GO/NO-GOs erledigt |
@@ -52,7 +52,8 @@ Dreh-Checkliste: 3 Takes pro Szene, Gerät-Footage zuerst, Musik lizenzfrei. Eng
 
 | Wartet auf | Blockt |
 |---|---|
-| Repo-URL (Block A) | Push, 3090-Clone |
+| ~~Repo-URL (Block A)~~ ✅ erledigt | — |
+| Unity + MCP läuft (Block B) | Szenen-Bau, Adapter-Verifikation |
 | Unity + MCP läuft (Block B) | Szenen-Bau via MCP, Adapter-Verifikation |
 | Quest-Tests (Block C/D) | GO für Capture-Flow-Finalisierung |
 
