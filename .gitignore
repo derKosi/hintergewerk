@@ -21,6 +21,10 @@ Recordings/
 .DS_Store
 Thumbs.db
 
+# ===== Agent-Artefakte =====
+.playwright-mcp/
+_hgw_unity_tmp/
+
 # ===== Build-Artefakte & Logs =====
 unity/build.log
 *.apk
