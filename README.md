@@ -24,7 +24,7 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 |---|---|---|
 | Start-Programm-Mitgliedschaft | 31.10. | ✅ **bestätigt** |
 | SDK-freier C#-Kern vorbereitet | 01.11. | ✅ **geschrieben** (Kompilierung folgt 02.11.) |
-| Setup Unity + SDK + MCP + Repo | 02.11. | ⏳ |
+| Setup Unity + SDK + MCP + Repo | 02.11. | 🟡 **05.11.: Windows-Setup ✅** (6000.6.8f1 + Projekthülle + **51/51 Tests grün** + Selbsttest/PDF · Meta-SDK-Import offen, wartet auf Asset-Store-Freischaltung) |
 | Smoketest: APK → Channel → Invite-URL → Quest | 02.11. | ⏳ |
 | Anker-Persistenz über Neustart | 02.11. | ⏳ |
 | Capture-Flow < 30 s pro Objekt | 07.11. | ⏳ |
