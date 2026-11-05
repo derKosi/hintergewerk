@@ -82,9 +82,11 @@ Division New Experience. Preisgeld-Gesamtpool $1M, Top-Preise $100k.
 - Unity-CLI (1.0.0-beta.16) + `com.unity.pipeline` ermöglichen Agent-Fernsteuerung des Editors
 
 **Offen / wartet:**
-1. **Meta XR SDK v207** — nur noch via Unity Asset Store („Meta XR SDK", Produkt 9022845):
-   „Add to my assets" braucht Mathias' Klick (EULA!) — Metas NPM-Registry ist tot (D26).
-   Danach: Editor öffnen → `package add com.meta.xr.sdk.all` → `Adapters~` reaktivieren → TODOs gegen v207.
+1. **Meta XR SDK v207** — gelöst ohne Menschen-Klick: Metas offizielle NPM-Registry ist
+   `https://npm.developer.oculus.com/` → Scoped Registry in `unity/Packages/manifest.json`
+   (`scopes: ["com.meta"]`) + `com.meta.xr.sdk.core` **207.0.1** (das All-in-One-Paket
+   `com.meta.xr.sdk.all` ist Asset-Store-only, brauchen wir aber nicht — Core deckt OVR*/Anker/Hände ab).
+   Danach: `Adapters~` reaktivieren → TODOs gegen v207 schließen.
 2. Szenen 01_Smoketest + 02_AnkerTest (Spec docs/11) — sobald SDK da ist (Meta XR Rig braucht es)
 3. Smoketest M0 + Anker-Test M1 (Menschen-Anteil: Dashboard, Gerät — docs/07)
 4. Erster Android-Build läuft als Pipeline-Check (SampleScene, ohne SDK-Rig)

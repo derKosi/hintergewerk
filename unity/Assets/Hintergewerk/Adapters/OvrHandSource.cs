@@ -1,10 +1,10 @@
-// Hintergewerk — SDK-Adapter: Hände (OVRHand + OVRSkeleton).
+// Hintergewerk — SDK-Adapter: Hände (OVRHand + OVRSkeleton, SDK 207.0.1).
 // LIEGT AUSSERHALB der Runtime-asmdef (Assembly-CSharp): Hier ist OVR* erlaubt.
-//
-// Verifiziert (01.11.): Offizielles Meta-Tutorial „unity-tutorial-basic-hand-training"
-// zeigt GetFingerIsPinching(OVRHand.HandFinger.Index); OVRHand liefert Pinch-Strength
-// und PointerPose (Klassenreferenz). TODO(02.11., v207): BoneId-Details (Hand_Index3
-// vs. Hand_IndexTip) und Palm-Normal-Ausrichtung links/rechts am Gerät tunen.
+// Verifiziert 06.11. gegen den SDK-Quellcode:
+//   OVRHand.IsTracked · GetFingerIsPinching(HandFinger) · GetFingerPinchStrength(HandFinger)
+//   PointerPose (Transform, kann null sein) · OVRSkeleton.Bones : IList<OVRBone>
+//   OVRBone.Id : OVRSkeleton.BoneId — Hand_WristRoot / Hand_IndexTip / Hand_Pinky1 existieren.
+// Palm-Normal-Ausrichtung links/rechts am Gerät tunen (TODO am Gerät).
 using UnityEngine;
 using Hintergewerk.Core;
 
@@ -24,10 +24,9 @@ namespace Hintergewerk.Adapters
             var f = new HandFrame();
 
             if (hand == null) return f;
-            f.Tracked = hand.IsTracked; // TODO(02.11.): Property-Name gegen v207 prüfen
+            f.Tracked = hand.IsTracked;
             if (!f.Tracked) return f;
 
-            // Offiziell bestätigt (Meta-Tutorial + Klassenreferenz):
             f.Pinching = hand.GetFingerIsPinching(OVRHand.HandFinger.Index);
             f.PinchStrength = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
 
@@ -36,15 +35,15 @@ namespace Hintergewerk.Adapters
 
             if (skeleton != null && skeleton.Bones != null)
             {
-                if (TryBone(skeleton, OVRPlugin.BoneId.Hand_Wrist, out var wrist) &
-                    TryBone(skeleton, OVRPlugin.BoneId.Hand_Index1, out var iMcp) &
-                    TryBone(skeleton, OVRPlugin.BoneId.Hand_Pinky1, out var pMcp))
+                if (TryBone(skeleton, OVRSkeleton.BoneId.Hand_WristRoot, out var wrist) &
+                    TryBone(skeleton, OVRSkeleton.BoneId.Hand_Index1, out var iMcp) &
+                    TryBone(skeleton, OVRSkeleton.BoneId.Hand_Pinky1, out var pMcp))
                 {
                     f.PalmCenter = (wrist + iMcp + pMcp) / 3f;
                     var n = Vector3.Cross(iMcp - wrist, pMcp - wrist).normalized;
-                    f.PalmNormal = left ? -n : n; // TODO(02.11.): Ausrichtung links/rechts am Gerät tunen
+                    f.PalmNormal = left ? -n : n; // TODO: Ausrichtung links/rechts am Gerät tunen
                 }
-                if (TryBone(skeleton, OVRPlugin.BoneId.Hand_Index3, out var indexTip)) // TODO: Hand_IndexTip?
+                if (TryBone(skeleton, OVRSkeleton.BoneId.Hand_IndexTip, out var indexTip))
                     f.IndexTip = indexTip;
             }
             return f;
@@ -59,7 +58,7 @@ namespace Hintergewerk.Adapters
             return Vector3.Dot(f.PalmNormal, f.PalmCenter - cam) > 0f;
         }
 
-        static bool TryBone(OVRSkeleton skeleton, OVRPlugin.BoneId id, out Vector3 pos)
+        static bool TryBone(OVRSkeleton skeleton, OVRSkeleton.BoneId id, out Vector3 pos)
         {
             foreach (var b in skeleton.Bones)
                 if (b.Id == id) { pos = b.Transform.position; return true; }

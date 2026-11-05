@@ -28,6 +28,8 @@ _hgw_unity_tmp/
 # ===== Build-Artefakte & Logs =====
 unity/build.log
 unity/test-results.xml
+test-results.xml
+unity/.utmp/
 *.apk
 *.aab
 *.unitypackage
