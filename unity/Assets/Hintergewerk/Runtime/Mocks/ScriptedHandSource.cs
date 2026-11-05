@@ -28,6 +28,9 @@ namespace Hintergewerk.Mocks
 
         public HandFrame GetHand(bool left) => left ? leftFrame : NextRight();
 
+        /// <summary>Mock: Menü-Geste nicht skriptiert — immer false (Grammatik §1).</summary>
+        public bool PalmFacingBody(bool left) => false;
+
         HandFrame NextRight()
         {
             if (rightFrames.Count > 0) lastRight = rightFrames.Dequeue();

@@ -15,12 +15,17 @@ namespace Hintergewerk.UI
 
         public ObjectType? CurrentType => IsOpen ? Types[Index] : null;
 
-        /// <summary>Steigende Flanke der Palm-Geste toggelt (offen/zu). Rückgabe: Ist offen?</summary>
+        /// <summary>
+        /// Palm-Geste: steigende Flanke öffnet, fallende schließt (Grammatik §1 — Handfläche
+        /// weg = Typ wählen). Rückgabe: Offen-Status des VORherigen Frames — der Flanken-Frame
+        /// selbst gilt noch als alter Zustand (UI blendet einen Frame verzögert ein; HandMenuTests).
+        /// </summary>
         public bool UpdatePalm(bool palmFacingBody)
         {
-            if (palmFacingBody && !palmWas) { IsOpen = !IsOpen; Index = 0; }
+            var before = IsOpen;
+            if (palmFacingBody != palmWas) { IsOpen = !IsOpen; Index = 0; }
             palmWas = palmFacingBody;
-            return IsOpen;
+            return before;
         }
 
         /// <summary>Typ weiterblättern (Pinch im Menü). Nur wirksam, wenn offen.</summary>

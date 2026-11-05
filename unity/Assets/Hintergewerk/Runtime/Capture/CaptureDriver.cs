@@ -8,6 +8,7 @@
 //   Bestaetigen: Pinch steigend  → Confirm → Store
 // Jede Aktion pusht auf den Undo-Stapel („Wischen = rückgängig").
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Hintergewerk.Core;
 using Hintergewerk.Data;
@@ -65,14 +66,12 @@ namespace Hintergewerk.Capture
                         undo?.Push("Punkt entfernen", () => session.UndoLastPoint());
                     }
                     if (!pinch && pinchWasDown) session.EndDraw();
-                    pinchWasDown = pinch;
                     break;
 
                 case CapturePhase.Tiefe:
                     if (right.Tracked && left.Tracked)
                         session.SetDepth(SnapEngine.DepthFromHandDistance(left.IndexTip, right.IndexTip));
                     if (pinch && !pinchWasDown) session.BeginBestaetigen();
-                    pinchWasDown = pinch;
                     break;
 
                 case CapturePhase.Bestaetigen:
@@ -85,9 +84,12 @@ namespace Hintergewerk.Capture
                             undo?.Push("Objekt entfernen", () => store.RemoveObject(o.id));
                         }
                     }
-                    pinchWasDown = pinch;
                     break;
             }
+
+            // Nach JEDER Phase (auch Idle!) buchen — sonst friert die Flanke ein und der
+            // erste Pinch nach einem Confirm wird verschluckt (Bug aus Test ZweiObjekte_…).
+            pinchWasDown = pinch;
         }
     }
 }

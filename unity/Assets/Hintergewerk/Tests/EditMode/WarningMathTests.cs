@@ -35,7 +35,8 @@ namespace Hintergewerk.Tests
         public void Warnsystem_Eskaliert_Nah_Kritisch_Frei()
         {
             var sys = new WarningSystem { NearCm = 15f, CriticalCm = 7f };
-            var line = new List<Vector3> { new Vector3(0f, 0f, 0f), new Vector3(2f, 0f, 0f) };
+            // Korridor verläuft entlang Z (bei X): Punkte (0.10|0.05|1.0) liegen sonst AUF der Linie
+            var line = new List<Vector3> { new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 2f) };
             var corridors = new List<(string id, IReadOnlyList<Vector3> line)> { ("obj_1", line) };
 
             string id; float cm;

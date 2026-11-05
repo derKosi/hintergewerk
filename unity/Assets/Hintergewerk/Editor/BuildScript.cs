@@ -7,6 +7,7 @@
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 namespace Hintergewerk.EditorTools

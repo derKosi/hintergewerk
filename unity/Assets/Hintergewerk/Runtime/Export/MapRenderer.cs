@@ -67,8 +67,9 @@ namespace Hintergewerk.Export
             float offX = (aw - w * scale) / 2f; // zentrieren
             float offZ = (ah - d * scale) / 2f;
 
-            float MX(float x) => MarginL + offX + (x - minx) * scale;
-            float MZ(float z) => MarginB + offZ + (z - minz) * scale;
+            float sc = scale; // lokale Kopie: out-Parameter dürfen in lokalen Funktionen nicht verwendet werden (CS1628)
+            float MX(float x) => MarginL + offX + (x - minx) * sc;
+            float MZ(float z) => MarginB + offZ + (z - minz) * sc;
             Vector2 M(Vector3 p) => new Vector2(MX(p.x), MZ(p.z));
             Vector2 M2(Vector2 p) => new Vector2(MX(p.x), MZ(p.y));
 

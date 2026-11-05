@@ -13,10 +13,9 @@ namespace Hintergewerk.Tests
             foreach (var key in Strings.Keys)
             {
                 Strings.Language = AppLanguage.De;
-                StringAssert.IsNotEmpty(Strings.Get(key));
-                StringAssert.IsNotEmpty(Strings.Get(key));
+                Assert.That(Strings.Get(key), Is.Not.Empty);
                 Strings.Language = AppLanguage.En;
-                StringAssert.IsNotEmpty(Strings.Get(key));
+                Assert.That(Strings.Get(key), Is.Not.Empty);
             }
             Strings.Language = AppLanguage.De; // Zustand zurücksetzen für andere Tests
         }
