@@ -24,8 +24,8 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 |---|---|---|
 | Start-Programm-Mitgliedschaft | 31.10. | ✅ **bestätigt** |
 | SDK-freier C#-Kern vorbereitet | 01.11. | ✅ **geschrieben** (Kompilierung folgt 02.11.) |
-| Setup Unity + SDK + MCP + Repo | 02.11. | 🟡 **05.11.: Windows-Setup ✅** (6000.6.8f1 + Projekthülle + **51/51 Tests grün** + Selbsttest/PDF · Meta-SDK-Import offen, wartet auf Asset-Store-Freischaltung) |
-| Smoketest: APK → Channel → Invite-URL → Quest | 02.11. | ⏳ |
+| Setup Unity + SDK + MCP + Repo | 02.11. | ✅ **06.11. (Windows)**: 6000.6.8f1 · Projekthülle im Repo · **Meta XR Core SDK 207.0.1** · Adapter kompilieren gegen v207 · **51/51 Tests** · Selbsttest/PDF · Szenen 01/02 gebaut (Simulator-MSI wartet auf Menschen-Klick, D29) |
+| Smoketest: APK → Channel → Invite-URL → Quest | 02.11. | 🟡 APK-Pipeline ✅ (2 Builds grün) · Szenen 01/02 drin · **Menschen-Anteil offen:** Dashboard + Channel + Quest (docs/07 §A/C/D) |
 | Anker-Persistenz über Neustart | 02.11. | ⏳ |
 | Capture-Flow < 30 s pro Objekt | 07.11. | ⏳ |
 | Recall-Overlay + Export (JSON/PDF) | 10.11. | ⏳ |

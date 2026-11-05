@@ -65,11 +65,36 @@ Division New Experience. Preisgeld-Gesamtpool $1M, Top-Preise $100k.
 - Device-Verifikation — Smoketest M0/M1 nie gefahren
 - Adapter-API-Namen — unbestätigt gegen v207
 
+## Update 06.11. (Nacht-Session, Claude auf der 3090)
+
+**Stand: Gerät-Pipeline komplett vorgebaut — Mathias muss nur noch Dashboard + Quest klicken (docs/07).**
+
+- **Meta XR Core SDK 207.0.1** via Metas NPM-Registry (`npm.developer.oculus.com`, scoped
+  `com.meta`) — kein Asset-Store-Klick nötig (D26)
+- **Adapter gegen echte v207-API umgeschrieben und kompiliert** (D25 aufgelöst):
+  AddComponent → auto-create · `SaveAnchorAsync()` · `LoadUnboundAnchorsAsync` + `BindTo` ·
+  `anchor.Uuid` · `OVRSkeleton.BoneId` (Hand_WristRoot/Hand_IndexTip) · Quellen-Referenz: PackageCache
+- **Szenen 01_Smoketest + 02_AnkerTest gebaut** (D28): SDK-Prefabs `OVRCameraRig` +
+  `OVRCustomHandPrefab_L/R` unter den Hand-Anchors · Szene 02 mit verdrahtetem
+  AnchorTestController (OvrAnchorProvider + OvrHandSource) · StatusText als TextMesh (kein TMP-Import)
+- **Hand-Tracking an:** OculusProjectConfig `handTrackingSupport=ControllersAndHands`,
+  `handTrackingFrequency=High` — OVR injected die HAND_TRACKING-Permission beim Build
+- **MetaQuestFeature (OpenXR, Android) aktiv** + Meta XR Feature Set enabled
+- **2× APK erfolgreich gebaut** (`build.cmd` → `unity/Builds/hintergewerk.apk`, IL2CPP/ARM64) —
+  Build #2 enthält SDK + Szenen; Build #3 (läuft) zusätzlich mit Hand-Tracking-Config
+- **51/51 EditMode-Tests** weiter grün (mit aktiven Adaptern — kein Regression)
+- Editor-Fernsteuerung steht: Unity-CLI + Pipeline (script eval, Menüs, Szenen-Kommandos)
+
+**Für Mathias (Morgen, ~5 min, kein Blocker):**
+1. Meta XR Simulator installieren: Doppelklick auf `_hgw_unity_tmp/sim/meta_xr_simulator.msi`
+   (435 MB, offizielles Meta-Paket v207.1) — danach Unity: `Window/Meta/Meta XR Simulator/Activate`
+   (D29; Unitys Auto-Download scheitert hier an einem Datei-Lock in Downloads)
+2. Dann docs/07: Dashboard-App + Channel „Competition" + APK-Upload + Invite-URL + Quest (Block C/D)
+
 ## Update 05.11. (Windows-Session, Claude auf der 3090)
 
-**Erledigt (alle Commits gepusht, 6000.6.8f1 fixiert):**
 - **Monorepo-Entscheid (D24):** Unity-Projekt lebt im Repo unter `unity/` — Projekthülle
-  (ProjectSettings + Packages) eingecheckt, erstellt per Unity-CLI aus URP-Blank (D24)
+  (ProjectSettings + Packages) eingecheckt, erstellt per Unity-CLI aus URP-Blank
 - **51/51 EditMode-Tests GRÜN** — erste Kompilierung überhaupt; Compile-Fixes + 3 Logik-Bugs
   behoben (CaptureDriver pinchWasDown im Idle, HandMenuLogic Flanken-Toggle, Testdaten)
 - **Selbsttest BESTANDEN**: JSON-Roundtrip + PDF-Beispiel (4,3 KB, valide: xref, Helvetica)
@@ -77,19 +102,8 @@ Division New Experience. Preisgeld-Gesamtpool $1M, Top-Preise $100k.
 - **Projekt-Setup:** Android-Target, IL2CPP, ARM64, `de.bautoolz.hintergewerk`, **minSdk 32**,
   OpenXR-Loader (Android) + Meta-Quest-Feature aktiv (D27) — reproduzierbar via
   `Hintergewerk.EditorTools.ProjectSetup.Apply()` (Menü Hintergewerk → Projekt-Setup)
-- `Adapters/` liegt ausgeblendet als `Adapters~/` (D25) — Re-Enable + v207-TODOs nach SDK-Import
 - `build.cmd`: Unity-Suche erweitert (`C:\Unity\Hub\Editor` als Hub-Secondary-Path), sort-Abhängigkeit entfernt
 - Unity-CLI (1.0.0-beta.16) + `com.unity.pipeline` ermöglichen Agent-Fernsteuerung des Editors
-
-**Offen / wartet:**
-1. **Meta XR SDK v207** — gelöst ohne Menschen-Klick: Metas offizielle NPM-Registry ist
-   `https://npm.developer.oculus.com/` → Scoped Registry in `unity/Packages/manifest.json`
-   (`scopes: ["com.meta"]`) + `com.meta.xr.sdk.core` **207.0.1** (das All-in-One-Paket
-   `com.meta.xr.sdk.all` ist Asset-Store-only, brauchen wir aber nicht — Core deckt OVR*/Anker/Hände ab).
-   Danach: `Adapters~` reaktivieren → TODOs gegen v207 schließen.
-2. Szenen 01_Smoketest + 02_AnkerTest (Spec docs/11) — sobald SDK da ist (Meta XR Rig braucht es)
-3. Smoketest M0 + Anker-Test M1 (Menschen-Anteil: Dashboard, Gerät — docs/07)
-4. Erster Android-Build läuft als Pipeline-Check (SampleScene, ohne SDK-Rig)
 
 ## Deine ersten Schritte auf Windows (Tag 1, ~90 min, docs/06)
 
