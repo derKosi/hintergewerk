@@ -8,10 +8,12 @@ setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 rem --- Unity.exe automatisch finden (neueste Hub-Installation) ---
-set "HUB=C:\Program Files\Unity\Hub\Editor"
 set "UNITY_EXE="
-for /f "delims=" %%v in ('dir /b /ad "%HUB%" 2^>nul ^| sort /r') do (
-  if not defined UNITY_EXE if exist "%HUB%\%%v\Editor\Unity.exe" set "UNITY_EXE=%HUB%\%%v\Editor\Unity.exe"
+rem Hub-Standardpfad UND sekundaerer Hub-Pfad (C:\Unity\Hub\Editor, Hub-Option "secondary install path")
+for %%H in ("C:\Program Files\Unity\Hub\Editor" "C:\Unity\Hub\Editor") do (
+  if not defined UNITY_EXE for /f "delims=" %%v in ('dir /b /ad /o-n %%H 2^>nul') do (
+    if not defined UNITY_EXE if exist "%%H\%%v\Editor\Unity.exe" set "UNITY_EXE=%%H\%%v\Editor\Unity.exe"
+  )
 )
 rem Alternative Version erzwingen: FORCE_UNITY setzen (vor diesem Aufruf)
 if defined FORCE_UNITY set "UNITY_EXE=%FORCE_UNITY%"

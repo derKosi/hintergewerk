@@ -65,6 +65,30 @@ Division New Experience. Preisgeld-Gesamtpool $1M, Top-Preise $100k.
 - Device-Verifikation — Smoketest M0/M1 nie gefahren
 - Adapter-API-Namen — unbestätigt gegen v207
 
+## Update 05.11. (Windows-Session, Claude auf der 3090)
+
+**Erledigt (alle Commits gepusht, 6000.6.8f1 fixiert):**
+- **Monorepo-Entscheid (D24):** Unity-Projekt lebt im Repo unter `unity/` — Projekthülle
+  (ProjectSettings + Packages) eingecheckt, erstellt per Unity-CLI aus URP-Blank (D24)
+- **51/51 EditMode-Tests GRÜN** — erste Kompilierung überhaupt; Compile-Fixes + 3 Logik-Bugs
+  behoben (CaptureDriver pinchWasDown im Idle, HandMenuLogic Flanken-Toggle, Testdaten)
+- **Selbsttest BESTANDEN**: JSON-Roundtrip + PDF-Beispiel (4,3 KB, valide: xref, Helvetica)
+  — dialogfrei via `unity command script eval 'Hintergewerk.EditorTools.CliSelfTest.RunAll()'`
+- **Projekt-Setup:** Android-Target, IL2CPP, ARM64, `de.bautoolz.hintergewerk`, **minSdk 32**,
+  OpenXR-Loader (Android) + Meta-Quest-Feature aktiv (D27) — reproduzierbar via
+  `Hintergewerk.EditorTools.ProjectSetup.Apply()` (Menü Hintergewerk → Projekt-Setup)
+- `Adapters/` liegt ausgeblendet als `Adapters~/` (D25) — Re-Enable + v207-TODOs nach SDK-Import
+- `build.cmd`: Unity-Suche erweitert (`C:\Unity\Hub\Editor` als Hub-Secondary-Path), sort-Abhängigkeit entfernt
+- Unity-CLI (1.0.0-beta.16) + `com.unity.pipeline` ermöglichen Agent-Fernsteuerung des Editors
+
+**Offen / wartet:**
+1. **Meta XR SDK v207** — nur noch via Unity Asset Store („Meta XR SDK", Produkt 9022845):
+   „Add to my assets" braucht Mathias' Klick (EULA!) — Metas NPM-Registry ist tot (D26).
+   Danach: Editor öffnen → `package add com.meta.xr.sdk.all` → `Adapters~` reaktivieren → TODOs gegen v207.
+2. Szenen 01_Smoketest + 02_AnkerTest (Spec docs/11) — sobald SDK da ist (Meta XR Rig braucht es)
+3. Smoketest M0 + Anker-Test M1 (Menschen-Anteil: Dashboard, Gerät — docs/07)
+4. Erster Android-Build läuft als Pipeline-Check (SampleScene, ohne SDK-Rig)
+
 ## Deine ersten Schritte auf Windows (Tag 1, ~90 min, docs/06)
 
 1. Unity 6 LTS + Module (Android Build Support, OpenJDK, SDK/NDK) — exakt eine Version fürs Projekt
