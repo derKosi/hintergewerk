@@ -174,5 +174,82 @@ namespace Hintergewerk.Tests
             Assert.AreEqual("wall", plane.Label);
             Assert.IsFalse(walls.TryFindPlane(new Vector3(0f, 0f, 1f), Vector3.forward, 2f, out _)); // weg von der Ebene
         }
+
+        // ---------------- ADR 0002: Punkte werden anker-lokal gespeichert ----------------
+
+        /// <summary>
+        /// Anker bei (2,0,0), Identity-Pose: gezeichnete Welt-Punkte landen als Welt−Anker im Store;
+        /// CorridorFactory.ToWorld(pose) rekonstruiert exakt die gezeichneten Weltpunkte.
+        /// (Regression für den 07.11.-Fix: vorher wurden Welt-Punkte doppelt transformiert.)
+        /// </summary>
+        [Test]
+        public void Punkte_ArAnkerLokal_RecallRoundtrip()
+        {
+            var anchorPose = new Pose(new Vector3(2f, 0f, 0f), Quaternion.identity);
+            var d = new CaptureDriver(session, store, new SnapEngine { GridCm = 5f, MagnetRadiusCm = 8f },
+                new UndoStack(),
+                () => new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "wall" },
+                () => Array.Empty<(Vector3 pos, string id)>(),
+                () => (anchorId, anchorPose),
+                "raum_1");
+
+            // Zwei Weltpunkte an der Ebene z=0 (Snapping rastet x/y aufs 5-cm-Raster ein)
+            d.Tick(Right(new Vector3(3.02f, 1.13f, 0.2f), true), Left(Vector3.zero));
+            d.Tick(Right(new Vector3(3.02f, 1.13f, 0.2f), false), Left(Vector3.zero));
+            d.Tick(Right(new Vector3(3.53f, 1.14f, 0.2f), true), Left(Vector3.zero));
+            d.Tick(Right(new Vector3(3.53f, 1.14f, 0.2f), false), Left(Vector3.zero));
+            d.Tick(Right(Vector3.zero, true), Left(new Vector3(0.12f, 0f, 0f)));  // Tiefe 12 → Bestaetigen
+            d.Tick(Right(Vector3.zero, false), Left(Vector3.zero));
+            d.Tick(Right(Vector3.zero, true), Left(Vector3.zero));                // Confirm
+
+            Assert.AreEqual(CapturePhase.Idle, session.Phase);
+            Assert.AreEqual(1, store.Data.objects.Count);
+            var o = store.Data.objects[0];
+            Assert.AreEqual(anchorId, o.anchor_id);
+
+            // Gesnappte Weltpunkte: (3.00, 1.15, 0) und (3.55, 1.15, 0) → lokal = Welt − (2,0,0)
+            Assert.AreEqual(1.00, o.geometry.Point(0)[0], 1e-4);
+            Assert.AreEqual(1.15, o.geometry.Point(0)[1], 1e-4);
+            Assert.AreEqual(0.00, o.geometry.Point(0)[2], 1e-4);
+            Assert.AreEqual(1.55, o.geometry.Point(1)[0], 1e-4);
+
+            // Recall: lokal → Welt mit der Anker-Pose deckungsgleich mit dem Gezeichneten
+            var world = Recall.CorridorFactory.ToWorld(o, anchorPose);
+            Assert.AreEqual(3.00f, world[0].x, 1e-4f);
+            Assert.AreEqual(1.15f, world[0].y, 1e-4f);
+            Assert.AreEqual(3.55f, world[1].x, 1e-4f);
+        }
+
+        /// <summary>Anker mit 90°-Yaw: Rotation steckt in der Konversion (Roundtrip deckungsgleich).</summary>
+        [Test]
+        public void Punkte_AnkerMitRotation_RoundtripDeckungsgleich()
+        {
+            var anchorPose = new Pose(new Vector3(2f, 0f, 0f), Quaternion.Euler(0f, 90f, 0f));
+            var d = new CaptureDriver(session, store, new SnapEngine { GridCm = 5f, MagnetRadiusCm = 8f },
+                new UndoStack(),
+                () => new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "wall" },
+                () => Array.Empty<(Vector3 pos, string id)>(),
+                () => (anchorId, anchorPose),
+                "raum_1");
+
+            d.Tick(Right(new Vector3(3.02f, 1.13f, 0.2f), true), Left(Vector3.zero));
+            d.Tick(Right(new Vector3(3.02f, 1.13f, 0.2f), false), Left(Vector3.zero)); // 1 Punkt → EndDraw bricht ab, bleibt Zeichnen
+            d.Tick(Right(new Vector3(3.53f, 1.14f, 0.2f), true), Left(Vector3.zero));
+            d.Tick(Right(new Vector3(3.53f, 1.14f, 0.2f), false), Left(Vector3.zero)); // → EndDraw → Tiefe
+            d.Tick(Right(Vector3.zero, true), Left(new Vector3(0.12f, 0f, 0f)));       // → Bestaetigen
+            d.Tick(Right(Vector3.zero, false), Left(Vector3.zero));
+            d.Tick(Right(Vector3.zero, true), Left(Vector3.zero));                     // Confirm
+
+            var o = store.Data.objects[0];
+            // q(0,90°)⁻¹ · (3.00−2, 1.15, 0) = (0, 1.15, 1): Rotation steckt wirklich drin
+            Assert.AreEqual(0.00, o.geometry.Point(0)[0], 1e-4);
+            Assert.AreEqual(1.15, o.geometry.Point(0)[1], 1e-4);
+            Assert.AreEqual(1.00, o.geometry.Point(0)[2], 1e-4);
+
+            var world = Recall.CorridorFactory.ToWorld(o, anchorPose);
+            Assert.AreEqual(3.00f, world[0].x, 1e-4f);
+            Assert.AreEqual(1.15f, world[0].y, 1e-4f);
+            Assert.AreEqual(0.00f, world[0].z, 1e-4f);
+        }
     }
 }
