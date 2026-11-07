@@ -38,6 +38,7 @@ namespace Hintergewerk.Capture
         bool pinchWasDown;
         bool menuWasOpen;
         SnapResult shownSnap;
+        string currentAnchorId;
 
         void Start()
         {
@@ -57,6 +58,23 @@ namespace Hintergewerk.Capture
             session = new CaptureSession();
             session.PhaseChanged += p => SetStatus(PhaseText(p));
             menu = new HandMenuLogic();
+
+            // CaptureDriver verdrahten (fehlte im Skeleton — NRE in Update, gefixt 07.11.):
+            // Plane aus Scene-Walls (oder Default-Frontalebene), Endpoint-Snapping v2 (M2),
+            // Anchor lazily beim ersten Confirm. M2-TODO: Welt→Anker-lokal-Konversion über
+            // AnchorPose⁻¹ (ADR 0002) — solange Raum-Anker nahe Ursprung liegt, lokal≈Welt.
+            driver = new CaptureDriver(session, store, snap, undo,
+                walls != null ? (System.Func<WallPlane>)(() =>
+                {
+                    var ws = walls.GetWalls();
+                    return ws != null && ws.Count > 0
+                        ? ws[0]
+                        : new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "default" };
+                }) : null,
+                () => (System.Collections.Generic.IReadOnlyList<(Vector3 pos, string id)>)
+                    System.Array.Empty<(Vector3 pos, string id)>(),
+                GetOrCreateAnchorId,
+                roomId);
 
             anchors.LoadAll(ok => SetStatus(ok
                 ? Strings.Format("recall.loaded", store.Data.objects.Count)
@@ -116,6 +134,18 @@ namespace Hintergewerk.Capture
         {
             pinchWasDown = pinchDown;
             menuWasOpen = menuOpen;
+        }
+
+        /// <summary>Raum-Anker lazily beim ersten Bedarf (Confirm) erzeugen + im Store registrieren.</summary>
+        string GetOrCreateAnchorId()
+        {
+            if (!string.IsNullOrEmpty(currentAnchorId)) return currentAnchorId;
+            if (anchors == null) return "";
+            var head = Camera.main != null ? Camera.main.transform : transform;
+            currentAnchorId = anchors.CreateAnchor(new Pose(head.position, Quaternion.identity), roomId);
+            store.RegisterAnchor(currentAnchorId, roomId);
+            Debug.Log("[DrawController] Raum-Anker erstellt: " + currentAnchorId);
+            return currentAnchorId;
         }
 
         string PhaseText(CapturePhase p)
