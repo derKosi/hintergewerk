@@ -15,6 +15,8 @@ using Hintergewerk.Recall;
 using Hintergewerk.Export;
 using Hintergewerk.UI;
 
+// ObjectInspector lebt in Hintergewerk.UI (dort ist auch SceneSwitcher)
+
 namespace Hintergewerk.EditorTools
 {
     public static class Scene04Builder
@@ -98,6 +100,13 @@ namespace Hintergewerk.EditorTools
             var switcherGo = new GameObject("SceneSwitcher");
             var switcher = switcherGo.AddComponent<SceneSwitcher>();
             Wire(switcher, "handSourceBehaviour", handSource);
+
+            var inspectorGo = new GameObject("ObjectInspector");
+            var inspector = inspectorGo.AddComponent<ObjectInspector>();
+            Wire(inspector, "anchorProviderBehaviour", anchorProvider);
+            Wire(inspector, "handSourceBehaviour", handSource);
+            Wire(inspector, "statusText", tm);
+            SetString(inspector, "roomId", "raum_1");
 
             // ---- 6) Speichern + Build-Liste [02, 03, 04, 01] ----
             EditorSceneManager.SaveScene(scene, ScenePath);

@@ -63,6 +63,14 @@ namespace Hintergewerk.Localization
             ["list.empty"] = ("Noch nichts dokumentiert", "Nothing documented yet"),
             ["list.count"] = ("{0} Objekte in {1}", "{0} objects in {1}"),
 
+            // Detail-Panel (Blick + Pinch, docs/03 §1)
+            ["panel.hint"] = ("Blick aufs Objekt + Pinch = Details", "Gaze at object + pinch = details"),
+            ["panel.not_found"] = ("Kein Objekt im Blick", "No object in gaze"),
+            ["panel.meta_line"] = ("angelegt von {0} am {1}", "added by {0} on {1}"),
+            ["panel.photo_line"] = ("Foto: {0}", "photo: {0}"),
+            ["panel.no_photo"] = ("keins", "none"),
+            ["panel.korridor"] = ("Korridor ± {0} cm", "corridor ± {0} cm"),
+
             // Demo/M1 (Szene 02_AnkerTest)
             ["demo.anchors_loaded"] = ("Geladen: {0} Anker", "Loaded: {0} anchors"),
             ["demo.anchor_placed"] = ("Anker gesetzt: {0}", "Anchor placed: {0}"),

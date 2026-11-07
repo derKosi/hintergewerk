@@ -32,6 +32,54 @@ namespace Hintergewerk.Recall
             float t = Mathf.Clamp01(Vector3.Dot(p - a, ab) / lenSq);
             return Vector3.Distance(p, a + ab * t);
         }
+
+        /// <summary>
+        /// Minimale Distanz Strahl ↔ Polylinie (Meter) — für „Blick + Pinch" (docs/03 §1:
+        /// Objekt auswählen). Strahl = Blickrichtung; Segment-Parameter wird geclampt (kein Hinternauswahl).
+        /// </summary>
+        public static float DistanceRayToPolyline(Vector3 rayOrigin, Vector3 rayDir, IReadOnlyList<Vector3> line, float maxDist)
+        {
+            if (line == null || line.Count < 2) return float.MaxValue;
+            var d = rayDir.normalized;
+            float best = float.MaxValue;
+            for (int i = 0; i < line.Count - 1; i++)
+            {
+                var a = line[i];
+                var b = line[i + 1];
+                var seg = b - a;
+                float C = seg.sqrMagnitude;
+                if (C < 1e-10f) continue;
+
+                // Geschlossene Lösung Strahl↔Linie (Ericson), dann s clampen und t nachlösen:
+                var w0 = rayOrigin - a;
+                float B = Vector3.Dot(d, seg);
+                float D = Vector3.Dot(d, w0);
+                float E = Vector3.Dot(seg, w0);
+                float denom = C - B * B;                // A = 1 (normalisiert)
+                float s, t;
+                if (denom < 1e-10f)
+                {
+                    s = 0f;                             // parallel: Strahlstart ist der Kandidat
+                    t = Mathf.Clamp01(E / C);
+                }
+                else
+                {
+                    s = (B * E - C * D) / denom;
+                    t = (E - B * D) / denom;
+                    if (s < 0f)
+                    {
+                        s = 0f;                         // nur vor dem Blick
+                        t = Mathf.Clamp01(E / C);       // t für s=0 nachlösen
+                    }
+                }
+                t = Mathf.Clamp01(t);
+                var pRay = rayOrigin + d * s;
+                var pSeg = a + seg * t;
+                float dist = Vector3.Distance(pRay, pSeg);
+                if (s <= maxDist && dist < best) best = dist;
+            }
+            return best;
+        }
     }
 
     public class WarningSystem

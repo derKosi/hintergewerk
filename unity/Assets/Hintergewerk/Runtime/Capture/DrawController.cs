@@ -73,14 +73,23 @@ namespace Hintergewerk.Capture
             menu = new HandMenuLogic();
 
             // CaptureDriver mit Anker-Pose (ADR 0002): Anker lazy beim ersten Punkt,
-            // Punkte → anker-lokal. Endpoint-Snapping v2 (M2) folgt mit Objektliste.
+            // Punkte → anker-lokal. Zeichnen snappt auf die Wand, die der Hand am nächsten liegt.
             driver = new CaptureDriver(session, store, snap, undo,
                 walls != null ? (System.Func<WallPlane>)(() =>
                 {
                     var ws = walls.GetWalls();
-                    return ws != null && ws.Count > 0
-                        ? ws[0]
-                        : new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "default" };
+                    if (ws == null || ws.Count == 0)
+                        return new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "default" };
+                    if (ws.Count == 1) return ws[0];
+                    // Mehrere Wände (Scene API): die Ebene mit dem geringsten Abstand zur Hand
+                    WallPlane best = ws[0];
+                    float bestD = float.MaxValue;
+                    foreach (var w in ws)
+                    {
+                        float d = Mathf.Abs(Vector3.Dot(lastTip - w.Point, w.Normal));
+                        if (d < bestD) { bestD = d; best = w; }
+                    }
+                    return best;
                 }) : null,
                 () => (System.Collections.Generic.IReadOnlyList<(Vector3 pos, string id)>)
                     CollectEndpoints(),
