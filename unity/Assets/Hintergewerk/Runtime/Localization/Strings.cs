@@ -29,6 +29,9 @@ namespace Hintergewerk.Localization
             ["capture.depth_hint"] = ("Zwei-Hand-Distanz = Tiefe", "Two-hand distance = depth"),
             ["capture.confirm_hint"] = ("Pinch zum Bestätigen", "Pinch to confirm"),
             ["capture.saved"] = ("Gespeichert: {0}", "Saved: {0}"),
+            ["capture.saved_room"] = ("Gespeichert · {0} Objekte im Raum", "Saved · {0} objects in room"),
+            ["capture.photo_saved"] = ("Gespeichert · Foto angehängt", "Saved · photo attached"),
+            ["capture.photo_unavailable"] = ("Gespeichert · Foto nicht verfügbar (ehrlich: kein Bild, kein Fake)", "Saved · photo unavailable (honest: no image, no fake)"),
             ["capture.undo_hint"] = ("Wischen = rückgängig", "Swipe to undo"),
             ["capture.undo_done"] = ("Rückgängig: {0}", "Undone: {0}"),
             ["capture.cancelled"] = ("Abgebrochen", "Cancelled"),
@@ -36,10 +39,12 @@ namespace Hintergewerk.Localization
 
             // Recall & Warnung
             ["recall.loaded"] = ("Geladen: {0} Objekte", "Loaded: {0} objects"),
+            ["recall.located_status"] = ("{0} verortbar · {1} nicht verortbar", "{0} located · {1} not locatable"),
             ["recall.near"] = ("Vorsicht — Leitung in der Nähe", "Careful — utility nearby"),
             ["recall.critical"] = ("STOPP — Sicherheitskorridor!", "STOP — safety corridor!"),
             ["recall.orphaned"] = ("Nicht verortbar (Anker fehlt)", "Cannot locate (anchor missing)"),
             ["recall.anchor_lost"] = ("Anker verloren: {0}", "Anchor lost: {0}"),
+            ["recall.empty_room"] = ("Dieser Raum: noch nichts dokumentiert", "This room: nothing documented yet"),
 
             // Konfidenz
             ["confidence.measured"] = ("gemessen", "measured"),
@@ -49,6 +54,8 @@ namespace Hintergewerk.Localization
             // Export
             ["export.started"] = ("Export läuft…", "Exporting…"),
             ["export.done"] = ("Export fertig: {0}", "Export done: {0}"),
+            ["export.done_json"] = ("JSON fertig: {0}", "JSON done: {0}"),
+            ["export.hint"] = ("Linke Hand: Pinch = Export (PDF + JSON)", "Left hand: pinch = export (PDF + JSON)"),
             ["export.failed"] = ("Export fehlgeschlagen", "Export failed"),
 
             // Objektliste
