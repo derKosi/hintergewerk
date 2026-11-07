@@ -65,6 +65,19 @@ Division New Experience. Preisgeld-Gesamtpool $1M, Top-Preise $100k.
 - Device-Verifikation — Smoketest M0/M1 nie gefahren
 - Adapter-API-Namen — unbestätigt gegen v207
 
+## Update 07.11. (Session 2, Claude auf der 3090 — M0 BESTANDEN ✅)
+
+**M0-Smoketest auf Quest 3S bestanden: Hände getrackt, animiert, korrekt ausgerichtet; Text/Würfel sichtbar; Greif-Demo läuft.**
+
+Root-Causes der Hand-Probleme (alle im Commit, gilt für beide Agenten):
+1. `OVRRuntimeSettings.HandSkeletonVersion` stand auf `OpenXR` → Skeletons liefen als XRHand-Typen(4/5) gegen das OVR-Konventions-Mesh. FIX: version=OVR + `_skeletonType` 0/1.
+2. **Metas OVRCustomHandPrefab liefert UNGBUNDEN aus** (`_customBones_V2` = Nulls) → ohne "Auto Map Bones" statisches Bind-Pose-Mesh. FIX: AutoMapBones per Editor (24/24 Knochen pro Hand, Overrides in 01_Smoketest.unity).
+3. StatusText rotY 180°→0 (TextMesh lesbar von −Z).
+
+Neue MBs in `Adapters/` (temp, vor Submission eval): HandDebugProbe (logcat), SmoketestPlacer (kopf-relativ: Tisch+Würfel+Stab+Text), ThrowCube+CollisionBlip (Pinch-Greif-Demo mit Audio), HandVisibilityDriver (Hand-Meshes aus bei Tracking-Verlust — "Geisterhand"-Fix).
+
+Build-Reihenfolge getauscht: **App startet mit 02_AnkerTest** (M1-Runs), 01_Smoketest zweitens. Device-Loop: adb (Quest 3S, Ser. 340YC10G7T044V) — bei `unauthorized` Headset-Dialog bestätigen. Nächster Schritt: **M1-Anker-Persistenz, 3 Runs** (docs/07) — GO/NO-GO.
+
 ## Update 06.11. (Nacht-Session, Claude auf der 3090)
 
 **Stand: Gerät-Pipeline komplett vorgebaut — Mathias muss nur noch Dashboard + Quest klicken (docs/07).**
