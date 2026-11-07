@@ -59,3 +59,36 @@ Produkt-Story „Hintergewerk mit Bestätigung statt blinder Anker-Gläubigkeit"
 - Status-Tabelle im README aktualisieren (M0 ✅ / M1 ✅ + Datum)
 - Entscheidung D4 (Stack) endgültig auf GO setzen
 - Ab 03.11.: SDK-Adapter an die Interfaces (`Core/Interfaces.cs`), dann Capture-Flow
+
+---
+
+## M2/M3-Gerätetest (ab 07.11. gebaut, Agent-seitig im Simulator verifiziert)
+
+App enthält Szenenliste: **02_AnkerTest → 03_CaptureAutoTest → 04_Recall → 01_Smoketest**.
+Szenenwechsel am Gerät: **linke Handfläche zum Körper halten (≈½ s) + linker Pinch** → nächste Szene (kein adb nötig).
+
+### E. M3 — Recall + Export am Gerät (~10 min)
+
+1. Vorher in Szene 03 mindestens 1–2 Objekt zeichnen (2-Tap-Linie → Tiefe → Pinch bestätigen).
+2. Szenenwechsel → **04_Recall**. Erwartung:
+   - Status: „Geladen: N Objekte" (+ ggf. „· X nicht verortbar" — ehrlich, nicht weggefiltert)
+   - Korridore als leuchtende Bänder in Typfarben auf der Wand
+   - Hand an die Wand halten: Nähe → Status „Vorsicht", Bernstein-Puls; im Korridor → „STOPP", Signalrot + schneller Audio-Ping
+3. **Export**: rechte Hand frei, **linker Pinch** (ohne Handfläche) → „Export fertig: …pdf + …json"
+4. Abholen (Laptop, USB):
+   ```
+   adb pull /sdcard/Android/data/de.bautoolz.hintergewerk/files/ hgw_export/
+   ```
+   → JSON prüfen (objekte inkl. `points_lokal` anker-lokal), PDF öffnen (Legende, Maßstab).
+
+### F. M2 — Capture-Zeit messen (~5 min)
+
+1. Szene 03, Stoppuhr: Handfläche-Meny → Typ → Linie ziehen (2+ Taps) → Tiefe → Pinch-Pinch.
+2. Ziel < 30 s inklusive Foto-Versuch. Status „Foto nicht verfügbar" ist **erwartbar** (D8: ScreenCapture am Gerät unklar — siehe docs/05 D33); Alternativen stehen im Entscheidungslog.
+
+### Pass-Kriterien M3 (Beweis)
+
+- [ ] Korridor nach App-Kill + Neustart deckungsgleich (Anker-lokal-Geometrie, docs/05 D30)
+- [ ] Warn-Eskalation sichtbar + hörbar
+- [ ] JSON + PDF am Laptop, JSON enthält verwaiste Objekte (falls vorhanden)
+- [ ] Screenrecording der 3 Beats (Korridor auf, Warnung, Export)

@@ -1,5 +1,37 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## Update 07.11. abends (Session 3, Claude auf der 3090 — M2/M3-Kern STEHT ✅)
+
+**M3-Loop (Recall + Export) ist gebaut und im XR-Simulator verifiziert; Capture-Flow (M2) komplett
+mit Zeichnen-Vorschau. ADR-0002-Regression behoben. Gerätetests M2/M3 warten auf Mathias (docs/07 §E/F).**
+
+Was diese Session gebracht hat (alles mit Tests, 58/58 EditMode grün, Selbsttest grün):
+
+1. **ADR-0002-Fix (kritisch):** CaptureDriver speicherte Welt-Punkte; Recall transformierte
+   nochmal mit Anker-Pose → Korridore doppelt versetzt nach Neustart. Jetzt `WorldToLocal`
+   beim Capture, Roundtrip-Tests (Translation + Rotation).
+2. **Szene 04_Recall** (M3): Korridore in **Typfarben**, Warn-Eskalation (Bernstein→Signalrot,
+   Puls, prozeduraler Audio-Ping), Export per linker-Hand-Pinch (PDF + JSON 1:1 HouseModel).
+   Simulator-Beweis: 2 Korridore + 1 „nicht verortbar", Near→Kritisch geloggt, Dateien im
+   persistentDataPath. `RecallDemoSeeder` (StandardExecutionOrder −100, **aus**): nur für
+   Simulator-Tests, am Gerät laufen echte Daten.
+3. **Zeichnen-Vorschau** (docs/03 „Linie folgt der Hand"): LineRenderer in Typfarbe + Snap-Marker;
+   Auto-Start nur EINMAL (vorher: nach jedem Confirm sofort neuer Capture-Loop).
+4. **SceneSwitcher:** linke Handfläche + linker Pinch = nächste Szene (kein adb) — Build-Liste
+   02 → 03 → 04 → 01 (docs/05 D34).
+5. **Beweisfoto-Seam** (D8/D33): `IEvidenceCapture` + `AppSnapshotEvidence`; ehrlicher Fallback
+   „Foto nicht verfügbar" bewiesen. Ob ScreenCapture am Gerät (Vulkan) schreibt → Gerätetest.
+6. Werkzeuge: `Scene04Builder` + `RecallAutotest` (Prepare/Cleanup) im Editor-Menü/eval;
+   Build via Pipeline `unity command build run confirm=true` (in-Editor, kein Editor-Neustart).
+
+Nächste Schritte: (a) Mathias: Gerätetests M2/M3 nach docs/07 §E/F + M1-Runs (3× Persistenz),
+(b) Politur 11.–13.11.: FoV-Audio, zweiter Raum, Detail-Panel (Blick+Pinch), (c) Video-Material
+aus Szene 03/04 als Beleg fürs Storyboard (docs/08).
+
+---
+
+# (Original-Handoff, Stand 04.11.)
+
 Hallo Claude — du übernimmst ein laufendes 18-Tage-Hackathon-Projekt an Tag 11 von 18.
 Der vorherige Agent (AutoClaw, Mac) hat Planung, Architektur und den kompletten SDK-freien
 Code-Kern gebaut. Deine Mission: Unity-Seite zum Laufen bringen, Smoketest bestehen,
