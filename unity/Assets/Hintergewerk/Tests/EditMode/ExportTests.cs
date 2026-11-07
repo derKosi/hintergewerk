@@ -84,5 +84,48 @@ namespace Hintergewerk.Tests
             Assert.AreEqual(0, ratio); // größer als 1:200 → freier Maßstab
             Assert.Less(scale, 2834.65f / 200f);
         }
+
+        // ---------------- JSON-Export (M3, ergänzt 07.11.) ----------------
+
+        [Test]
+        public void ExportJson_Roundtrip_ErhaeltObjekteUndSchema()
+        {
+            var path = System.IO.Path.Combine(Application.temporaryCachePath, "hg_exp_" + System.Guid.NewGuid().ToString("N") + ".json");
+            var store = new HouseDataStore(System.IO.Path.Combine(Application.temporaryCachePath, "hg_st_" + System.Guid.NewGuid().ToString("N") + ".json"));
+            store.EnsureRoom("raum_1", "Testraum", 0);
+            store.RegisterAnchor("anc_x", "raum_1");
+            store.AddObject(ObjectType.Water, "raum_1", "anc_x", 6.0);
+            store.AddObject(ObjectType.Power, "raum_1", "anc_missing", 4.0); // Anker fehlt → orphaned
+
+            var written = ExportRunner.ExportJson(store, out var count, path);
+            Assert.AreEqual(2, count);
+            Assert.IsTrue(System.IO.File.Exists(written));
+
+            var parsed = SimpleJson.Parse(System.IO.File.ReadAllText(written));
+            Assert.AreEqual(Schema.Version, parsed.schema_version);
+            Assert.AreEqual(2, parsed.objects.Count);
+
+            // Ehrlichkeit: verwaistes Objekt bleibt im Export drin (Beweis, kein Filter).
+            // orphaned wird bewusst NICHT serialisiert — der Store berechnet es beim Laden neu.
+            var reloaded = new HouseDataStore(written);
+            Assert.AreEqual(1, reloaded.OrphanedObjects().Count);
+            Assert.AreEqual("anc_missing", reloaded.OrphanedObjects()[0].anchor_id);
+        }
+
+        [Test]
+        public void AttachPhoto_HaengtAnUndSpeichert()
+        {
+            var store = new HouseDataStore(System.IO.Path.Combine(Application.temporaryCachePath, "hg_st_" + System.Guid.NewGuid().ToString("N") + ".json"));
+            var o = store.AddObject(ObjectType.Power, "raum_1", "anc_x", 4.0);
+
+            Assert.IsFalse(store.AttachPhoto("obj_gibtsnicht", "photos/x.png")); // unbekanntes Objekt
+            Assert.IsFalse(store.AttachPhoto(o.id, null));                        // kein Pfad
+            Assert.IsTrue(store.AttachPhoto(o.id, "photos/test.png"));
+            Assert.IsTrue(store.AttachPhoto(o.id, "photos/test.png"));            // Idempotent (kein Duplikat)
+
+            var reloaded = new HouseDataStore(store.Path);
+            Assert.AreEqual(1, reloaded.Data.objects[0].evidence.photos.Count);
+            Assert.AreEqual("photos/test.png", reloaded.Data.objects[0].evidence.photos[0]);
+        }
     }
 }

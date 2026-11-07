@@ -43,5 +43,21 @@ namespace Hintergewerk.Export
             Debug.Log($"[Export] {mapped.Count} Objekte, {bytes.Length} Bytes, 1:{scaleRatio} → {path}");
             return path;
         }
+
+        /// <summary>
+        /// JSON-Export: 1:1 das HouseModel (docs/02 §5) — maschinenlesbar, überlebt Jahre via
+        /// schema_version. Absichtlich das GANZE Haus (nicht raumgefiltert): verwaiste Objekte
+        /// bleiben drin (Ehrlichkeitsregel — der Export ist ein Beweis, kein Filter).
+        /// </summary>
+        public static string ExportJson(HouseDataStore store, out int objectCount, string explicitPath = null)
+        {
+            objectCount = store.Data.objects.Count;
+            var json = SimpleJson.Write(store.Data);
+            var path = explicitPath ?? Path.Combine(Application.persistentDataPath,
+                $"hintergewerk_export_{DateTime.UtcNow:yyyyMMdd_HHmm}.json");
+            File.WriteAllText(path, json);
+            Debug.Log($"[Export] JSON: {objectCount} Objekte, {json.Length} Zeichen → {path}");
+            return path;
+        }
     }
 }
