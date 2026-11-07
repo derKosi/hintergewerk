@@ -133,6 +133,20 @@ namespace Hintergewerk.Data
         public List<TrackedObject> OrphanedObjects() =>
             Data.objects.FindAll(o => o.orphaned);
 
+        /// <summary>
+        /// Beweisfoto an ein Objekt hängen (D8) + Auto-Save. relPath relativ zu persistentDataPath
+        /// (z. B. photos/obj_…jpg). Liefert false, wenn Objekt oder Pfad fehlt — niemals still verwerfen.
+        /// </summary>
+        public bool AttachPhoto(string objectId, string relPath)
+        {
+            if (string.IsNullOrEmpty(relPath)) return false;
+            var o = Data.objects.Find(x => x.id == objectId);
+            if (o == null) return false;
+            if (!o.evidence.photos.Contains(relPath)) o.evidence.photos.Add(relPath);
+            Save();
+            return true;
+        }
+
         // ---------------- Interna ----------------
 
         void RebuildOrphans()
