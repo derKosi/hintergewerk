@@ -198,3 +198,8 @@ keine Graph-API — Dashboard-Upload ist manuell), private SSH-Keys, Tokens.
 M0 (Pipeline) + M1 (Anker) ✅ → Capture-Flow < 30 s (M2) → Recall + Export (M3) →
 Video ≤ 3 min (docs/08) → Submission komplett (docs/12) → **abgegeben vor 18.11., 21:00 CET**.
 Scope-Leiter bei Zeitnot: docs/01 §5. Lieber ein runder Capture-Flow als vier halbe Features.
+
+### Nachtrag 07.11. spät (Politur-Runde 1)
+- **Scene-API-Wände** (D36): SceneWallProvider liest echte Wände (WALL_FACE), DrawController wählt die handnächste. Am Gerät: einmal Room Setup machen, dann zeichnet die App auf der echten Wand.
+- **Detail-Panel** (D37): Blick aufs Objekt + Pinch → Panel (Typ, Konfidenz, Tiefe, Monteur, Datum, Foto). Panel-Kern unit-getestet; Auswahlgeste am Gerät prüfen (Checkliste docs/03 §6).
+- Stand: **65/65 Tests grün**, APK final gebaut (Builds/hintergewerk.apk, alle Szenen 02→03→04→01, SceneSwitcher-Geste: linke Handfläche + Pinch).
