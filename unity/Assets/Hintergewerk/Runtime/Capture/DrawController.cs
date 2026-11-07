@@ -83,7 +83,7 @@ namespace Hintergewerk.Capture
                         : new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "default" };
                 }) : null,
                 () => (System.Collections.Generic.IReadOnlyList<(Vector3 pos, string id)>)
-                    System.Array.Empty<(Vector3 pos, string id)>(),
+                    CollectEndpoints(),
                 ResolveAnchor,
                 roomId);
 
@@ -115,6 +115,25 @@ namespace Hintergewerk.Capture
                 return ("", new Pose(Vector3.zero, Quaternion.identity));
             var pose = anchors.TryGetPose(id, out var p) ? p : new Pose(Camera.main != null ? Camera.main.transform.position : transform.position, Quaternion.identity);
             return (id, pose);
+        }
+
+        /// <summary>
+        /// Magnetische Endpunkte bereits erfasster Objekte des Raums (docs/03 §1: „magnetische
+        /// Endpunkte") — verortbare Objekte, erster/letzter Punkt in Welt. Anker-lokal → Welt
+        /// mit derselben Mathematik wie der Recall (CorridorFactory.ToWorld).
+        /// </summary>
+        System.Collections.Generic.IReadOnlyList<(Vector3 pos, string id)> CollectEndpoints()
+        {
+            var list = new System.Collections.Generic.List<(Vector3, string)>();
+            foreach (var o in store.ObjectsInRoom(roomId))
+            {
+                if (o.orphaned || o.geometry.Count < 2) continue;
+                if (!anchors.TryGetPose(o.anchor_id, out var pose)) continue;
+                var world = Recall.CorridorFactory.ToWorld(o, pose);
+                list.Add((world[0], o.id));
+                list.Add((world[world.Count - 1], o.id));
+            }
+            return list;
         }
 
         void Update()

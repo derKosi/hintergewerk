@@ -32,6 +32,7 @@ Dashboard-App anlegen → Channel „Competition" → APK-Upload → Invite-URL 
 
 ### Block E — Feature-Tage 05.–13.11. · täglich 20–30 min
 Gerätests nach Checkliste (docs/03 §6). Der Agent baut via MCP — du testest und sagst, was sich falsch anfühlt. Probe-PDF am 10.11. anschauen.
+**Neu 07.11.:** M2 (Capture-Zeit) + M3 (Recall/Export) sind gebaut — Gerätetests nach **docs/07 §E/F**; Szenenwechsel am Gerät ohne adb (linke Handfläche + Pinch).
 
 ### Block F — Video 14.–15.11. · 2,5 h · docs/08
 Dreh-Checkliste: 3 Takes pro Szene, Gerät-Footage zuerst, Musik lizenzfrei. Englischer VO ist vorgeschrieben (docs/08, mit Aussprache-Notizen).

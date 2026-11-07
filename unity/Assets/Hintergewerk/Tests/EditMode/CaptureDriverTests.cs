@@ -175,6 +175,30 @@ namespace Hintergewerk.Tests
             Assert.IsFalse(walls.TryFindPlane(new Vector3(0f, 0f, 1f), Vector3.forward, 2f, out _)); // weg von der Ebene
         }
 
+        // ---------------- Magnetische Endpunkte (docs/03 §1) ----------------
+
+        [Test]
+        public void Endpunkte_Magnet_ZiehtPunktAnBestehendesObjekt()
+        {
+            var endpoints = new System.Collections.Generic.List<(Vector3 pos, string id)>
+            {
+                (new Vector3(0.5f, 1.15f, 0f), "obj_alt")
+            };
+            var d = new CaptureDriver(session, store, new SnapEngine { GridCm = 5f, MagnetRadiusCm = 8f },
+                new UndoStack(),
+                () => new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "wall" },
+                () => endpoints,
+                () => (anchorId, new Pose(Vector3.zero, Quaternion.identity)),
+                "raum_1");
+
+            // ~3,2 cm neben dem bestehenden Endpunkt — Magnetradius 8 cm gewinnt über das Raster
+            d.Tick(Right(new Vector3(0.53f, 1.14f, 0.2f), true), Left(Vector3.zero));
+            Assert.IsTrue(d.LastSnap.SnappedToMagnet);
+            Assert.AreEqual("obj_alt", d.LastSnap.MagnetId);
+            Assert.AreEqual(0.50, session.Punkte[0][0], 1e-4);
+            Assert.AreEqual(1.15, session.Punkte[0][1], 1e-4);
+        }
+
         // ---------------- ADR 0002: Punkte werden anker-lokal gespeichert ----------------
 
         /// <summary>
