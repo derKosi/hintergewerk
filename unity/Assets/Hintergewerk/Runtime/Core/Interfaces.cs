@@ -58,4 +58,16 @@ namespace Hintergewerk.Core
         /// <summary>Wand unter einem Weltpunkt suchen (Raycast auf Scene-Ebenen). maxDist in Metern.</summary>
         bool TryFindPlane(Vector3 point, Vector3 direction, float maxDist, out WallPlane plane);
     }
+
+    /// <summary>
+    /// Beweisfoto (Ansatz D8, R3): ein App-Render-Snapshot pro gespeichertem Objekt.
+    /// Passthrough-Aufnahmen aus der App sind API-beschränkt — wenn keine Aufnahme möglich
+    /// ist, meldet die Implementierung onDone(null) und die UI sagt es ehrlich (Ehrlichkeitsregel:
+    /// kein Fake-Bild, kein stilles Leeren des Anhangs).
+    /// </summary>
+    public interface IEvidenceCapture
+    {
+        /// <summary>Snapshot anfordern. onDone(relPath) mit relativem Pfad (photos/…jpg) oder onDone(null).</summary>
+        void CaptureFor(string objectId, Action<string> onDone);
+    }
 }
