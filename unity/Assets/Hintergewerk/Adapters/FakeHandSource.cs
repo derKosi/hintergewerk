@@ -50,6 +50,16 @@ namespace Hintergewerk.Adapters
                 f.PalmNormal = Vector3.forward;
                 if (T > 1f) f.Pinching = T < 1.6f;
             }
+            else if (scenario == "RecallApproach")
+            {
+                // Rechte Hand nähert sich der Demo-Wasserlinie (world ≈ (−0.6..0.5, 0.9, 0.5)):
+                // fern → nah → im Korridor (Kritisch). Linke Pinch ab t=8 s → Export-Trigger.
+                if (T < 2f) f.IndexTip = new Vector3(0f, 1.3f, 1.2f);
+                else if (T < 6f) f.IndexTip = Vector3.Lerp(new Vector3(0f, 1.3f, 1.2f), new Vector3(0f, 0.92f, 0.5f), (T - 2f) / 4f);
+                else f.IndexTip = new Vector3(0f, 0.92f, 0.5f);
+                f.PalmCenter = f.IndexTip + Vector3.back * 0.1f;
+                f.PalmNormal = Vector3.forward;
+            }
             else // "Idle"
             {
                 f.IndexTip = P1;
@@ -64,6 +74,7 @@ namespace Hintergewerk.Adapters
                 f.IndexTip = r + Vector3.left * 0.15f - Vector3.up * (0.05f + Mathf.PingPong(T * 0.03f, 0.1f));
                 f.PalmCenter = f.IndexTip + Vector3.back * 0.1f;
                 f.PalmNormal = Vector3.forward;
+                if (scenario == "RecallApproach") f.Pinching = T > 8f && T < 8.5f; // Export-Flanke
             }
             return f;
         }
