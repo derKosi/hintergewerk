@@ -72,20 +72,6 @@ namespace Hintergewerk.Capture
             session.PhaseChanged += p => { SetStatus(PhaseText(p)); if (p == CapturePhase.Idle) FadeOutPreview(); };
             menu = new HandMenuLogic();
 
-            // Beweisfoto (D8): nach Confirm anhängen — fehlgeschlagen wird ehrlich gemeldet.
-            driver.ObjectConfirmed += o =>
-            {
-                var count = store.ObjectsInRoom(roomId).Count;
-                if (evidence == null) { SetStatus(Strings.Format("capture.saved_room", count)); return; }
-                evidence.CaptureFor(o.id, path =>
-                {
-                    if (path != null && store.AttachPhoto(o.id, path))
-                        SetStatus(Strings.Get("capture.photo_saved") + " · " + Strings.Format("capture.saved_room", count));
-                    else
-                        SetStatus(Strings.Get("capture.photo_unavailable"));
-                });
-            };
-
             // CaptureDriver mit Anker-Pose (ADR 0002): Anker lazy beim ersten Punkt,
             // Punkte → anker-lokal. Endpoint-Snapping v2 (M2) folgt mit Objektliste.
             driver = new CaptureDriver(session, store, snap, undo,
@@ -100,6 +86,21 @@ namespace Hintergewerk.Capture
                     System.Array.Empty<(Vector3 pos, string id)>(),
                 ResolveAnchor,
                 roomId);
+
+            // Beweisfoto (D8): nach Confirm anhängen — fehlgeschlagen wird ehrlich gemeldet.
+            // (NACH der Driver-Konstruktion — NRE-Fix 07.11.: Subscription saß vorher davor.)
+            driver.ObjectConfirmed += o =>
+            {
+                var count = store.ObjectsInRoom(roomId).Count;
+                if (evidence == null) { SetStatus(Strings.Format("capture.saved_room", count)); return; }
+                evidence.CaptureFor(o.id, path =>
+                {
+                    if (path != null && store.AttachPhoto(o.id, path))
+                        SetStatus(Strings.Get("capture.photo_saved") + " · " + Strings.Format("capture.saved_room", count));
+                    else
+                        SetStatus(Strings.Get("capture.photo_unavailable"));
+                });
+            };
 
             anchors.LoadAll(ok => SetStatus(ok
                 ? Strings.Format("recall.loaded", store.Data.objects.Count)

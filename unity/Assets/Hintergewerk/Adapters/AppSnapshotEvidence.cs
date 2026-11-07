@@ -27,13 +27,18 @@ namespace Hintergewerk.Adapters
             ScreenCapture.CaptureScreenshot(rel); // mobil: relativ zu persistentDataPath
 
             // CaptureScreenshot schreibt asynchron (nächstes gerendertes Frame) — begrenzt warten.
-            var abs = Path.Combine(Application.persistentDataPath, rel);
+            // Am Gerät: persistentDataPath. Im EDITOR schreibt Unity ins Projektverzeichnis —
+            // beide Orte akzeptieren (gleiche ehrliche Semantik, nur Ablageort je Plattform).
+            var absDevice = Path.Combine(Application.persistentDataPath, rel);
+            var absEditor = Path.Combine(Directory.GetParent(Application.dataPath)!.FullName, rel);
             float t = 0f;
-            while (!File.Exists(abs) && t < WaitSeconds) { t += Time.deltaTime; yield return null; }
+            while (!File.Exists(absDevice) && !File.Exists(absEditor) && t < WaitSeconds)
+            { t += Time.deltaTime; yield return null; }
 
-            if (File.Exists(abs))
+            string found = File.Exists(absDevice) ? absDevice : (File.Exists(absEditor) ? absEditor : null);
+            if (found != null)
             {
-                Debug.Log($"[Evidence] Snapshot: {rel} ({new FileInfo(abs).Length} Bytes)");
+                Debug.Log($"[Evidence] Snapshot: {rel} ({new FileInfo(found).Length} Bytes)");
                 onDone?.Invoke(rel);
             }
             else
