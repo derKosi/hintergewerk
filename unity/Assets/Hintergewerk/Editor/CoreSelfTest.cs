@@ -17,7 +17,9 @@ namespace Hintergewerk.EditorTools
         [MenuItem("Hintergewerk/Kern-Selbsttest (JSON-Roundtrip)")]
         public static void JsonRoundtrip()
         {
-            var store = new HouseDataStore(Path.Combine(Application.temporaryCachePath, "hg_selftest.json"));
+            // Eindeutiger Pfad pro Lauf — wiederholbar ohne Ablage-Reste (Fix 07.11., wie CliSelfTest).
+            var store = new HouseDataStore(Path.Combine(Application.temporaryCachePath,
+                "hg_selftest_" + Guid.NewGuid().ToString("N") + ".json"));
             store.EnsureRoom("raum_test", "Testraum", 0);
             store.RegisterAnchor("anc_test_1", "raum_test", "high");
 

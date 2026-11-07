@@ -24,7 +24,10 @@ namespace Hintergewerk.EditorTools
 
         static bool JsonRoundtrip()
         {
-            var store = new HouseDataStore(Path.Combine(Application.temporaryCachePath, "hg_selftest_cli.json"));
+            // Eindeutiger Pfad pro Lauf — der Selbsttest muss jederzeit wiederholbar sein
+            // (Fix 07.11.: fester Pfad kumulierte Objekte über Läufe → zweiter Lauf scheiterte).
+            var store = new HouseDataStore(Path.Combine(Application.temporaryCachePath,
+                "hg_selftest_cli_" + Guid.NewGuid().ToString("N") + ".json"));
             store.EnsureRoom("raum_test", "Testraum", 0);
             store.RegisterAnchor("anc_test_1", "raum_test", "high");
 
