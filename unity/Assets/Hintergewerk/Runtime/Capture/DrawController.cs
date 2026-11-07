@@ -2,10 +2,17 @@
 // Keine Logik hier — nur Verkabelung (Interfaces, Inspector) und Status-Anzeige.
 // Die Logik lebt in CaptureSession + CaptureDriver (getestet, SDK-frei).
 // Menü: Handfläche zum Körper öffnet, Pinch zählt den Typ weiter, Handfläche weg wählt.
+//
+// 07.11. (M2-Finish):
+//  - ADR 0002: Driver bekommt (Anker-Id, Anker-Pose) — Punkte werden anker-lokal gespeichert
+//  - Zeichnen-Vorschau: Linie folgt der Hand (docs/03 §1) + Snap-Marker, in Typ-Farbe
+//  - Auto-Start nur EINMAL beim Start (vorher: nach jedem Confirm sofort neuer Capture-Loop)
+//  - Beweisfoto (D8): optionales IEvidenceCapture — fehlgeschlagen wird ehrlich gemeldet
 using UnityEngine;
 using Hintergewerk.Core;
 using Hintergewerk.Data;
 using Hintergewerk.Localization;
+using Hintergewerk.Recall;
 using Hintergewerk.UI;
 
 namespace Hintergewerk.Capture
@@ -16,6 +23,7 @@ namespace Hintergewerk.Capture
         [SerializeField] MonoBehaviour handSourceBehaviour;     // OvrHandSource
         [SerializeField] MonoBehaviour wallProviderBehaviour;   // SceneWallProvider (optional)
         [SerializeField] MonoBehaviour anchorProviderBehaviour; // OvrAnchorProvider
+        [SerializeField] MonoBehaviour evidenceBehaviour;       // AppSnapshotEvidence (optional, D8)
 
         [Header("Capture")]
         [SerializeField] ObjectType startType = ObjectType.Power;
@@ -23,10 +31,12 @@ namespace Hintergewerk.Capture
         [SerializeField] float magnetRadiusCm = 8f;
         [SerializeField] string roomId = "raum_1";
         [SerializeField] TextMesh statusText;
+        [SerializeField] float previewWidthM = 0.018f;
 
         IHandSource hands;
         IWallProvider walls;
         IAnchorProvider anchors;
+        IEvidenceCapture evidence;
         HouseDataStore store;
         SnapEngine snap;
         UndoStack undo;
@@ -37,14 +47,17 @@ namespace Hintergewerk.Capture
         Vector3 lastTip;
         bool pinchWasDown;
         bool menuWasOpen;
+        bool autoStarted;
         SnapResult shownSnap;
-        string currentAnchorId;
+        LineRenderer preview;
+        GameObject snapMarker;
 
         void Start()
         {
             hands = handSourceBehaviour as IHandSource;
             walls = wallProviderBehaviour as IWallProvider;
             anchors = anchorProviderBehaviour as IAnchorProvider;
+            evidence = evidenceBehaviour as IEvidenceCapture;
             if (hands == null || anchors == null)
             {
                 Debug.LogError("[DrawController] Adapter fehlen oder implementieren die Interfaces nicht.");
@@ -56,13 +69,25 @@ namespace Hintergewerk.Capture
             snap = new SnapEngine { GridCm = gridCm, MagnetRadiusCm = magnetRadiusCm };
             undo = new UndoStack();
             session = new CaptureSession();
-            session.PhaseChanged += p => SetStatus(PhaseText(p));
+            session.PhaseChanged += p => { SetStatus(PhaseText(p)); if (p == CapturePhase.Idle) FadeOutPreview(); };
             menu = new HandMenuLogic();
 
-            // CaptureDriver verdrahten (fehlte im Skeleton — NRE in Update, gefixt 07.11.):
-            // Plane aus Scene-Walls (oder Default-Frontalebene), Endpoint-Snapping v2 (M2),
-            // Anchor lazily beim ersten Confirm. M2-TODO: Welt→Anker-lokal-Konversion über
-            // AnchorPose⁻¹ (ADR 0002) — solange Raum-Anker nahe Ursprung liegt, lokal≈Welt.
+            // Beweisfoto (D8): nach Confirm anhängen — fehlgeschlagen wird ehrlich gemeldet.
+            driver.ObjectConfirmed += o =>
+            {
+                var count = store.ObjectsInRoom(roomId).Count;
+                if (evidence == null) { SetStatus(Strings.Format("capture.saved_room", count)); return; }
+                evidence.CaptureFor(o.id, path =>
+                {
+                    if (path != null && store.AttachPhoto(o.id, path))
+                        SetStatus(Strings.Get("capture.photo_saved") + " · " + Strings.Format("capture.saved_room", count));
+                    else
+                        SetStatus(Strings.Get("capture.photo_unavailable"));
+                });
+            };
+
+            // CaptureDriver mit Anker-Pose (ADR 0002): Anker lazy beim ersten Punkt,
+            // Punkte → anker-lokal. Endpoint-Snapping v2 (M2) folgt mit Objektliste.
             driver = new CaptureDriver(session, store, snap, undo,
                 walls != null ? (System.Func<WallPlane>)(() =>
                 {
@@ -73,12 +98,22 @@ namespace Hintergewerk.Capture
                 }) : null,
                 () => (System.Collections.Generic.IReadOnlyList<(Vector3 pos, string id)>)
                     System.Array.Empty<(Vector3 pos, string id)>(),
-                GetOrCreateAnchorId,
+                ResolveAnchor,
                 roomId);
 
             anchors.LoadAll(ok => SetStatus(ok
                 ? Strings.Format("recall.loaded", store.Data.objects.Count)
                 : Strings.Get("demo.load_failed")));
+        }
+
+        /// <summary>Raum-Anker lazily erzeugen + im Store registrieren; Liefert (Id, Pose) für den Driver.</summary>
+        (string id, Pose pose) ResolveAnchor()
+        {
+            var id = GetOrCreateAnchorId();
+            if (string.IsNullOrEmpty(id))
+                return ("", new Pose(Vector3.zero, Quaternion.identity));
+            var pose = anchors.TryGetPose(id, out var p) ? p : new Pose(Camera.main != null ? Camera.main.transform.position : transform.position, Quaternion.identity);
+            return (id, pose);
         }
 
         void Update()
@@ -110,24 +145,82 @@ namespace Hintergewerk.Capture
                 }
             }
 
-            // Idle + noch kein Typ: mit Standard-Typ automatisch starten (Menü kommt später feiner)
-            if (session.Phase == CapturePhase.Idle)
+            // Auto-Start EINMAL beim Start mit Standard-Typ (danach: Menü startet jeden Capture)
+            if (session.Phase == CapturePhase.Idle && !autoStarted)
             {
+                autoStarted = true;
                 session.BeginTypwahl();
                 session.SelectType(startType);
             }
 
             driver.Tick(right, left);
 
+            UpdatePreview(right);
+
             if (session.Phase == CapturePhase.Tiefe)
                 SetStatus(Strings.Format("phase.tiefe", session.DepthCm));
-            else if (driver.LastSnap != null && driver.LastSnap != shownSnap)
+            else if (session.Phase == CapturePhase.Zeichnen && driver.LastSnap != null && driver.LastSnap != shownSnap)
             {
                 shownSnap = driver.LastSnap;
-                SetStatus(Strings.Get("capture.point_snapped"));
+                SetStatus(Strings.Get("capture.point_snapped") + " · " + Strings.Format("list.count", store.ObjectsInRoom(roomId).Count, roomId));
             }
 
             FinishFrame(pinchDown, open);
+        }
+
+        // ---------------- Zeichnen-Vorschau („Linie folgt der Hand", docs/03 §1) ----------------
+
+        void UpdatePreview(HandFrame right)
+        {
+            var phase = session.Phase;
+            if (phase != CapturePhase.Zeichnen && phase != CapturePhase.Tiefe && phase != CapturePhase.Bestaetigen)
+                return;
+
+            var pose = driver.ActiveAnchorPose ?? new Pose(Vector3.zero, Quaternion.identity);
+            if (preview == null)
+            {
+                var go = new GameObject("DrawPreview");
+                preview = go.AddComponent<LineRenderer>();
+                preview.startWidth = previewWidthM;
+                preview.endWidth = previewWidthM;
+                preview.useWorldSpace = true;
+                preview.numCornerVertices = 2;
+            }
+            var c = RecallPalette.TypeColor(session.Type ?? ObjectType.Power);
+            preview.startColor = c;
+            preview.endColor = c;
+
+            var pts = new System.Collections.Generic.List<Vector3>();
+            foreach (var p in session.Punkte)
+                pts.Add(CaptureDriver.LocalToWorld(pose, new Vector3((float)p[0], (float)p[1], (float)p[2])));
+            if (session.Phase == CapturePhase.Zeichnen && right.Tracked) pts.Add(right.IndexTip); // Linie folgt der Hand
+
+            if (pts.Count >= 2)
+            {
+                preview.positionCount = pts.Count;
+                preview.SetPositions(pts.ToArray());
+            }
+
+            // Snap-Marker am letzten eingerasteten Punkt
+            if (driver.LastSnap != null)
+            {
+                if (snapMarker == null)
+                {
+                    snapMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    Destroy(snapMarker.GetComponent<Collider>());
+                    snapMarker.transform.localScale = Vector3.one * 0.035f;
+                    snapMarker.name = "SnapMarker";
+                }
+                snapMarker.transform.position = driver.LastSnap.Point;
+                snapMarker.SetActive(phase == CapturePhase.Zeichnen);
+            }
+        }
+
+        /// <summary>Nach Confirm/Cancel: Vorschau versetzt ausblenden — das Foto (D8) soll die Linie noch zeigen.</summary>
+        void FadeOutPreview()
+        {
+            if (preview != null) { Destroy(preview.gameObject, 0.6f); preview = null; }
+            if (snapMarker != null) { Destroy(snapMarker, 0.6f); snapMarker = null; }
         }
 
         void FinishFrame(bool pinchDown, bool menuOpen)
@@ -136,16 +229,15 @@ namespace Hintergewerk.Capture
             menuWasOpen = menuOpen;
         }
 
-        /// <summary>Raum-Anker lazily beim ersten Bedarf (Confirm) erzeugen + im Store registrieren.</summary>
+        /// <summary>Raum-Anker lazily beim ersten Bedarf (erster Punkt) erzeugen + im Store registrieren.</summary>
         string GetOrCreateAnchorId()
         {
-            if (!string.IsNullOrEmpty(currentAnchorId)) return currentAnchorId;
             if (anchors == null) return "";
             var head = Camera.main != null ? Camera.main.transform : transform;
-            currentAnchorId = anchors.CreateAnchor(new Pose(head.position, Quaternion.identity), roomId);
-            store.RegisterAnchor(currentAnchorId, roomId);
-            Debug.Log("[DrawController] Raum-Anker erstellt: " + currentAnchorId);
-            return currentAnchorId;
+            var id = anchors.CreateAnchor(new Pose(head.position, Quaternion.identity), roomId);
+            store.RegisterAnchor(id, roomId);
+            Debug.Log("[DrawController] Raum-Anker erstellt: " + id);
+            return id;
         }
 
         string PhaseText(CapturePhase p)
