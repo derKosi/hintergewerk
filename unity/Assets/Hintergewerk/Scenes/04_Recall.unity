@@ -119,6 +119,57 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &2388380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2388382}
+  - component: {fileID: 2388381}
+  m_Layer: 0
+  m_Name: BauplanPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2388381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2388380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21452309bc2713549a47bc582eb7fa5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Hintergewerk.Runtime::Hintergewerk.Recall.BauplanPanel
+  anchorProviderBehaviour: {fileID: 1249878680}
+  followTarget: {fileID: 2027450070}
+  roomId: raum_1
+  panelWidthM: 0.22
+  panelHeightM: 0.16
+  pollSeconds: 0.5
+  paperColor: {r: 0.94, g: 0.92, b: 0.87, a: 1}
+--- !u!4 &2388382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2388380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &181586968
 GameObject:
   m_ObjectHideFlags: 0
@@ -932,3 +983,4 @@ SceneRoots:
   - {fileID: 1877962628}
   - {fileID: 1645199565}
   - {fileID: 1079818843}
+  - {fileID: 2388382}
