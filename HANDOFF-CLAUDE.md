@@ -2,6 +2,14 @@
 
 ## Update 08.11. (Replan: „Bauplan in der Hand" + BIM-ready — D38–D40, ADR-0005)
 
+**M4 „zweiter Raum" BESTANDEN (Simulator):** RecallController + BauplanPanel akzeptieren
+`roomId=""` = alle Räume; Seeder legt Raum 2 (Flur, eigene Wand + Anker + 2 Objekte) an.
+Beweis: Log `4 Korridore, 1 nicht verortbar (Raum alle)` + Foto `m13_zweiRaeume.png`
+(rot = Kritisch in Raum 1, grün = Ständerwerk in Raum 2, Bauplan-Panel im Bild).
+Szene 04 läuft auf „alle Räume". **Offen:** Szene 03 (CaptureAutoTest) hat kein
+`HGW_Adapters` — Bauplan-Panel dort braucht eigene Adapter-Verdrahtung (~30 min,
+nicht kritisch: Szene 04 zeigt das Panel bereits; Video kann Szene 04 nutzen).
+
 **Simulator-Testlauf M3 bestanden (Claude, mit Fotos + Fixes) — drei ECHTE Bugs gefunden und behoben:**
 1. **Korridore unsichtbar (Backface-Culling):** BuildRibbon lieferte nur eine Dreiecks-Wicklung;
    URP/Unlit culled Backfaces → Korridore von der Kameraseite weg. Beide Wicklungen jetzt
