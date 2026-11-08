@@ -2,6 +2,19 @@
 
 ## Update 08.11. (Replan: „Bauplan in der Hand" + BIM-ready — D38–D40, ADR-0005)
 
+**Nachmittag (autonom): M4 CODE-SEITIG KOMPLETT vor Feature-Freeze:**
+1. **Szene 03 + Bauplan live beim Zeichnen:** `HouseDataStore.Reload()` im Panel-Poll —
+   gezeichnete Objekte erscheinen OHNE Neustart im Plan (der D39-Kern!). Szene 03 verdrahtet
+   (OvrAnchorProvider hängt dort am DrawController-GO, nicht an HGW_Adapters).
+   Beweis: `s03_plan_live.png` — gelbe Elektro-Linie + „Geladen: 1 Objekte" direkt nach DrawSquare.
+2. **FoV-Audio:** `WarningAudio.PanFor` — Ping pannet zur Gefahr (6 Tests); Simulator-Beweis
+   `panStereo=-0.50` während Eskalation. RecallController reicht Korridor-Richtung durch.
+3. **Export alle Räume:** `ExportController` mit `roomId=''` → ein Pinch = PDF je Raum + globales
+   JSON (Logs: raum_1.pdf + raum_2.pdf + JSON 5 Objekte).
+4. **docs/09 v2** (Bauplan + BIM-ready-Satz) · **docs/07 §G** Bauplan-Gerätetest-Checkliste ·
+   **docs/08 Szene 2b** Video-Beat „plan grows in your hand" · **86/86 Tests** · Selbsttest ✓.
+   **Neue APK nötig** (alter Stand 15:36 ohne Nachmittag-Features) → nach diesem Abschnitt bauen.
+
 **M4 „zweiter Raum" BESTANDEN (Simulator):** RecallController + BauplanPanel akzeptieren
 `roomId=""` = alle Räume; Seeder legt Raum 2 (Flur, eigene Wand + Anker + 2 Objekte) an.
 Beweis: Log `4 Korridore, 1 nicht verortbar (Raum alle)` + Foto `m13_zweiRaeume.png`
