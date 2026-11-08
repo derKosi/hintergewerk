@@ -34,6 +34,18 @@
 - 1:25 — *(Geist-Modus-Moment falls gebaut: Möbel-Ghost wegschieben)*
   **VO:** „Furniture in the way? Push the ghosts aside — the wall is yours again."
 
+## Szene 2b — The plan grows in your hand (0:52–1:05, Bauplan-Beat, D39)
+
+**Bild:** Während Szene 2 läuft: Bauplan-Panel an der linken Hand im Blick — der Live-Top-Down-Plan
+des Raums, Korridore in Typfarben. Beim Bestätigen eines neuen Objekts erscheint die Linie **live**
+im Plan (Simulator-Beweis: `docs/beweise/2026-11-08-simulator-m3/m13_zweiRaeume.png`).
+
+- **VO:** „And while you draw — the floor plan grows in your other hand. Live. Every corridor you
+  document, every room you open — BIM-ready when you leave the site."
+- *(Ehrlichkeits-Regel: „BIM-ready" ≠ „BIM" — kein IFC-Claim, siehe D40. Panel-Statuszeile zählt
+  verortbar/nicht verortbar sichtbar mit.)*
+- **Dreh-Quelle:** Szene 04 (am Gerät: Room Setup vorher). Checkliste: docs/07 §G.
+
 ## Szene 3 — The proof (1:40–2:30)
 
 **Bild:** Objektliste; dann Export: PDF-Grundriss füllt Panel.
