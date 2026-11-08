@@ -81,6 +81,7 @@ Anker-Regel: Anker nur an stabilen Merkmalen setzen (Türzarge, Zählerschrank, 
 
 - **JSON**: 1:1 das HouseModel — maschinenlesbar, überlebt Jahre via `schema_version`
 - **PDF**: Grundriss-Projektion (Top-Down x/z) aller Objekte eines Raums, Maßstab + Legende (Typ, Farbe, Tiefe, Konfidenz), Monteur + Datum. Eigener `PdfEmitter` (Linien + Helvetica). Fallback: PNG-Render derselben Ansicht.
+- **BIM-Anschluss (D40, ADR-0005):** Das JSON ist der **Anschlussvertrag** für Planungs-/BIM-Workflows — strukturiert, versioniert, mit den Feldern, die Planung braucht (Typ · Tiefe · Konfidenz · Monteur · Zeit · anker-lokale Geometrie). **Kein IFC-Export im Wettbewerbsscope** — Pitch-Sprache „BIM-ready", nie „BIM". Der PDF-Grundriss ist die menschenlesbare Ebene derselben Daten; dieselbe Projektion wird mit D39 live als Bauplan-Panel in der Hand gerendert.
 
 ## 6. Build- & Delivery-Pipeline
 

@@ -8,6 +8,12 @@ Eingereichte, vollständige Submission beim Meta VR Start Developer Competition 
 
 Erfolg ist **nicht** „viel gebaut", sondern: **ein runder Flow, der auf dem Gerät läuft, über die Invite-URL für die Jury erreichbar ist, und in ≤ 3 Minuten Video überzeugt.**
 
+**Vision geschärft (08.11., D39/D40):** Hintergewerk ist kein Raum-Scanner. Der Monteur hält einen
+**Bauplan in der Hand** — Live-Top-Down-Sicht des aktuellen Raums — und trägt mit der freien Hand
+Leitungen **hinter der Wand** ein. Das Ergebnis ist maschinenlesbar: **BIM-ready-Export**
+(strukturiertes JSON + PDF-Grundriss), damit die Bauplanung damit weiterarbeiten kann.
+Ehrlich gezeichnet: Der Bauplan ist **Output**, kein Scan-to-BIM (ADR-0003, ADR-0005).
+
 ## 2. Meilensteine
 
 | # | Meilenstein | Bis | Akzeptanzkriterium (Beweis) |
@@ -54,6 +60,38 @@ gegen Doku + Tutorial, TODOs für v207), **Anker-Test-Demo** (AnchorTestControll
 **Normblatt-PDF** (1:20–1:200 + Schriftfeld), **JSON-Schema-Vertrag + Fixtures-Matrix**,
 **Vorjahres-Analyse** (docs/13) und **Landingpage-Entwurf** (website/).
 
+## 3.2 Replanung 08.11. — „Bauplan in der Hand" + BIM-ready (D38–D40, ADR-0005)
+
+Anlass: Produktvision geschärft (Mathias) + Mitte-Scope-Check vorgezogen (war für 10.11. geplant, D11 → D38).
+Zwei neue Elemente, beide ehrlich gegen die Deadline gerahmt — die Detail-Bewertung steht in der Tabelle oben (§1).
+
+**Was neu gebaut wird:** Der `MapRenderer` projiziert bereits top-down (PDF-Pfad). **M4-Kern** ist,
+dieselbe Projektion **live** als Textur auf einem Hand-Panel zu rendern — der Bauplan wächst mit,
+während gezeichnet wird. Kein neuer Export-Pfad, keine neue Geometrie: Wiederverwendung.
+Stretch (Scope-Leiter Sprosse 4): Panel als Zeichenebene (Ray aus dem Panel auf die Wandebene,
+SnapEngine wiederverwendet) — Risko Winkelauflösung auf kleinem Panel.
+
+**Meilensteine v2** (M0–M3 unverändert, M4/M5 geschärft):
+
+| # | Meilenstein | Bis | Akzeptanzkriterium (Beweis) |
+|---|---|---|---|
+| M4 | Politur + **Bauplan in der Hand** | 13.11. | Panel in Hand zeigt den Raum top-down **live** (Objekt erscheint beim Confirm); zweiter Raum funktioniert; **Feature-Freeze** |
+| M5 | Abgabereif | 17.11. | Probe-Submission komplett; Video zeigt: Zeichnen mit Bauplan → Recall-Korridor → Export (PDF + BIM-ready-JSON) |
+
+**Timeline ab heute:**
+
+| Datum | Fokus |
+|---|---|
+| Sa 08.11. | Replan (dieses Dokument) · **Headset-Block Mathias: M1 (3 Runs) + M2 + M3** (docs/07 — der einzige echte Engpass) |
+| So 09.–Mo 10.11. | Gerät-Fehlerfälle + Fixes aus dem Headset-Block · Bauplan-Prototyp (Live-View) |
+| 11.–13.11. | M4: Bauplan live + zweiter Raum + FoV-Audio · **Feature-Freeze 13.11.** |
+| 14.–15.11. | Video (3 Szenen) + 500-Wörter-Text + Screenshots — Recording-Workflow aus YetAnotherDemoVR (`D:\Unity\Projects\YetAnotherDemoVR` — separates Projekt, nur Werkzeug-Wiederverwendung) |
+| 16.–17.11. | Puffer · **Probe-Submission** (M5) · Invite-URL-Flow als Jury-Pfad nochmal testen |
+| **Mi 18.11.** | **Nur absenden — vormittags, hart vor 21:00 CET** |
+
+**Statusbilanz 08.11. (ehrlich):** Code dem Plan **voraus** (M3 vorgezogen, 65/65 Tests), Gerät-Verifikation
+**hinterher** (M1 seit 02.11. überfällig — GO/NO-GO D6 noch offen). Der Engpass sind Headset-Stunden, nicht Code.
+
 ## 4. Risiko-Register
 
 | # | Risiko | Impact | Gegenmaß | Entscheidung bis |
@@ -67,15 +105,17 @@ gegen Doku + Tutorial, TODOs für v207), **Anker-Test-Demo** (AnchorTestControll
 | R7 | Hand-Tracking zu unpräzise zum Zeichnen | mittel | Grammatik ist dagegen gebaut (Snap/Raster/Magnet); notfalls Zwei-Punkt-Methode | 04.11. |
 | R8 | Setup-Tag 01.11. entfallen → Termindruck | mittel | SDK-freier Kern vorgezogen (fertig), Guide mit Zeitbox + Abbruchkriterien | 02.11. |
 
-## 5. Scope-Leiter (bei Zeitnot in dieser Reihenfolge streichen)
+## 5. Scope-Leiter v2 (Mitte-Scope-Check 08.11., D38 — bei Zeitnot in dieser Reihenfolge streichen)
 
-1. Agenten-Vorschlag (Agentic Interaction Award)
-2. 4. Objektklasse „Nicht-bohren-Zone" (Fußbodenheizung)
-3. Sprachnotiz
-4. PDF-Export → PNG-Export
-5. Video-Fokus auf Capture + Export; Recall als „next" zeigen
+1. ~~Agenten-Vorschlag (Agentic Interaction Award)~~ — **gestrichen 08.11.** (nicht gebaut; D10 bleibt NO-GO)
+2. ~~4. Objektklasse „Nicht-bohren-Zone" (Fußbodenheizung)~~ — **gestrichen 08.11.** (Typ bleibt im Farbkanon D31)
+3. ~~Sprachnotiz~~ — **gestrichen 08.11.** (nicht gebaut)
+4. Bauplan als Zeichenebene (auf dem Panel tippen) — Stretch; wenn es hakt: Bauplan bleibt Live-Ansicht
+5. PDF-Export → PNG-Export — bleibt **unberührt**: PDF ist gebaut und getestet, Wegwerfen spart nichts
+6. Video-Fokus auf Zeichnen (mit Bauplan) + Export; Recall-Korridor als Beleg zeigen
 
-**Nie streichen:** Hands-first-Kernflow · Ehrlichkeitsregel/Konfidenz · Speichern/Laden · Invite-URL-Test.
+**Nie streichen:** Hands-first-Kernflow · Ehrlichkeitsregel/Konfidenz · Speichern/Laden · Invite-URL-Test ·
+BIM-ready-Export (JSON + PDF) als Pitch-Kern.
 
 ## 6. Human-Punkte (nur Mathias)
 

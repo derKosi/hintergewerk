@@ -1,5 +1,27 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## Update 08.11. (Replan: „Bauplan in der Hand" + BIM-ready — D38–D40, ADR-0005)
+
+**Vision geschärft (Mathias):** Nicht nur Raum erfassen — der Monteur hält einen **Bauplan in der
+Hand** (Live-Top-Down des Raums) und trägt Leitungen mit der freien Hand **hinter der Wand** ein;
+das Ergebnis geht als **BIM-ready-Export** in die Bauplanung. Ehrlich gerahmt (D40): kein IFC bis
+18.11. — das schema-versionierte JSON ist der Anschlussvertrag, Pitch-Sprache „BIM-ready", nie „BIM".
+
+- **D38 Mitte-Scope-Check vorgezogen:** Scope-Leiter-Sprossen 1–3 gestrichen (Agenten-Vorschlag,
+  4. Objektklasse, Sprachnotiz) — nichts davon war gebaut, kostet null.
+- **D39 M4 v2:** `MapRenderer`-Projektion (existiert fürs PDF, top-down) **live** als Textur auf einem
+  Hand-Panel — Wiederverwendung, kein neuer Pfad. Panel-als-Zeichenebene = Scope-Sprosse 4 (Stretch).
+  **Neuer Plan:** docs/01 §3.2 (Replanung 08.11.) + Meilensteine v2. Feature-Freeze **13.11.**
+- **Nächster Baustein (Agent):** Bauplan-Panel bauen — `MapRenderer` → `Texture2D`/RenderTexture auf
+  Quad an der linken Hand, Update beim Confirm. Danach: M4-Rest (zweiter Raum, FoV-Audio).
+- **Engpass bleibt Mathias' Headset-Block:** M1 3× Runs (🔴 seit 02.11. überfällig, GO/NO-GO D6) +
+  M2 + M3 Tests (docs/07 §E/F) — einem Rutsch, ~2 h.
+- **Nicht verwechseln:** `D:\Unity\Projects\YetAnotherDemoVR` ist ein SEPARATES Projekt (kein
+  Hintergewerk-Bezug) — nur dessen Recording-/Video-Workflow wird fürs Abgabe-Video wiederverwendet.
+- Invite-URL-Flow (Jury-Pfad) vor M5 nochmal testen — M0 lief bislang via adb install.
+
+
+
 ## Update 07.11. abends (Session 3, Claude auf der 3090 — M2/M3-Kern STEHT ✅)
 
 **M3-Loop (Recall + Export) ist gebaut und im XR-Simulator verifiziert; Capture-Flow (M2) komplett

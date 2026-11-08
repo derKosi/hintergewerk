@@ -25,11 +25,11 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 | Start-Programm-Mitgliedschaft | 31.10. | ✅ **bestätigt** |
 | SDK-freier C#-Kern vorbereitet | 01.11. | ✅ **geschrieben** (Kompilierung folgt 02.11.) |
 | Setup Unity + SDK + MCP + Repo | 02.11. | ✅ **06.11. (Windows)**: 6000.6.8f1 · Projekthülle im Repo · **Meta XR Core SDK 207.0.1** · Adapter kompilieren gegen v207 · **51/51 Tests** · Selbsttest/PDF · Szenen 01/02 gebaut (Simulator-MSI wartet auf Menschen-Klick, D29) |
-| Smoketest: APK → Channel → Invite-URL → Quest | 02.11. | 🟡 APK-Pipeline ✅ (2 Builds grün) · Szenen 01/02 drin · **Menschen-Anteil offen:** Dashboard + Channel + Quest (docs/07 §A/C/D) |
-| Anker-Persistenz über Neustart | 02.11. | ⏳ |
-| Capture-Flow < 30 s pro Objekt | 07.11. | 🟡 **07.11.**: Flow komplett + Zeichnen-Vorschau („Linie folgt der Hand"), Snap-Marker, Typ-Menü, Auto-Start-Fix · Simulator-Autotest grün · **offen: Gerätetest M2** (Mathias, docs/03-Checkliste) |
-| Recall-Overlay + Export (JSON/PDF) | 10.11. | 🟡 **07.11. vorgezogen**: Szene 04 gebaut — Korridore in Typfarben, Warn-Eskalation (Farbe+Puls+Audio), Export PDF+JSON (linke-Hand-Pinch) · **im XR-Simulator verifiziert** (2 Korridore + 1 „nicht verortbar", Near→Kritisch) · **offen: Gerätetest M3** |
-| Politur, zweiter Raum | 13.11. | ⏳ |
+| Smoketest: APK → Channel → Invite-URL → Quest | 02.11. | ✅ **APK läuft am Gerät** (07.11. Quest 3S: Hände getrackt, Greif-Demo) · 🟡 offen: **Invite-URL-Flow als Jury-Pfad** vor M5 nochmal testen |
+| Anker-Persistenz über Neustart | 02.11. | 🔴 **überfällig** — 3 Runs im nächsten Headset-Block (docs/07); App startet bereits in Szene 02 · GO/NO-GO D6 offen |
+| Capture-Flow < 30 s pro Objekt | 07.11. | 🟡 Flow komplett + Zeichnen-Vorschau, Snap-Marker, Typ-Menü, magnetische Endpunkte, Scene-API-Wände (D36) · **offen: Gerätetest M2** |
+| Recall-Overlay + Export (JSON/PDF) | 10.11. | 🟡 **vorgezogen**: Szene 04 — Korridore in Typfarben, Warn-Eskalation, Export PDF+JSON (D32) · im XR-Simulator verifiziert · **offen: Gerätetest M3** |
+| Politur + **Bauplan in der Hand** | 13.11. | 🟡 Detail-Panel gebaut (D37) · **M4 v2:** Bauplan live auf Hand-Panel (D39, ADR-0005) + zweiter Raum + FoV-Audio · Feature-Freeze 13.11. |
 | Video + 500-Wörter-Text + Screenshots | 15.11. | ⏳ |
 | Probe-Submission komplett | 17.11. | ⏳ |
 | **Abgabe** | **18.11. vormittags** | ⏳ |
@@ -62,9 +62,10 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 ## Kernidee in drei Sätzen
 
 Beim Öffnen einer Wand zeichnet der Monteur Leitungen und Träger **mit der Hand in die Szene** —
+der **Bauplan in der anderen Hand** (Live-Top-Down des Raums) wächst sichtbar mit.
 Snap-Punkte und Sicherheitskorridore gleichen das Hand-Zittern aus, unter 30 Sekunden pro Objekt.
 Monate später erscheint das Overlay: **Warnkorridor statt Haarlinie**, mit Foto, Tiefe und Monteur.
-Export als JSON + PDF-Grundriss macht daraus einen Beweis, den Bauherr und nächste Firma annehmen.
+Export als **BIM-ready-JSON + PDF-Grundriss** (ehrlich: kein BIM, aber der Anschluss für die Bauplanung — ADR-0005) macht daraus einen Beweis, den Bauherr und nächste Firma annehmen.
 
 ## Links
 
