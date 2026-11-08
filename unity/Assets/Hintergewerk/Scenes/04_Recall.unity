@@ -170,6 +170,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &45707753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 45707755}
+  - component: {fileID: 45707754}
+  m_Layer: 0
+  m_Name: FakeHands
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &45707754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45707753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c42fdf41dd9e984390867c879bf2862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hintergewerk.Adapters.FakeHandSource
+  scenario: RecallApproach
+--- !u!4 &45707755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45707753}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &181586968
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,8 +677,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Hintergewerk.Runtime::Hintergewerk.Export.ExportController
   anchorProviderBehaviour: {fileID: 1249878680}
-  handSourceBehaviour: {fileID: 595042115}
-  roomId: raum_1
+  handSourceBehaviour: {fileID: 45707754}
+  roomId: 
   statusText: {fileID: 181586969}
   cooldownS: 3
 --- !u!4 &1254399574
@@ -681,7 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Hintergewerk.Runtime::Hintergewerk.Recall.RecallController
   anchorProviderBehaviour: {fileID: 1249878680}
-  handSourceBehaviour: {fileID: 595042115}
+  handSourceBehaviour: {fileID: 45707754}
   roomId: 
   corridorMaterial: {fileID: 2100000, guid: cdd40deb2065e6c4a837560b82b2eaa0, type: 2}
   statusText: {fileID: 181586969}
@@ -878,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a95001a8d6fd9d44b28a8e28b1f7371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Hintergewerk.Runtime::Hintergewerk.UI.SceneSwitcher
-  handSourceBehaviour: {fileID: 595042115}
+  handSourceBehaviour: {fileID: 45707754}
   holdSeconds: 0.4
 --- !u!4 &1645199565
 Transform:
@@ -928,6 +973,8 @@ MonoBehaviour:
   roomId: raum_1
   wallZ: 0.5
   anchorZ: -0.3
+  room2X: 1.9
+  seedRoom2: 1
 --- !u!4 &1877962628
 Transform:
   m_ObjectHideFlags: 0
@@ -1076,3 +1123,4 @@ SceneRoots:
   - {fileID: 2388382}
   - {fileID: 701905360}
   - {fileID: 595042116}
+  - {fileID: 45707755}

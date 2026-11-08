@@ -49,9 +49,22 @@ namespace Hintergewerk.Export
             {
                 readyAt = Time.time + cooldownS;
                 SetStatus(Strings.Get("export.started"));
-                var pdf = ExportRunner.ExportRoomPdf(store, roomId, anchors, out _);
-                var json = ExportRunner.ExportJson(store, out _);
-                SetStatus(Strings.Format("export.done", System.IO.Path.GetFileName(pdf))
+                var json = ExportRunner.ExportJson(store, out _); // JSON bleibt 1:1 das ganze Haus (D32)
+
+                // roomId leer = alle Räume (M4): je Raum ein PDF-Grundriss, JSON bleibt global.
+                string pdfList;
+                if (string.IsNullOrEmpty(roomId))
+                {
+                    var names = new System.Collections.Generic.List<string>();
+                    foreach (var room in store.Data.rooms)
+                        names.Add(System.IO.Path.GetFileName(ExportRunner.ExportRoomPdf(store, room.id, anchors, out _)));
+                    pdfList = string.Join(" + ", names);
+                }
+                else
+                {
+                    pdfList = System.IO.Path.GetFileName(ExportRunner.ExportRoomPdf(store, roomId, anchors, out _));
+                }
+                SetStatus(Strings.Format("export.done", pdfList)
                     + " + " + System.IO.Path.GetFileName(json));
             }
         }
