@@ -103,3 +103,4 @@ Szene 04 startet mit Bauplan-Panel an der **linken Hand** (Papier-Quad, Statusze
 - [ ] Beide Räume sichtbar (Simulator-Beweis: 4 Korridore über 2 Räume; am Gerät: echte Daten)
 - [ ] Nicht verortbare Objekte fehlen im Plan, stehen aber in der Statuszeile (Ehrlichkeit)
 - [ ] Screenrecording: „Plan wächst in der Hand" — **Video-Beat für docs/08**
+- [ ] Cold Start < 15 s (M4-Kriterium, docs/01 §2) — Stoppuhr ab App-Icon bis Statuszeile
