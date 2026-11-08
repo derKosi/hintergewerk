@@ -1,5 +1,33 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## NÄCHSTE SESSION (Stand Nacht 08.11. — zuerst lesen!)
+
+**Wo wir stehen:** M4 **code-seitig KOMPLETT, 5 Tage vor Freeze** (13.11.). M3 Simulator-Beweis
+mit Fotos (`docs/beweise/2026-11-08-simulator-m3/`). 86/86 Tests, Selbsttest ✓.
+**APK frisch:** `unity/Builds/hintergewerk.apk` (08.11. 19:19, 49 MB — Baupan live, 2 Räume,
+FoV-Audio, Export je Raum alles drin). 15 Commits heute (88afb08 → e2b89ab).
+
+**Reihenfolge morgen:**
+1. **Mathias — Headset-Block ~2 h (der Engpass):** M1 3× Anker-Persistenz (**GO/NO-GO, seit
+   02.11. überfällig!**) → M2 → M3 → **§G Bauplan-Checkliste** + Cold Start (docs/07).
+   Screenrecording dabei machen = Video-Material (docs/08 Szene 2b: „plan grows in your hand").
+2. **Agent parallel:** Animatic aus Beweis-Fotos als Storyboard-Trockenübung (docs/08) ·
+   Ergebnis M1 abwarten (falls NO-GO → R1-Fallback Re-Lock über Scene Mesh SOFORT planen, docs/01 R1).
+3. **Danach:** Invite-URL-Flow (docs/07 §C/D, Menschen-Klick) · 14.–15.11. Video · 17.11.
+   Probe-Submission · **18.11. vormittags abgeben.**
+
+**Bekannte Reste (klein):** FoV-Audio nur im Simulator bewiesen (`panStereo=-0.50`) — Gerätklang
+prüfen (§G). Szene 03 trägt den echten OvrAnchorProvider am DrawController-GO — am Gerät prüfen.
+Invite-URL nie getestet (M0 lief via adb).
+
+**Harness-Regeln (Memory + unten, gilt für beide Agenten):** `RecallAutotest.Prepare()` VOR
+playmode start · Play-Erfolg mit `EditorApplication.isPlaying` verifizieren (Pipeline lügt bei
+Compile-Fehlern: „Entered play mode" + stille alte Assembly!) · nach Edits Console auf `error CS`
+· Fotos: TrackingSpace vor Ziel + `capture game_view --source screen` · Editor-Import-Klemme →
+Neustart. **Achtung: letzte Nacht liefen 3 Unity.exe-Instanzen (1 aktiv + 2 Alt) — vor Builds prüfen.**
+
+---
+
 ## Update 08.11. (Replan: „Bauplan in der Hand" + BIM-ready — D38–D40, ADR-0005)
 
 **Nachmittag (autonom): M4 CODE-SEITIG KOMPLETT vor Feature-Freeze:**
