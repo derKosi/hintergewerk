@@ -1,6 +1,7 @@
 # Submission-Text — Entwurf v1 (Englisch, ~430 Wörter)
 
-> Status: ENTWURF vom 01.11. — nach Feature-Freeze (10.11.) aktualisieren:
+> Status: ENTWURF vom 01.11., **v2 08.11.** (Bauplan in der Hand D39, BIM-ready D40,
+> zweiter Raum, FoV-Audio) — nach Feature-Freeze (13.11.) finalisieren:
 > Features streichen, die nicht gebaut wurden; „X days / Y restarts" mit echten Werten füllen.
 > Wortlimit 500. Struktur folicht 04-submission.md §3.
 
@@ -21,20 +22,26 @@ of buildings has no memory. So we gave it one.
 Hintergewerk — German for "the work behind" — captures what an open wall reveals, directly in VR, with your hands. Pinch to
 draw a cable run along the open wall. Two hands set the depth. A photo proves it. Under thirty
 seconds per object, the moment becomes permanent: spatially anchored, typed (power, water,
-heating, studs), timestamped, and signed with the installer's name. Weeks later, the overlay
+heating, studs), timestamped, and signed with the installer's name. While you draw, a floor plan
+grows in your other hand — a live top-down view of the room, every corridor appearing as you
+confirm it. Weeks later, the overlay
 returns exactly where you left it — not as a thin line, but as a glowing safety corridor. When
-your hand approaches, the corridor escalates: color, intensity, spatial audio. The drill stops
+your hand approaches, the corridor escalates: color, intensity, and a panned audio ping that
+comes from the direction of the hazard. The drill stops
 before the pipe does. Look and pinch, and the original evidence appears: the photo, the depth,
 who documented it — and whether it was measured or estimated. One gesture exports a floor plan
-with legend and scale as PDF and a machine-readable JSON: the document a homeowner accepts and
-the next firm inherits.
+per room with legend and scale as PDF plus a machine-readable, BIM-ready JSON: the document a
+homeowner accepts, the next firm inherits, and planning software can consume.
 
 **How we built it**
 
 Unity 6 with the Meta XR SDKs. The core is deliberately engine-agnostic: a versioned data
 schema where geometry is stored anchor-relative, so anchor drift and re-localization can never
 corrupt a captured run. Snap points, a 5 cm grid and magnetic endpoints absorb hand-tracking
-tremor; a ±5–6 cm safety corridor replaces the illusion of millimeter lines. Spatial anchors
+tremor; a ±5–6 cm safety corridor replaces the illusion of millimeter lines. The in-hand floor
+plan is the same top-down projection that renders the exported PDF — one source of truth, live
+instead of on paper. Whole houses work: every room gets its own plan, one JSON holds them all.
+Spatial anchors
 persist across app restarts and re-entry (demonstrated, not claimed: X days, Y restarts).
 The PDF export is a dependency-free emitter written from scratch — lines, legend, scale bar.
 
@@ -49,7 +56,9 @@ product better.
 **Honesty (our design rule)**
 
 We do not see through walls. We remember what was documented. Every object carries a visible
-confidence level, and „not found" never means „not there."
+confidence level, and „not found" never means „not there." The export is honest about its
+format too: it is BIM-ready structured data — not a proprietary BIM file, and we never claim
+otherwise.
 
 **What's next**
 
