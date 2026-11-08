@@ -28,8 +28,8 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 | Smoketest: APK → Channel → Invite-URL → Quest | 02.11. | ✅ **APK läuft am Gerät** (07.11. Quest 3S: Hände getrackt, Greif-Demo) · 🟡 offen: **Invite-URL-Flow als Jury-Pfad** vor M5 nochmal testen |
 | Anker-Persistenz über Neustart | 02.11. | 🔴 **überfällig** — 3 Runs im nächsten Headset-Block (docs/07); App startet bereits in Szene 02 · GO/NO-GO D6 offen |
 | Capture-Flow < 30 s pro Objekt | 07.11. | 🟡 Flow komplett + Zeichnen-Vorschau, Snap-Marker, Typ-Menü, magnetische Endpunkte, Scene-API-Wände (D36) · **offen: Gerätetest M2** |
-| Recall-Overlay + Export (JSON/PDF) | 10.11. | 🟡 **vorgezogen**: Szene 04 — Korridore in Typfarben, Warn-Eskalation, Export PDF+JSON (D32) · im XR-Simulator verifiziert · **offen: Gerätetest M3** |
-| Politur + **Bauplan in der Hand** | 13.11. | 🟡 Detail-Panel gebaut (D37) · **M4 v2:** Bauplan live auf Hand-Panel (D39, ADR-0005) + zweiter Raum + FoV-Audio · Feature-Freeze 13.11. |
+| Recall-Overlay + Export (JSON/PDF) | 10.11. | ✅ **08.11. Simulator-Beweis mit Fotos**: Korridore sichtbar (blau→rot Eskalation, `TestShots/m7_*.png`), Export PDF+JSON geschrieben · 3 Render-/Race-Bugs behoben (Backface, Z-Fight, späte Anker-Lokalisierung) · **offen: Gerätetest M3** |
+| Politur + **Bauplan in der Hand** | 13.11. | 🟡 **08.11.: Bauplan-Panel gebaut** (D39, ADR-0005) — Live-Top-Down an der linken Hand, Szene 04 verdrahtet · zweiter Raum + FoV-Audio offen · Feature-Freeze 13.11. |
 | Video + 500-Wörter-Text + Screenshots | 15.11. | ⏳ |
 | Probe-Submission komplett | 17.11. | ⏳ |
 | **Abgabe** | **18.11. vormittags** | ⏳ |

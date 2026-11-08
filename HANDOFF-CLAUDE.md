@@ -2,6 +2,28 @@
 
 ## Update 08.11. (Replan: „Bauplan in der Hand" + BIM-ready — D38–D40, ADR-0005)
 
+**Simulator-Testlauf M3 bestanden (Claude, mit Fotos + Fixes) — drei ECHTE Bugs gefunden und behoben:**
+1. **Korridore unsichtbar (Backface-Culling):** BuildRibbon lieferte nur eine Dreiecks-Wicklung;
+   URP/Unlit culled Backfaces → Korridore von der Kameraseite weg. Beide Wicklungen jetzt
+   (Tests decken es ab). Beweis: `TestShots/m7_korridore.png` (blau) → `m7_eskalation.png` (rot).
+2. **Z-Fighting + 0-Ausdehnungs-Bounds:** Ribbon koplanar zur Wand → unsichtbar; zusätzlich
+   sortierte das XR-Frustum-Culling 0-Extent-Bounds aus. Fix: 8 mm kamera-seitiger
+   Anzeige-Offset (`CorridorFactory.FacingOffset`) + Bounds aufblähen. ADR-0002 unberührt.
+3. **Späte Anker-Lokalisierung:** Am Gerät kommen Posen erst NACH `LoadAll` an — Korridore
+   blieben sonst dauerhaft „nicht verortbar". RecallController pollt jetzt (0,5 s) und rebuildet
+   (`ShouldRebuildForLatePoses`, unit-getestet). Ehrlichkeitsregel bleibt: nur Rebuild wenn
+   wirklich Posen dazukamen, Verwaiste nie zuholen.
+
+**Harness-Regel (gilt für beide Agenten):** `RecallAutotest.Prepare()` VOR `editor.playmode start`
+(im Edit-Modus) — im Play-Modus aufgerufen raced es gegen den Controller-Start (Beweis: Lauf
+14:52 mit `0 Korridore, 3 nicht verortbar`). Fotos: `SimulatorShot.CaptureAt(...)` (manueller
+Kamera-Render; XR rendert nicht in den Game-View — D33 bestätigt). Realer XR-Blick für Fotos:
+TrackingSpace vor die Wand setzen + `capture game_view --source screen`.
+
+**Bauplan-Panel (D39) gebaut:** `PlanProjection` (SDK-frei, testbar) + `BauplanPanel` (live
+Top-Down an der linken Hand, Statuszeile aus Strings-Tabelle, estimated = 65 % Alpha) +
+`BauplanWiring` (Menü Hintergewerk → Bauplan verdrahten). Szene 04 verdrahtet + gespeichert.
+
 **Vision geschärft (Mathias):** Nicht nur Raum erfassen — der Monteur hält einen **Bauplan in der
 Hand** (Live-Top-Down des Raums) und trägt Leitungen mit der freien Hand **hinter der Wand** ein;
 das Ergebnis geht als **BIM-ready-Export** in die Bauplanung. Ehrlich gerahmt (D40): kein IFC bis
