@@ -92,3 +92,14 @@ Szenenwechsel am Gerät: **linke Handfläche zum Körper halten (≈½ s) + link
 - [ ] Warn-Eskalation sichtbar + hörbar
 - [ ] JSON + PDF am Laptop, JSON enthält verwaiste Objekte (falls vorhanden)
 - [ ] Screenrecording der 3 Beats (Korridor auf, Warnung, Export)
+
+### G. Bauplan in der Hand (ab 08.11., D39/ADR-0005 — ~5 min, im selben Block)
+
+Szene 04 startet mit Bauplan-Panel an der **linken Hand** (Papier-Quad, Statuszeile darunter).
+
+- [ ] Panel folgt der linken Hand, Papier zeigt zum Kopf (lesbar, nicht gespiegelt)
+- [ ] Statuszeile zählt ehrlich: „X Objekte · Y verortbar · Z nicht verortbar"
+- [ ] Gezeichnete Objekte (aus Szene 03) erscheinen **live** im Plan (0,5 s Poll) — Typfarben, Geschätztes gedimmt (65 % Alpha)
+- [ ] Beide Räume sichtbar (Simulator-Beweis: 4 Korridore über 2 Räume; am Gerät: echte Daten)
+- [ ] Nicht verortbare Objekte fehlen im Plan, stehen aber in der Statuszeile (Ehrlichkeit)
+- [ ] Screenrecording: „Plan wächst in der Hand" — **Video-Beat für docs/08**
