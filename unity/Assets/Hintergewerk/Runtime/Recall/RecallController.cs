@@ -34,6 +34,8 @@ namespace Hintergewerk.Recall
         string lastStatus;
         WarningLevel lastLevel = WarningLevel.None;
         float nextPingTime;
+        int lastAnchorSignature;    // Späte Lokalisierung: Rebuild, wenn Posen nachträglich ankommen (Fix 08.11.)
+        float nextAnchorPollTime;
 
         void Start()
         {
@@ -47,8 +49,25 @@ namespace Hintergewerk.Recall
             }
             store = new HouseDataStore();
             warning = new WarningSystem { NearCm = nearCm, CriticalCm = criticalCm };
+            lastAnchorSignature = AnchorSignature();
             anchors.LoadAll(ok => { RebuildCorridors(); SetStatus(StatusLine()); });
         }
+
+        int AnchorSignature()
+        {
+            int h = 17;
+            foreach (var id in anchors.KnownAnchorIds) h = h * 31 + id.GetHashCode();
+            return h;
+        }
+
+        /// <summary>
+        /// Rebuild-Entscheidung für spät lokalisierende Anker: Anker liefern Posen erst NACH
+        /// LoadAll (Gerät-Realität, Simulator-Beweis 08.11.). Ohne Rebuild blieben Korridore
+        /// dauerhaft „nicht verortbar". Ehrlich: nur bauen, wenn wirklich Posen dazukamen
+        /// UND noch etwas nicht verortbar ist — nie zuholen.
+        /// </summary>
+        public static bool ShouldRebuildForLatePoses(int signature, int lastSignature, int notLocatable)
+            => notLocatable > 0 && signature != lastSignature;
 
         void RebuildCorridors()
         {
@@ -95,6 +114,21 @@ namespace Hintergewerk.Recall
 
         void Update()
         {
+            // Späte Lokalisierung (0,5-s-Poll): Wenn Anker-Posen nach LoadAll ankommen und
+            // Objekte noch „nicht verortbar" sind, korridor ehrlich neu bauen — nie raten.
+            if (Time.time >= nextAnchorPollTime)
+            {
+                nextAnchorPollTime = Time.time + 0.5f;
+                var sig = AnchorSignature();
+                if (ShouldRebuildForLatePoses(sig, lastAnchorSignature, notLocatable))
+                {
+                    Debug.Log("[RecallController] Anker-Posen nachträglich angekommen — Rebuild.");
+                    RebuildCorridors();
+                    SetStatus(StatusLine());
+                }
+                lastAnchorSignature = sig;
+            }
+
             var hand = hands.GetHand(left: false);
             if (!hand.Tracked)
             {

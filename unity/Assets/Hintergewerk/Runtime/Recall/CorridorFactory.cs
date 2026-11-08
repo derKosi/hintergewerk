@@ -43,9 +43,13 @@ namespace Hintergewerk.Recall
                 int baseIdx = verts.Count;
                 verts.Add(a2 - left); verts.Add(a2 + left);
                 verts.Add(b2 + left); verts.Add(b2 - left);
-                // Zwei Dreiecke (beidseitig sichtbar via Material, Reihenfolge egal)
+                // Beidseitig sichtbar: beide Wicklungen ausgeben (Fix 08.11. — vorher nur eine
+                // Wicklung; URP/Unlit culled Backfaces → Korridore von der Kameraseite unsichtbar,
+                // Simulator-Beweis xr_ribbons.png). Unabhängig vom Material korrekt.
                 tris.Add(baseIdx); tris.Add(baseIdx + 1); tris.Add(baseIdx + 2);
                 tris.Add(baseIdx); tris.Add(baseIdx + 2); tris.Add(baseIdx + 3);
+                tris.Add(baseIdx + 2); tris.Add(baseIdx + 1); tris.Add(baseIdx);
+                tris.Add(baseIdx + 3); tris.Add(baseIdx + 2); tris.Add(baseIdx);
             }
 
             var mesh = new Mesh { name = "CorridorRibbon" };
@@ -55,16 +59,37 @@ namespace Hintergewerk.Recall
             return mesh;
         }
 
-        /// <summary>Fertiges Overlay-GameObject (MeshFilter + MeshRenderer, Material vom Aufrufer).</summary>
+        /// <summary>Fertiges Overlay-GameObject (MeshFilter + MeshRenderer, Material vom Aufrufer).
+        /// Vertices bekommen einen ~8 mm kamera-seitigen Versatz — sonst z-fightet das Ribbon
+        /// koplanar mit der echten Wand (Simulator-Beweis 08.11: Korridore unsichtbar hinter
+        /// dem Wand-Quad). Nur Anzeige-Offset, keine Datenänderung (ADR-0002 unberührt).</summary>
         public static GameObject CreateOverlay(string name, IReadOnlyList<Vector3> points,
                                                 float halfWidthM, Vector3 planeNormal, Material material)
         {
             var go = new GameObject(name);
             var mf = go.AddComponent<MeshFilter>();
-            mf.sharedMesh = BuildRibbon(points, halfWidthM, planeNormal);
+            var mesh = BuildRibbon(points, halfWidthM, planeNormal);
+            // Flache Ribbons (0 Ausdehnung in Normalen-Richtung) werden vom XR-Frustum-Culling
+            // fälschlich aussortiert (Beweis 08.11: isVisible=false trotz Sichtfeld). Bounds
+            // minimal aufblähen — nur Culling-Betroffenheit, keine Geometrie-Änderung.
+            var b = mesh.bounds;
+            b.size += Vector3.one * 0.02f;
+            mesh.bounds = b;
+            mf.sharedMesh = mesh;
+            var cam = Camera.main;
+            go.transform.position = FacingOffset(points[0], planeNormal, cam != null ? cam.transform.position : (Vector3?)null);
             var mr = go.AddComponent<MeshRenderer>();
             if (material != null) mr.sharedMaterial = material;
             return go;
+        }
+
+        /// <summary>Signierter Anzeige-Versatz entlang der Ebenen-Normalen, zur Kamera gewandt.
+        /// Ohne Kamera (EditMode-Test) zeigt der Versatz in Normalen-Richtung.</summary>
+        public static Vector3 FacingOffset(Vector3 center, Vector3 normal, Vector3? cameraPos, float eps = 0.008f)
+        {
+            var n = normal.normalized;
+            var sign = cameraPos.HasValue && Vector3.Dot(cameraPos.Value - center, n) < 0f ? -1f : 1f;
+            return n * (sign * eps);
         }
 
         /// <summary>Anker-lokale Punkte in Weltpositionen auflösen (Konvention §2 Architektur).</summary>

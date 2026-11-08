@@ -17,6 +17,10 @@ namespace Hintergewerk.EditorTools
     {
         public static void Prepare()
         {
+            if (Application.isPlaying)
+                Debug.LogWarning("[RecallAutotest] Prepare im Play-Modus = Race (Controller hat schon geladen). " +
+                                 "VOR editor.playmode start aufrufen (Fix 08.11.).");
+
             // Store-Reset für wiederholbare Läufe (nur Editor-Testdaten des Simulators):
             var dataDir = Application.persistentDataPath;
             foreach (var f in new[] { "hintergewerk.json", "anker_map.json" })
