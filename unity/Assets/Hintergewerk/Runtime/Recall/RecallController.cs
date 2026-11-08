@@ -78,7 +78,7 @@ namespace Hintergewerk.Recall
             totalObjects = 0;
             notLocatable = 0;
 
-            foreach (var o in store.ObjectsInRoom(roomId))
+            foreach (var o in TargetObjects())
             {
                 if (o.orphaned || !anchors.TryGetPose(o.anchor_id, out var pose))
                 {
@@ -92,8 +92,14 @@ namespace Hintergewerk.Recall
                 corridorRenderers[o.id] = (go.GetComponent<MeshRenderer>(), o.type);
                 totalObjects++;
             }
-            Debug.Log($"[RecallController] {totalObjects} Korridore, {notLocatable} nicht verortbar (Raum {roomId})");
+            Debug.Log($"[RecallController] {totalObjects} Korridore, {notLocatable} nicht verortbar (Raum {RoomLabel()})");
         }
+
+        /// <summary>Ziel-Objekte: roomId leer = alle Räume (M4 „zweiter Raum"), sonst gefiltert.</summary>
+        List<TrackedObject> TargetObjects() =>
+            string.IsNullOrEmpty(roomId) ? store.Data.objects : store.ObjectsInRoom(roomId);
+
+        string RoomLabel() => string.IsNullOrEmpty(roomId) ? "alle" : roomId;
 
         /// <summary>Material-Instanz in Typ-Farbe (Template aus der Szene; Fallback: unlit).</summary>
         Material CorridorMaterialFor(TrackedObject o)

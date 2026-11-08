@@ -19,6 +19,8 @@ namespace Hintergewerk.Recall
         [SerializeField] string roomId = "raum_1";
         [SerializeField] float wallZ = 0.5f;    // Welt-z der Demo-Wand (Szene 04 baut das Quad dorthin)
         [SerializeField] float anchorZ = -0.3f; // Anker hinter dem Kopf, damit lokal ≠ Welt sichtbar ist
+        [SerializeField] float room2X = 1.9f;   // Welt-x der zweiten Demo-Wand (M4: zweiter Raum)
+        [SerializeField] bool seedRoom2 = true; // M4-Demo; bei reinem M3-Test abschaltbar
 
         void Start()
         {
@@ -60,6 +62,34 @@ namespace Hintergewerk.Recall
             store.Save();
 
             Debug.Log($"[DemoSeeder] 3 Demo-Objekte geseedet (Anker {anchorId}).");
+
+            if (seedRoom2) SeedRoom2(store, anchors);
+        }
+
+        /// <summary>Zweiter Raum (M4): eigene Wand-Quad, eigener Anker, eigene Objekte —
+        /// inkl. eines verwaisten (Ehrlichkeitsregel sichtbar über Räume hinweg).</summary>
+        void SeedRoom2(HouseDataStore store, IAnchorProvider anchors)
+        {
+            const string r2 = "raum_2";
+
+            var wall2 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            wall2.name = "DemoWall_Raum2";
+            wall2.transform.SetPositionAndRotation(new Vector3(room2X, 1.1f, wallZ), Quaternion.identity);
+            wall2.transform.localScale = new Vector3(1.6f, 2.2f, 1f);
+
+            var anchorPose2 = new Pose(new Vector3(room2X, 1.2f, anchorZ), Quaternion.identity);
+            var anchorId2 = anchors.CreateAnchor(anchorPose2, r2);
+            store.EnsureRoom(r2, "Demo-Flur (Szene 04, Raum 2)", 0);
+            store.RegisterAnchor(anchorId2, r2);
+
+            Seed(store, r2, ObjectType.Power, anchorId2, anchorPose2, 4.0,
+                "Demo: Elektroleitung Flur (Unterputz)",
+                new Vector3(room2X, 1.4f, wallZ), new Vector3(room2X, 0.8f, wallZ));
+            Seed(store, r2, ObjectType.Stud, anchorId2, anchorPose2, 8.0,
+                "Demo: Ständerwerk Flur (BeTexung)",
+                new Vector3(room2X - 0.5f, 1.0f, wallZ), new Vector3(room2X + 0.3f, 1.0f, wallZ));
+
+            Debug.Log($"[DemoSeeder] Raum 2 geseedet: 2 Objekte (Anker {anchorId2}).");
         }
 
         static void Seed(HouseDataStore store, string roomId, ObjectType t, string anchorId, Pose anchorPose,

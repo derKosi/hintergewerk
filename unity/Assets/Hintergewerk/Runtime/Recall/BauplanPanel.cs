@@ -102,7 +102,7 @@ namespace Hintergewerk.Recall
         int StoreSignature()
         {
             int h = 17;
-            foreach (var o in store.ObjectsInRoom(roomId))
+            foreach (var o in string.IsNullOrEmpty(roomId) ? store.Data.objects : store.ObjectsInRoom(roomId))
             {
                 h = h * 31 + o.id.GetHashCode();
                 h = h * 31 + o.geometry.Count;
@@ -116,7 +116,8 @@ namespace Hintergewerk.Recall
             foreach (var l in lines) if (l != null) Destroy(l.gameObject);
             lines.Clear();
 
-            var objs = store.ObjectsInRoom(roomId);
+            // roomId leer = alle Räume (M4 „zweiter Raum"): der Bauplan zeigt das ganze Haus.
+            var objs = string.IsNullOrEmpty(roomId) ? store.Data.objects : store.ObjectsInRoom(roomId);
             var worldPts = new List<Vector3>();
             int located = 0;
             var locatedObjs = new List<TrackedObject>();
