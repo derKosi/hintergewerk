@@ -18,10 +18,12 @@ namespace Hintergewerk.EditorTools
 
         public static void Wire(string roomId)
         {
-            var adapters = GameObject.Find("HGW_Adapters");
-            if (adapters == null) { Debug.LogError("[Bauplan] HGW_Adapters fehlt — zuerst Szene-Builder laufen lassen."); return; }
-            var anchorProvider = adapters.GetComponent("OvrAnchorProvider");
-            if (anchorProvider == null) { Debug.LogError("[Bauplan] OvrAnchorProvider fehlt an HGW_Adapters."); return; }
+            var anchorProvider = FindAnchorProvider();
+            if (anchorProvider == null)
+            {
+                Debug.LogError("[Bauplan] Kein OvrAnchorProvider gefunden (HGW_Adapters oder sonstwo in der Szene).");
+                return;
+            }
 
             // Linke Hand-Anchor: OVR-Rig-Konvention TrackingSpace/LeftHandAnchor
             var rig = GameObject.Find("OVRCameraRig");
@@ -48,6 +50,21 @@ namespace Hintergewerk.EditorTools
             var p = so.FindProperty(field);
             if (p == null) { Debug.LogError("[Bauplan] Feld fehlt: " + field); return; }
             p.objectReferenceValue = val;
+        }
+
+        /// <summary>OvrAnchorProvider suchen: bevorzugt an HGW_Adapters, sonst erste Instanz
+        /// in der Szene (Szene 03 trägt ihn unter anderem Namen).</summary>
+        static Component FindAnchorProvider()
+        {
+            var adapters = GameObject.Find("HGW_Adapters");
+            if (adapters != null)
+            {
+                var c = adapters.GetComponent("OvrAnchorProvider");
+                if (c != null) return c;
+            }
+            foreach (var mb in Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
+                if (mb != null && mb.GetType().Name == "OvrAnchorProvider") return mb;
+            return null;
         }
     }
 }

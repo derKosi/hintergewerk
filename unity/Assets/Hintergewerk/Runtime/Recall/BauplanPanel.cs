@@ -76,6 +76,7 @@ namespace Hintergewerk.Recall
             if (Time.time >= nextPoll)
             {
                 nextPoll = Time.time + pollSeconds;
+                store.Reload(); // Auto-Save = Datei ist Wahrheit: gezeichnete Objekte erscheinen live (D39)
                 var sig = StoreSignature();
                 if (sig != lastSignature)
                 {

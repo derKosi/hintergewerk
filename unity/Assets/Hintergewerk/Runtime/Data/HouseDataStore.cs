@@ -29,16 +29,20 @@ namespace Hintergewerk.Data
         public static string DefaultPath() =>
             System.IO.Path.Combine(Application.persistentDataPath, "hintergewerk.json");
 
+        /// <summary>Datei neu laden — für Live-Viewer (Bauplan-Panel, D39): Auto-Save macht die
+        /// Datei zur Wahrheit, gezeichnete Objekte erscheinen so ohne Neustart im Plan.</summary>
+        public void Reload() => Load(log: false);
+
         // ---------------- Laden / Speichern ----------------
 
-        void Load()
+        void Load(bool log = true)
         {
             if (!File.Exists(path)) return;
             try
             {
                 Data = SimpleJson.Parse(File.ReadAllText(path));
                 RebuildOrphans();
-                Debug.Log($"[Store] {Data.rooms.Count} Räume, {Data.anchors.Count} Anker, {Data.objects.Count} Objekte geladen: {path}");
+                if (log) Debug.Log($"[Store] {Data.rooms.Count} Räume, {Data.anchors.Count} Anker, {Data.objects.Count} Objekte geladen: {path}");
             }
             catch (Exception e)
             {
