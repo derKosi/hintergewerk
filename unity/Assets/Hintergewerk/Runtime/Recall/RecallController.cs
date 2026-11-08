@@ -156,10 +156,11 @@ namespace Hintergewerk.Recall
                 });
             }
 
-            // Audio-Ping: Abstand je nach Stufe (2D — ausreichend für M3; FoV-aware später)
+            // Audio-Ping: Abstand je nach Stufe, FoV-aware gepannt (Politur 08.11.) —
+            // der Ping kommt aus der Richtung der nächsten Leitung, auch wenn sie außerhalb liegt.
             if (level != WarningLevel.None && Time.time >= nextPingTime)
             {
-                WarningAudio.Ping(level);
+                WarningAudio.Ping(level, PanForNearest(nearestId));
                 nextPingTime = Time.time + (level == WarningLevel.Critical ? pingIntervalCritical : pingIntervalNear);
             }
             lastLevel = level;
@@ -187,6 +188,20 @@ namespace Hintergewerk.Recall
         }
 
         void ResetColors() => ApplyEscalation(WarningLevel.None, null);
+
+        /// <summary>Stereo-Panning zur Gefahr: Kopfframe (Camera.main) × Richtung der nächsten
+        /// Korridor-Polylinie. Ohne Kamera-Frame neutral (0).</summary>
+        float PanForNearest(string nearestId)
+        {
+            var cam = Camera.main;
+            if (cam == null || string.IsNullOrEmpty(nearestId)) return 0f;
+            foreach (var kv in corridors)
+            {
+                if (kv.id != nearestId || kv.line.Count == 0) continue;
+                return WarningAudio.PanFor(cam.transform.position, cam.transform.right, kv.line[0]);
+            }
+            return 0f;
+        }
 
         string StatusLine()
         {
