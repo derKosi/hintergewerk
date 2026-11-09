@@ -14,8 +14,10 @@ namespace Hintergewerk.EditorTools
     public static class BauplanWiring
     {
         [MenuItem("Hintergewerk/Bauplan verdrahten (offene Szene)")]
-        public static void WireOpenScene() => Wire("raum_1");
+        public static void WireOpenScene() => Wire(null);
 
+        /// <summary>roomId null/leer = bestehenden Wert des Panels BEHALTEN (Szene 04 läuft auf
+        /// „alle Räume" — Fix 09.11.: das harte „raum_1" hatte das zurückgesetzt).</summary>
         public static void Wire(string roomId)
         {
             var anchorProvider = FindAnchorProvider();
@@ -31,6 +33,25 @@ namespace Hintergewerk.EditorTools
             if (leftHand == null) { Debug.LogError("[Bauplan] TrackingSpace/LeftHandAnchor nicht gefunden."); return; }
 
             var wallProvider = FindOrCreateWallProvider();
+
+            // DrawController (Capture-Szenen) auf DENSELBEN Provider setzen, wenn leer —
+            // Snap-Wände = Plan-Wände (Konsistenz); am Gerät echte Scene-Wände (D36).
+            var dcGo = GameObject.Find("DrawController");
+            if (dcGo != null)
+            {
+                var dcComp = dcGo.GetComponent("DrawController");
+                if (dcComp != null)
+                {
+                    var dso = new SerializedObject(dcComp);
+                    var dwp = dso.FindProperty("wallProviderBehaviour");
+                    if (dwp != null && dwp.objectReferenceValue == null)
+                    {
+                        dwp.objectReferenceValue = wallProvider;
+                        dso.ApplyModifiedPropertiesWithoutUndo();
+                        Debug.Log("[Bauplan] DrawController auf Wall-Provider gesetzt (Snap = Plan-Wände).");
+                    }
+                }
+            }
             var existing = GameObject.Find("BauplanPanel");
             var panelGo = existing != null ? existing : new GameObject("BauplanPanel");
             var panel = panelGo.GetComponent<BauplanPanel>() ?? panelGo.AddComponent<BauplanPanel>();
@@ -39,8 +60,10 @@ namespace Hintergewerk.EditorTools
             Set(so, "anchorProviderBehaviour", anchorProvider);
             Set(so, "wallProviderBehaviour", wallProvider); // D41: Raum-Umriss im Plan
             Set(so, "followTarget", leftHand);
-            so.FindProperty("roomId").stringValue = roomId;
+            if (!string.IsNullOrEmpty(roomId))
+                so.FindProperty("roomId").stringValue = roomId;
             so.ApplyModifiedPropertiesWithoutUndo();
+            Debug.Log("[Bauplan] roomId=" + so.FindProperty("roomId").stringValue + " ('' = alle Räume)");
 
             // ExportController (falls in der Szene) bekommt denselben Provider → Umriss im PDF
             foreach (var mb in Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))

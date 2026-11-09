@@ -151,7 +151,7 @@ MonoBehaviour:
   anchorProviderBehaviour: {fileID: 1249878680}
   wallProviderBehaviour: {fileID: 1249878682}
   followTarget: {fileID: 2027450070}
-  roomId: raum_1
+  roomId: 
   panelWidthM: 0.22
   panelHeightM: 0.16
   pollSeconds: 0.5

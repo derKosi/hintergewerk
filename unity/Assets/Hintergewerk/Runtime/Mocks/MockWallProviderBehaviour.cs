@@ -16,14 +16,10 @@ namespace Hintergewerk.Mocks
             new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "wall" }
         };
 
-        MockWallProvider inner; // für TryFindPlane (GetWalls liest direkt — auch im Edit-Modus)
-
         public List<WallPlane> GetWalls() => walls;
 
-        public bool TryFindPlane(Vector3 point, Vector3 direction, float maxDist, out WallPlane plane)
-        {
-            if (inner == null) inner = new MockWallProvider { Walls = walls };
-            return inner.TryFindPlane(point, direction, maxDist, out plane);
-        }
+        public bool TryFindPlane(Vector3 point, Vector3 direction, float maxDist, out WallPlane plane) =>
+            // immer gegen das AKTUELLE Feld (kein Cache — walls kann zur Laufzeit getauscht werden)
+            MockWallProvider.TryFindPlane(point, direction, maxDist, walls, out plane);
     }
 }

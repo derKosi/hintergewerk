@@ -36,10 +36,16 @@ namespace Hintergewerk.Mocks
 
         public List<WallPlane> GetWalls() => Walls;
 
-        public bool TryFindPlane(Vector3 point, Vector3 direction, float maxDist, out WallPlane plane)
+        public bool TryFindPlane(Vector3 point, Vector3 direction, float maxDist, out WallPlane plane) =>
+            TryFindPlane(point, direction, maxDist, Walls, out plane);
+
+        /// <summary>Statische Variante — rechnet gegen die ÜBERGEBENE Liste (nie gegen einen
+        /// veralteten Cache; Fix 09.11.: MockWallProviderBehaviour tauscht walls zur Laufzeit).</summary>
+        public static bool TryFindPlane(Vector3 point, Vector3 direction, float maxDist,
+            List<WallPlane> walls, out WallPlane plane)
         {
             plane = default;
-            foreach (var w in Walls)
+            foreach (var w in walls)
             {
                 float denom = Vector3.Dot(w.Normal, direction);
                 if (Mathf.Abs(denom) < 1e-5f) continue;
