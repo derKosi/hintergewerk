@@ -1,5 +1,27 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## Update 09.11. — Nachmittag (TOP-10-Runde: Regression gefixt, Szene 03, Animatic)
+
+**Drei Fixes/Erweiterungen auf D41:**
+1. **Alle-Räume-Regression behoben:** BauplanWiring überschreibt roomId nur noch, wenn
+   explizit übergeben — Szene 04 läuft wieder auf `''` (Beweis: `s04_bauplan_alle_raeume.png`,
+   „Geladen: 5 Objekte · 4 verortbar · 1 nicht verortbar", Korridore beider Räume im Plan).
+2. **Szene 03 verdrahtet** (war Handoff-Rest): BauplanPanel + DrawController auf denselben
+   Wall-Provider (Snap = Plan-Wände!). Am Gerät: Szene 03 snappt jetzt auf ECHTE Wände (D36).
+3. **Mock-Stale-Fix:** MockWallProviderBehaviour rechnet TryFindPlane gegen das aktuelle
+   Feld (kein Cache). 96/96 Tests.
+
+**Agent-Material für den Video-Block (14.–15.11.):** **Animatic-Shotlist** in docs/08 —
+13 Beats × vorhandene Beweis-Fotos gemappt, Gaps markiert. Kritischer Pfad = Szene 1
+(Realfilm/Passthrough, kein Simulator-Ersatz). Szene 2b best-belegt (4 Fotos).
+
+**Docs geschärft:** docs/07 §G (D41-Prüfpunkte: `[SceneWallProvider]`-Log-Quelle, Export
+„k Wand-Segmente") · §C/D Invite-URL-Klickfolge + Stolperfalle · docs/09 **v3** · docs/12
+Sync · Website-Tagebuch 09.11.
+
+**APK:** siehe unten (14:16) — **nach dem Nachmittag-Commit ERNEUT bauen** (Szene-03-Wiring
++ Fixes drin) und `Builds/hintergewerk.apk` aktualisieren. Stand: siehe git log.
+
 ## Update 09.11. (Zimmer-Umriss im Bauplan + PDF — D41)
 
 **Neu gebaut (Mathias-Verdacht bestätigt: der Umriss FEHLTE komplett — `wallOutline: null` im PDF):**

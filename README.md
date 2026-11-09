@@ -29,7 +29,7 @@ Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
 | Anker-Persistenz über Neustart | 02.11. | 🔴 **überfällig** — 3 Runs im nächsten Headset-Block (docs/07); App startet bereits in Szene 02 · GO/NO-GO D6 offen |
 | Capture-Flow < 30 s pro Objekt | 07.11. | 🟡 Flow komplett + Zeichnen-Vorschau, Snap-Marker, Typ-Menü, magnetische Endpunkte, Scene-API-Wände (D36) · **offen: Gerätetest M2** |
 | Recall-Overlay + Export (JSON/PDF) | 10.11. | ✅ **08.11. Simulator-Beweis mit Fotos**: Korridore sichtbar (blau→rot Eskalation, `TestShots/m7_*.png`), Export PDF+JSON geschrieben · 3 Render-/Race-Bugs behoben (Backface, Z-Fight, späte Anker-Lokalisierung) · **offen: Gerätetest M3** |
-| Politur + **Bauplan in der Hand** | 13.11. | ✅ **08.11. Code-seitig KOMPLETT** (vor Freeze!): Bauplan-Panel live beim Zeichnen (Szene 03+Beweisfoto), zweiter Raum (4 Korridore über 2 Räume), FoV-Audio (`panStereo` bewiesen), Export je Raum · ✅ **09.11. Zimmer-Umriss (D41)**: Wand-Grundkanten aus Scene-Wänden im Plan + PDF (Beweisfoto) · Rest: Gerätetest (M1–M3 + §G) + Invite-URL vor M5 |
+| Politur + **Bauplan in der Hand** | 13.11. | ✅ **08.11. Code-seitig KOMPLETT** (vor Freeze!): Bauplan-Panel live beim Zeichnen, zweiter Raum (4 Korridore über 2 Räume), FoV-Audio (`panStereo` bewiesen), Export je Raum · ✅ **09.11. Zimmer-Umriss (D41)** in Plan + PDF + **Szene 03 verdrahtet** (Snap = Plan-Wände) + Animatic-Shotlist (docs/08) · Rest: Gerätetest (M1–M3 + §G) + Invite-URL vor M5 |
 | Video + 500-Wörter-Text + Screenshots | 15.11. | ⏳ |
 | Probe-Submission komplett | 17.11. | ⏳ |
 | **Abgabe** | **18.11. vormittags** | ⏳ |
