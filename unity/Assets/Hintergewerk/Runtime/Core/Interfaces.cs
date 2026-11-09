@@ -13,11 +13,15 @@ using UnityEngine;
 namespace Hintergewerk.Core
 {
     /// <summary>Ebene im Raum (Wand/Decke/Boden) aus Scene API oder manueller Kalibrierung.</summary>
+    [Serializable] // serialisierbar für Szenen-Wiring (MockWallProviderBehaviour.walls)
     public struct WallPlane
     {
-        public Vector3 Point;   // Punkt auf der Ebene
+        public Vector3 Point;   // Punkt auf der Ebene (Zentrum der Fläche, wenn Size bekannt)
         public Vector3 Normal;  // Normale, zeigt in den Raum
         public string Label;    // z. B. "wall", "ceiling" (Scene-API-Klassifikation)
+        /// <summary>Flächenmaße (x = Breite, y = Höhe) in Metern; 0/0 = unbekannt
+        /// (dann ist die Ebene unendlich — daraus wird bewusst KEIN Umriss abgeleitet).</summary>
+        public Vector2 Size;
     }
 
     /// <summary>Ein Hand-Snapshot, pro Frame abgefragt.</summary>

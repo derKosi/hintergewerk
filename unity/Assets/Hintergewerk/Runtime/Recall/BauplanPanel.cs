@@ -14,6 +14,7 @@ namespace Hintergewerk.Recall
     public class BauplanPanel : MonoBehaviour
     {
         [SerializeField] MonoBehaviour anchorProviderBehaviour; // OvrAnchorProvider
+        [SerializeField] MonoBehaviour wallProviderBehaviour;   // SceneWallProvider (optional, D41: Raum-Umriss)
         [SerializeField] Transform followTarget;                // linke Hand (Anchor)
         [SerializeField] string roomId = "raum_1";
         [SerializeField] float panelWidthM = 0.22f;
@@ -22,6 +23,7 @@ namespace Hintergewerk.Recall
         [SerializeField] Color paperColor = new Color(0.94f, 0.92f, 0.87f);
 
         IAnchorProvider anchors;
+        IWallProvider walls;      // null = kein Umriss (ehrlich: Plan zeigt nur Objekte)
         HouseDataStore store;
         Transform paper;
         TextMesh status;
@@ -34,6 +36,7 @@ namespace Hintergewerk.Recall
         {
             anchors = anchorProviderBehaviour as IAnchorProvider;
             if (anchors == null) { Debug.LogError("[Bauplan] Anchor-Adapter fehlt oder implementiert das Interface nicht."); enabled = false; return; }
+            walls = wallProviderBehaviour as IWallProvider; // null = kein Raum-Umriss (kein Fehler)
             store = new HouseDataStore();
             BuildPanel();
             anchors.LoadAll(_ => { /* Posen folgen asynchron — Poll rebuildet */ });
@@ -77,7 +80,7 @@ namespace Hintergewerk.Recall
             {
                 nextPoll = Time.time + pollSeconds;
                 store.Reload(); // Auto-Save = Datei ist Wahrheit: gezeichnete Objekte erscheinen live (D39)
-                var sig = StoreSignature();
+                var sig = StoreSignature() * 397 ^ WallSignature(); // Wände kommen asynchron (Scene-Load) → mit in den Trigger
                 if (sig != lastSignature)
                 {
                     lastSignature = sig;
@@ -112,6 +115,18 @@ namespace Hintergewerk.Recall
             return h;
         }
 
+        int WallSignature()
+        {
+            int h = 19;
+            if (walls == null) return h;
+            foreach (var s in WallOutline.FloorSegments(walls.GetWalls()))
+            {
+                h = h * 31 + s[0].GetHashCode();
+                h = h * 31 + s[1].GetHashCode();
+            }
+            return h;
+        }
+
         void Rebuild()
         {
             foreach (var l in lines) if (l != null) Destroy(l.gameObject);
@@ -134,7 +149,36 @@ namespace Hintergewerk.Recall
                 }
             }
 
+            // Raum-Umriss (D41): Grundkanten aus der Wand-Ermittlung. Wände zählen mit in die
+            // Plan-Bounds — der Plan zeigt den Raum, nicht nur die Leitungen. Ohne Größe/Scene-
+            // Daten liefert FloorSegments nichts → Plan wie bisher (kein erfundener Umriss).
+            var wallSegments = walls != null ? WallOutline.FloorSegments(walls.GetWalls()) : new List<Vector2[]>();
+            foreach (var s in wallSegments)
+            {
+                worldPts.Add(new Vector3(s[0].x, 0f, s[0].y));
+                worldPts.Add(new Vector3(s[1].x, 0f, s[1].y));
+            }
+
             plan = PlanProjection.Fit(worldPts, new Vector2(panelWidthM * 0.9f, panelHeightM * 0.82f));
+
+            // Wand-Linien (dunkel, ruhig, unter den Objektlinien)
+            foreach (var s in wallSegments)
+            {
+                var wl = new GameObject("Plan_Wand").AddComponent<LineRenderer>();
+                wl.transform.SetParent(transform, false);
+                wl.useWorldSpace = false;
+                wl.positionCount = 2;
+                var a = plan.ToLocal(new Vector3(s[0].x, 0f, s[0].y));
+                var b = plan.ToLocal(new Vector3(s[1].x, 0f, s[1].y));
+                wl.SetPosition(0, new Vector3(a.x - panelWidthM * 0.5f, a.y - panelHeightM * 0.5f, 0.001f));
+                wl.SetPosition(1, new Vector3(b.x - panelWidthM * 0.5f, b.y - panelHeightM * 0.5f, 0.001f));
+                wl.startWidth = 0.0022f;
+                wl.endWidth = 0.0022f;
+                var shader = Shader.Find("Universal Render Pipeline/Unlit");
+                wl.material = new Material(shader != null ? shader : Shader.Find("Sprites/Default"))
+                    { color = new Color(0.25f, 0.25f, 0.25f) };
+                lines.Add(wl);
+            }
 
             foreach (var o in locatedObjs)
             {

@@ -1,6 +1,28 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
-## NÄCHSTE SESSION (Stand Nacht 08.11. — zuerst lesen!)
+## Update 09.11. (Zimmer-Umriss im Bauplan + PDF — D41)
+
+**Neu gebaut (Mathias-Verdacht bestätigt: der Umriss FEHLTE komplett — `wallOutline: null` im PDF):**
+- `WallPlane.Size` (aus `OVRScenePlane.Width/Height`) + `WallOutline.FloorSegments` (SDK-frei,
+  9 Tests) + Filter nahe Raum-Objekten (2,5 m) — kein Schema-Change vor dem Freeze.
+- BauplanPanel + ExportController haben jetzt `wallProviderBehaviour`; Szene 04 verdrahtet
+  (SceneWallProvider an HGW_Adapters + MockRaume_ohneRoomSetup als Simulator-Fallback, 3×3×2,6 m,
+  serialisiert). Am Gerät: Room Setup → echte Wände (Log meldet Quelle, z. B. „via MockRaume…").
+- **Beweis:** `docs/beweise/2026-11-09-bauplan-umriss/` (Plan mit Umriss + Statuszeile;
+  PDF-Logs „2 Objekte, 3 Wand-Segmente" raum_1 / „2 Wand-Segmente" raum_2). 96/96 Tests,
+  Selbsttest ✓. **Neue APK nötig** (Umriss + Wiring drin → vor M2/M3-Gerätetest bauen!).
+
+**Fallstricke (gilt für beide Agenten):**
+- `[Serializable]` fehlte an `WallPlane` → Unity serialisierte Mock-Wände NICHT (YAML ohne
+  `walls:`), beim Play-Load nur Feld-Initializer. Merkregel: Structs in serialized Listen
+  IMMER `[Serializable]`, sonst geht der Zustand beim Szenen-Save/Load verloren.
+- `Type.GetType("SceneWallProvider, Assembly-CSharp")` → null; es braucht den vollen Namen
+  („Hintergewerk.Adapters.SceneWallProvider") — wie Scene04Builder es macht.
+- Simulator-Foto aufs Hand-Panel: Panel schaut zu Camera.main (XR-Kopf) → SimulatorShot-Kamera
+  entlang (head − panel).normalized × 0,3 m vom Panel, Blick aufs Panel — dann ist die
+  VORDERSEITE lesbar (sonst gespiegelt von hinten).
+
+## NÄCHSTE SESSION (Stand Nacht 08.11. — Reihenfolge gilt weiter)
 
 **Wo wir stehen:** M4 **code-seitig KOMPLETT, 5 Tage vor Freeze** (13.11.). M3 Simulator-Beweis
 mit Fotos (`docs/beweise/2026-11-08-simulator-m3/`). 86/86 Tests, Selbsttest ✓.

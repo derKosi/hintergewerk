@@ -35,10 +35,13 @@ namespace Hintergewerk.Export
 
         /// <summary>
         /// Baut das PdfDoc für einen Raum. wallOutline: geschlossenes Polygon in Meter (x/z),
-        /// darf null sein (dann nur Rahmen). Rückgabe: scale = Punkte pro Meter für den Balken.
+        /// darf null sein (dann nur Rahmen). wallSegments (D41): offene Wand-Grundkanten
+        /// [a, b] aus der Zimmer-Ermittlung (Scene API) — ergänzt Bounds + Zeichnung.
+        /// Rückgabe: scale = Punkte pro Meter für den Balken.
         /// </summary>
         public static PdfDoc BuildDoc(string roomLabel, string author, List<Vector2> wallOutline,
-                                      List<MappedObject> objects, out float scale, out int scaleRatio)
+                                      List<MappedObject> objects, out float scale, out int scaleRatio,
+                                      List<Vector2[]> wallSegments = null)
         {
             var doc = new PdfDoc();
 
@@ -46,6 +49,7 @@ namespace Hintergewerk.Export
             float minx = float.MaxValue, maxx = float.MinValue, minz = float.MaxValue, maxz = float.MinValue;
             void Ext(Vector2 p) { minx = Mathf.Min(minx, p.x); maxx = Mathf.Max(maxx, p.x); minz = Mathf.Min(minz, p.y); maxz = Mathf.Max(maxz, p.y); }
             if (wallOutline != null) foreach (var p in wallOutline) Ext(p);
+            if (wallSegments != null) foreach (var s in wallSegments) { Ext(s[0]); Ext(s[1]); }
             if (objects != null) foreach (var o in objects) foreach (var p in o.WorldPoints) Ext(new Vector2(p.x, p.z));
             if (minx > maxx) { minx = 0; maxx = 3; minz = 0; maxz = 3; } // leerer Raum
 
@@ -84,13 +88,24 @@ namespace Hintergewerk.Export
                     Line(doc, a.x, a.y, b.x, b.y, 1.4f, wallCol);
                 }
             }
-            else
+            else if (wallSegments == null || wallSegments.Count == 0)
             {
                 // Fallback: Zeichnungsrahmen
                 Line(doc, MarginL, MarginB, doc.Width - MarginR, MarginB, 0.5f, wallCol);
                 Line(doc, doc.Width - MarginR, MarginB, doc.Width - MarginR, doc.Height - MarginT, 0.5f, wallCol);
                 Line(doc, doc.Width - MarginR, doc.Height - MarginT, MarginL, doc.Height - MarginT, 0.5f, wallCol);
                 Line(doc, MarginL, doc.Height - MarginT, MarginL, MarginB, 0.5f, wallCol);
+            }
+
+            // ---- Wand-Grundkanten aus der Zimmer-Ermittlung (D41, offene Segmente) ----
+            if (wallSegments != null)
+            {
+                foreach (var s in wallSegments)
+                {
+                    var a = M2(s[0]);
+                    var b = M2(s[1]);
+                    Line(doc, a.x, a.y, b.x, b.y, 1.4f, wallCol);
+                }
             }
 
             // ---- Objekte: Korridor-Halo (breit, hell) + Mittellinie (dünn, kräftig) + Endpunkte ----

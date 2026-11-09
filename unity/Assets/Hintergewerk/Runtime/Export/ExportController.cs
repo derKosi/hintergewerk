@@ -13,12 +13,14 @@ namespace Hintergewerk.Export
     {
         [SerializeField] MonoBehaviour anchorProviderBehaviour; // OvrAnchorProvider
         [SerializeField] MonoBehaviour handSourceBehaviour;     // OvrHandSource
+        [SerializeField] MonoBehaviour wallProviderBehaviour;   // SceneWallProvider (optional, D41: Umriss im PDF)
         [SerializeField] string roomId = "raum_1";
         [SerializeField] TextMesh statusText;
         [SerializeField] float cooldownS = 3f;
 
         IAnchorProvider anchors;
         IHandSource hands;
+        IWallProvider walls;
         HouseDataStore store;
         bool pinchWasDown;
         float readyAt;
@@ -28,6 +30,7 @@ namespace Hintergewerk.Export
         {
             anchors = anchorProviderBehaviour as IAnchorProvider;
             hands = handSourceBehaviour as IHandSource;
+            walls = wallProviderBehaviour as IWallProvider; // null = kein Umriss im PDF (ehrlich, kein Fehler)
             if (anchors == null || hands == null)
             {
                 Debug.LogError("[ExportController] Adapter fehlen oder implementieren die Interfaces nicht.");
@@ -57,12 +60,12 @@ namespace Hintergewerk.Export
                 {
                     var names = new System.Collections.Generic.List<string>();
                     foreach (var room in store.Data.rooms)
-                        names.Add(System.IO.Path.GetFileName(ExportRunner.ExportRoomPdf(store, room.id, anchors, out _)));
+                        names.Add(System.IO.Path.GetFileName(ExportRunner.ExportRoomPdf(store, room.id, anchors, out _, walls)));
                     pdfList = string.Join(" + ", names);
                 }
                 else
                 {
-                    pdfList = System.IO.Path.GetFileName(ExportRunner.ExportRoomPdf(store, roomId, anchors, out _));
+                    pdfList = System.IO.Path.GetFileName(ExportRunner.ExportRoomPdf(store, roomId, anchors, out _, walls));
                 }
                 SetStatus(Strings.Format("export.done", pdfList)
                     + " + " + System.IO.Path.GetFileName(json));

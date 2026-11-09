@@ -12,6 +12,28 @@ namespace Hintergewerk.Mocks
             new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "wall" }
         };
 
+        /// <summary>
+        /// Rechteckiger Raum (4 Wände mit Maßen) — für Simulator/Demo, wenn kein Room Setup
+        /// vorliegt. Origin = Raum-Eckpunkt (min x/z), y = Boden. Wände zeigen ins Innere.
+        /// </summary>
+        public static MockWallProvider Room(Vector3 originMin, float widthX, float depthZ, float heightY)
+        {
+            var h = Vector3.up * (heightY * 0.5f);
+            var p = new MockWallProvider();
+            p.Walls = new List<WallPlane>
+            {
+                // Süd (z = min), Normale +z (nach innen); Zentrum = Kantenmitte + halbe Höhe
+                new WallPlane { Point = originMin + new Vector3(widthX * 0.5f, 0f, 0f) + h, Normal = Vector3.forward,  Label = "wall", Size = new Vector2(widthX, heightY) },
+                // Nord (z = max), Normale −z
+                new WallPlane { Point = originMin + new Vector3(widthX * 0.5f, 0f, depthZ) + h, Normal = Vector3.back,     Label = "wall", Size = new Vector2(widthX, heightY) },
+                // West (x = min), Normale +x
+                new WallPlane { Point = originMin + new Vector3(0f, 0f, depthZ * 0.5f) + h, Normal = Vector3.right,   Label = "wall", Size = new Vector2(depthZ, heightY) },
+                // Ost (x = max), Normale −x
+                new WallPlane { Point = originMin + new Vector3(widthX, 0f, depthZ * 0.5f) + h, Normal = Vector3.left,    Label = "wall", Size = new Vector2(depthZ, heightY) },
+            };
+            return p;
+        }
+
         public List<WallPlane> GetWalls() => Walls;
 
         public bool TryFindPlane(Vector3 point, Vector3 direction, float maxDist, out WallPlane plane)

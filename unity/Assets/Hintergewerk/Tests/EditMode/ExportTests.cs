@@ -66,6 +66,26 @@ namespace Hintergewerk.Tests
         }
 
         [Test]
+        public void Grundriss_WandSegmente_D41_SkizzierenRaumOhneObjekte()
+        {
+            // Zimmer-Ermittlung (D41): nur Wand-Grundkanten, noch kein Objekt dokumentiert
+            var segs = new List<Vector2[]>
+            {
+                new[] { new Vector2(0f, 0f), new Vector2(4f, 0f) },
+                new[] { new Vector2(4f, 0f), new Vector2(4f, 3f) },
+                new[] { new Vector2(4f, 3f), new Vector2(0f, 3f) },
+                new[] { new Vector2(0f, 3f), new Vector2(0f, 0f) },
+            };
+
+            float scale; int ratio;
+            var doc = MapRenderer.BuildDoc("Bad EG", "Mathias", null, new List<MappedObject>(), out scale, out ratio, segs);
+
+            Assert.Greater(doc.Lines.Count, 0);          // Wand-Segmente wurden gezeichnet (kein reiner Rahmen)
+            Assert.AreEqual(25, ratio);                  // 4×3-m-Raum → 1:25 (Segmente bestimmen die Bounds!)
+            Assert.Greater(PdfEmitter.Emit(doc).Length, 500);
+        }
+
+        [Test]
         public void Normblatt_KleinerRaum_Nimmt120()
         {
             var walls = new List<Vector2> { new Vector2(0f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0.5f), new Vector2(0f, 0.5f) };
