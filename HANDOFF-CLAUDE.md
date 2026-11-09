@@ -2,6 +2,9 @@
 
 ## Update 09.11. — Abend (D42: Der kritische Gerätetest-Fix, Sim-Demo-Räume getestet)
 
+**APK FINALE (09.11. 17:14, 49 MB → `unity/Builds/hintergewerk.apk`):** enthält D41 + D42
+(SceneManager-Fix!) + alle Nachmittag-Fixes. **Diese APK für den Headset-Block nutzen.**
+
 **Der wichtigste Fund des Tages (D42):** Szenen 03/04 trugen **keinen OVRSceneManager** — ohne ihn
 entstehen NIE OVRSceneAnchor (auch am Gerät mit Room Setup nicht!) UND `OVRSceneManager.Start()`
 lädt das Scene-Model nicht von allein. Beides gefixt: SceneManager kommt per BauplanWiring an den
