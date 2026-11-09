@@ -31,6 +31,19 @@ namespace Hintergewerk.Adapters
         string lastSource = "";
         IWallProvider fallbackProvider;
 
+        void Start()
+        {
+            // Fix 09.11. (Schwäche #2): OVRSceneManager lädt das Scene-Model NICHT von allein
+            // (Start() nur Telemetrie) — ohne expliziten LoadSceneModel()-Aufruf entstehen keine
+            // OVRSceneAnchor und der Plan fiel immer in den Mock-Fallback, auch am Gerät mit
+            // Room Setup. Ergebnis ehrlich im Log (Success / NoSceneModelToLoad / Permission).
+            var sceneManager = GetComponent<OVRSceneManager>();
+            if (sceneManager == null) { Debug.Log("[SceneWallProvider] Kein OVRSceneManager am GO — Scene-Anker bleiben aus."); return; }
+            sceneManager.VerboseLogging = true;
+            var loaded = sceneManager.LoadSceneModel();
+            Debug.Log("[SceneWallProvider] LoadSceneModel(): " + (loaded ? "angefordert" : "abgelehnt"));
+        }
+
         public List<WallPlane> GetWalls()
         {
             walls.Clear();

@@ -398,7 +398,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &701905358
+--- !u!1 &946428792
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -406,8 +406,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 701905360}
-  - component: {fileID: 701905359}
+  - component: {fileID: 946428794}
+  - component: {fileID: 946428793}
   m_Layer: 0
   m_Name: FakeHands
   m_TagString: Untagged
@@ -415,26 +415,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &701905359
+--- !u!114 &946428793
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701905358}
+  m_GameObject: {fileID: 946428792}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c42fdf41dd9e984390867c879bf2862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hintergewerk.Adapters.FakeHandSource
   scenario: RecallApproach
---- !u!4 &701905360
+--- !u!4 &946428794
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701905358}
+  m_GameObject: {fileID: 946428792}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -615,6 +615,7 @@ GameObject:
   - component: {fileID: 1249878680}
   - component: {fileID: 1249878679}
   - component: {fileID: 1249878682}
+  - component: {fileID: 1249878683}
   m_Layer: 0
   m_Name: HGW_Adapters
   m_TagString: Untagged
@@ -681,7 +682,26 @@ MonoBehaviour:
   fallbackPlaneOrigin: {fileID: 0}
   fallbackPlaneNormal: {x: 0, y: 0, z: 1}
   fallbackPlaneSize: {x: 0, y: 0}
-  logWallCount: 0
+  logWallCount: 1
+--- !u!114 &1249878683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249878678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2253d75e3ddc644b8153409c62dd74e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.VR::OVRSceneManager
+  PlanePrefab: {fileID: 0}
+  VolumePrefab: {fileID: 0}
+  PrefabOverrides: []
+  ActiveRoomsOnly: 1
+  VerboseLogging: 0
+  MaxSceneAnchorUpdatesPerFrame: 3
+  _initialAnchorParent: {fileID: 0}
 --- !u!1 &1254399572
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,8 +1267,8 @@ SceneRoots:
   - {fileID: 1645199565}
   - {fileID: 1079818843}
   - {fileID: 2388382}
-  - {fileID: 701905360}
   - {fileID: 289121488}
   - {fileID: 1152321858}
   - {fileID: 1318592300}
   - {fileID: 1657744718}
+  - {fileID: 946428794}

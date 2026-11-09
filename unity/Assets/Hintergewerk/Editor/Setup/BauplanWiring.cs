@@ -4,6 +4,7 @@
 // Aufruf: Menü Hintergewerk → Bauplan verdrahten (offene Szene) — oder script eval
 // 'Hintergewerk.EditorTools.BauplanWiring.WireOpenScene();'
 #if UNITY_EDITOR
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace Hintergewerk.EditorTools
             if (leftHand == null) { Debug.LogError("[Bauplan] TrackingSpace/LeftHandAnchor nicht gefunden."); return; }
 
             var wallProvider = FindOrCreateWallProvider();
+            EnsureSceneManager(wallProvider);
 
             // DrawController (Capture-Szenen) auf DENSELBEN Provider setzen, wenn leer —
             // Snap-Wände = Plan-Wände (Konsistenz); am Gerät echte Scene-Wände (D36).
@@ -113,6 +115,7 @@ namespace Hintergewerk.EditorTools
 
             var wso = new SerializedObject(sceneWalls);
             Set(wso, "fallbackWallProviderBehaviour", mock);
+            wso.FindProperty("logWallCount").boolValue = true; // Spur für Gerätetest: Quelle im Log
             wso.ApplyModifiedPropertiesWithoutUndo();
 
             Debug.Log("[Bauplan] SceneWallProvider " + (created ? "angelegt" : "gefunden") +
@@ -126,6 +129,28 @@ namespace Hintergewerk.EditorTools
             var p = so.FindProperty(field);
             if (p == null) { Debug.LogError("[Bauplan] Feld fehlt: " + field); return; }
             p.objectReferenceValue = val;
+        }
+
+        /// <summary>OVRSceneAnchor entstehen NUR durch einen OVRSceneManager (der instanziiert
+        /// die Scene-Anker der Session als GameObjects) — Fix 09.11.: Ohne ihn blieb GetSceneAnchors
+        /// leer und der Plan fiel immer in den Mock-Fallback, auch am Gerät mit Room Setup.
+        /// Der SceneManager wird an den Wall-Provider gehängt (SceneWallProvider am selben GO).
+        /// Am Gerät fragt er beim ersten Start ggf. den System-Scene-Capture-Dialog ab — das ist
+        /// der D16-Flow (Onboarding über OS-Room-Setup).</summary>
+        static void EnsureSceneManager(Component wallProvider)
+        {
+            var smType = System.Type.GetType("OVRSceneManager, Oculus.VR");
+            if (smType == null) { Debug.LogError("[Bauplan] OVRSceneManager-Typ nicht gefunden (Oculus.VR)."); return; }
+
+            var host = wallProvider != null ? wallProvider.gameObject : null;
+            if (host == null) { Debug.LogError("[Bauplan] Kein Host für den SceneManager."); return; }
+
+            if (Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                    .Any(mb => mb != null && mb.GetType() == smType))
+            { Debug.Log("[Bauplan] OVRSceneManager vorhanden."); return; }
+
+            host.AddComponent(smType);
+            Debug.Log("[Bauplan] OVRSceneManager an " + host.name + " gesetzt (instanziiert die Scene-Anker).");
         }
 
         static System.Type FindAdapterType(string name)

@@ -108,12 +108,19 @@ Szene 04 startet mit Bauplan-Panel an der **linken Hand** (Papier-Quad, Statusze
 - [ ] Screenrecording: „Plan wächst in der Hand" — **Video-Beat für docs/08**
 - [ ] Cold Start < 15 s (M4-Kriterium, docs/01 §2) — Stoppuhr ab App-Icon bis Statuszeile
 
-**Zimmer-Umriss (D41, ab 09.11.) —logcat/adb logcat nach `[SceneWallProvider]` filtern:**
+**Zimmer-Umriss (D41/D42, ab 09.11.) — logcat nach `[SceneWallProvider]` filtern:**
 - [ ] **Mit Room Setup** (vorher einmalig machen — brauchen wir eh für Capture-Snap): Log meldet
-  `N Wände via scene` (echte Wände) → Plan zeigt den **echten Raum-Umriss** (dunkle Grundkanten)
+  `LoadSceneModel(): angefordert` + danach `N Wände via scene` (echte Wände) → Plan zeigt den
+  **echten Raum-Umriss** (dunkle Grundkanten)
 - [ ] **Ohne Room Setup**: Log meldet `via MockRaume_ohneRoomSetup` → Fantasy-Raum 3×3×2,6 m im
   Plan (Demo-Fallback, bewusst sichtbar geloggt — kein Fake „stille Wände")
 - [ ] Export-Pinch: Log `Export] n Objekte, k Wand-Segmente, …` — k > 0 bei echten Wänden;
   PDF zeigt Umriss-Linien + Legende
 - [ ] Szene 03 (Capture): zeichnet jetzt auf die **echten Wände** (Snap = Plan-Wände, D36-Pfad);
   Log `[Bauplan] DrawController auf Wall-Provider gesetzt` ist Editor-Spur, am Gerät egal
+
+**Im XR-Simulator (D42):** Sim-Demo-Räume (Bedroom/GameRoom/LivingRoom) liefern KEINE
+Scene-Anker — nur das Bild. Für den vollen Sim-Beweis: **Meta-XR-Simulator-Fenster → „Scene"-Tab
+→ Room with Furnitures laden** (Menschen-Klick), dann Log `via scene` mit den 4 WALL_FACE-Wänden
+(nicht-orthogonal! Grundriss muss mitgedreht erscheinen). Ohne Toggle: toter Platzhalter-Anker
+(tracked=False) wird übersprungen → Mock greift — **das ist der erwartete ehrliche Zustand**.

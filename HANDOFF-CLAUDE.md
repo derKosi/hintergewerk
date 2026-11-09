@@ -1,5 +1,24 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## Update 09.11. — Abend (D42: Der kritische Gerätetest-Fix, Sim-Demo-Räume getestet)
+
+**Der wichtigste Fund des Tages (D42):** Szenen 03/04 trugen **keinen OVRSceneManager** — ohne ihn
+entstehen NIE OVRSceneAnchor (auch am Gerät mit Room Setup nicht!) UND `OVRSceneManager.Start()`
+lädt das Scene-Model nicht von allein. Beides gefixt: SceneManager kommt per BauplanWiring an den
+Wall-Provider, `SceneWallProvider.Start()` ruft `LoadSceneModel()` (Resultat ehrlich geloggt).
+**Ohne diesen Fix wäre der Umriss am Gerät LEER gewesen — der Gerätetest hätte das erst spät
+gezeigt.** 96/96 Tests.
+
+**Simulator-Demo-Räume (Mathias-Wunsch getestet):**
+- Visuelle Räume Bedroom/GameRoom/LivingRoom sind umschaltbar
+  (`synthetic_env_server/Launch*.bat`, kill synth_env_server.exe vorher) — liefern NUR Bild,
+  KEINE Scene-Anker. GameRoom-Lauf bewiesen: `s04_gameroom_umgebung.png` (App stabil, Panel
+  + Umriss + Statuszeile, Korridor an echter grauer Sim-Wand).
+- Scene-Anker kommen nur per **Simulator-HUD „Scene"-Tab → Room with Furnitures laden**
+  (Menschen-Klick, docs/07 §G). Danach: 4 WALL_FACE-Wände (NICHT-ORTHOGONAL — guter Test
+  für die Plan-Rotation). Ohne Toggle: toter Platzhalter-Anker → wird ehrlich übersprungen
+  (tracked=False) → Mock + Log — Edge-Case bestanden, kein Fake.
+
 ## Update 09.11. — Nachmittag (TOP-10-Runde: Regression gefixt, Szene 03, Animatic)
 
 **Drei Fixes/Erweiterungen auf D41:**
