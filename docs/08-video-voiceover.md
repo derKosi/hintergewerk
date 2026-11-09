@@ -66,3 +66,31 @@ im Plan (Simulator-Beweis: `docs/beweise/2026-11-08-simulator-m3/m13_zweiRaeume.
 - [ ] Session-Banner „X days / Y restarts" echt sein — aus dem Store-Log ablesen, nicht schätzen
 - [ ] Keine Copyright-Musik, keine fremden Marken/logos im Frame (Werkzeug de-branden)
 - [ ] Rohmaterial pro Szene 3 Takes; 3-Minuten-Grenze: 2:40 anpeilen (Puffer)
+
+## Animatic-Trockenübung (09.11., Agent) — Beats × vorhandene Beweis-Fotos
+
+Ziel: Der Schnitt ist VOR dem Dreh montierbar — jeder Beat hat ein Standbild aus den
+Simulator-Beweisen, der Dreh ersetzt es nur durch echtes Passthrough-Material. Gaps sind
+explizit markiert (das NUR-am-Gerät-Gefilmte). Grundlage: `docs/beweise/`.
+
+| Beat | Zeitslot | Standbild (Animatic-Frame) | Gap: nur am Gerät drehbar |
+|---|---|---|---|
+| 0:00 Bohrer/Wand-Stop | 0:00–0:06 | ⟨Echtfilm, kein Ersatz⟩ | Realfilm: geschlossene Wand, Bohrer |
+| 0:06 offene Wand | 0:06–0:14 | ⟨Echtfilm⟩ | Realfilm: offene Wand, Leitung |
+| 0:14 Menü + Typ-Wahl | 0:14–0:22 | ⟨Echtfilm; Menü-Logik bewiesen (Tests)⟩ | Hand-Fläche + radiales Menü am Gerät |
+| 0:22 Zeichnen + Snap | 0:22–0:32 | `s03_plan_zeichnen_mit_umriss.png` (Raumkontext) | Zeichnen in echter offener Wand (Passthrough!) |
+| 0:32 Tiefe + Foto | 0:32–0:40 | ⟨Echtfilm; Panel-Tests bewiesen⟩ | Zwei-Hand-Distanz „4,5 cm" + Foto-Puls |
+| 0:40 Overlay-Return | 0:40–0:50 | `m7_korridore.png` (Korridore sichtbar) | Overlay in frisch gespachtelter echter Wand |
+| 0:50 Eskalation | 0:50–1:05 | `m7_eskalation.png` (Bernstein→Signalrot) | Hand-Näherung + Audio-Ping (FoV-Pan am Gerät hören!) |
+| 0:52 Bauplan-Beat (2b) | 0:52–1:05 | `s04_bauplan_alle_raeume.png` (Plan + Umriss + 2 Räume) | Plan in echter Hand, echter Umriss aus Room Setup |
+| 1:05 Detail-Panel | 1:05–1:25 | ⟨Panel-Unit-Beweise⟩ — am Gerät drehen | Blick+Pinch Auswahl (docs/03 §6-Checkliste) |
+| 1:25 Geist-Modus | 1:25–1:40 | ⟨GESTRICHEN, D38⟩ — Beat streichen oder „What's next" ziehen | — |
+| 1:40 Objektliste | 1:40–1:50 | ⟨Echtfilm/JSON⟩ | Objektliste im Gerät-UI (falls gebaut; sonst Folie) |
+| 1:50 PDF-Export | 1:50–2:05 | PDF-Beispiel (Menü „PDF-Beispiel erzeugen", 4,3 KB) + Export-Logs „k Wand-Segmente" | Export-Pinch am Gerät; PDF auf Laptop daneben filmen |
+| 2:05 What's next | 2:05–2:18 | Folie (kein Foto nötig) | — |
+| 2:18 Endkarte | 2:18–2:30 | Folie: Logo + Tagline | — |
+
+**Erkenntnis aus der Trockenübung:** 6 von 13 Beats haben schon jetzt brauchbare Frames aus den
+Beweisen — der kritische Pfad ist Szene 1 (alles Realfilm/Passthrough, kein Simulator-Ersatz).
+Szene 2b ist das am besten belegte Feature (4 Fotos). Zeitslot „Geist-Modus" frei → Szene 2b
+darf 0:52–1:20 wachsen („plan grows" hat B-Roll-Verdopplung verdient: Zeichnen + Plan im Split).

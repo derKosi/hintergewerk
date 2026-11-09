@@ -1,7 +1,8 @@
 # Submission-Text — Entwurf v1 (Englisch, ~430 Wörter)
 
 > Status: ENTWURF vom 01.11., **v2 08.11.** (Bauplan in der Hand D39, BIM-ready D40,
-> zweiter Raum, FoV-Audio) — nach Feature-Freeze (13.11.) finalisieren:
+> zweiter Raum, FoV-Audio), **v3 09.11.** (Zimmer-Umriss aus Scene-API-Wänden in Plan
+> + PDF, D41) — nach Feature-Freeze (13.11.) finalisieren:
 > Features streichen, die nicht gebaut wurden; „X days / Y restarts" mit echten Werten füllen.
 > Wortlimit 500. Struktur folicht 04-submission.md §3.
 
@@ -23,8 +24,8 @@ Hintergewerk — German for "the work behind" — captures what an open wall rev
 draw a cable run along the open wall. Two hands set the depth. A photo proves it. Under thirty
 seconds per object, the moment becomes permanent: spatially anchored, typed (power, water,
 heating, studs), timestamped, and signed with the installer's name. While you draw, a floor plan
-grows in your other hand — a live top-down view of the room, every corridor appearing as you
-confirm it. Weeks later, the overlay
+grows in your other hand — the actual room, its outline taken from the Quest's room setup, with
+every corridor appearing as you confirm it. Weeks later, the overlay
 returns exactly where you left it — not as a thin line, but as a glowing safety corridor. When
 your hand approaches, the corridor escalates: color, intensity, and a panned audio ping that
 comes from the direction of the hazard. The drill stops
@@ -40,7 +41,8 @@ schema where geometry is stored anchor-relative, so anchor drift and re-localiza
 corrupt a captured run. Snap points, a 5 cm grid and magnetic endpoints absorb hand-tracking
 tremor; a ±5–6 cm safety corridor replaces the illusion of millimeter lines. The in-hand floor
 plan is the same top-down projection that renders the exported PDF — one source of truth, live
-instead of on paper. Whole houses work: every room gets its own plan, one JSON holds them all.
+instead of on paper — and both draw the real room outline from the Quest Scene API walls.
+Whole houses work: every room gets its own plan, one JSON holds them all.
 Spatial anchors
 persist across app restarts and re-entry (demonstrated, not claimed: X days, Y restarts).
 The PDF export is a dependency-free emitter written from scratch — lines, legend, scale bar.

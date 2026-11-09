@@ -22,15 +22,18 @@ Menünamen im Dashboard können abweichen — das Ziel zählt, nicht der Pfad.
 
 ### C. Upload + Invite-URL (~10 min)
 
-- [ ] APK in den Channel „Competition" hochladen (ggf. „Alpha"-Flow)
+Konkrete Klickfolge (09.11. geschärft — Flow lief NIE, M0 ging via adb; erstmals ZUSAMMEN mit D testen):
+- [ ] Meta Developer Dashboard → Backend dieser App („Hintergewerk", `de.bautoolz.hintergewerk`) → **Release Channels / Distribution** (ggf. „Alpha")
+- [ ] Channel „Competition": **Upload** der APK (aktuell: `unity/Builds/hintergewerk.apk`, 09.11. 14:16) — Upload dauert 1–2 min, dann verarbeitet Meta asynchron (Status prüfen, bis „ready")
 - [ ] **Invite-/Share-Link** für den Channel erzeugen und kopieren
-- [ ] Link aufs Handy schicken / QR zeigen
+- [ ] Link aufs Handy schicken / QR zeigen — die Quest muss mit dem **gleichen Meta-Account** verknüpft sein wie die App-Team-Rolle
 
 ### D. Install über den Jurys-Weg (~10 min) — NICHT sideloaden!
 
-- [ ] Quest-Browser → Invite-URL öffnen → Install-Flow durchlaufen
+- [ ] Quest-Browser → Invite-URL öffnen → Install-Flow durchlaufen (ggf. Login/„App anfordern")
 - [ ] App starten: Würfel sichtbar? Hände getrackt (Skeleton sichtbar)?
 - [ ] **Beweis:** Screenrecording oder Foto + Datum
+- [ ] Stolperfalle: „App nicht verfügbar" → meist Channel-Mitgliedschaft/Team-Rolle fehlt oder Build noch in Verarbeitung (10 min warten, erneut)
 
 **M0-Pass =** Start über Invite-URL funktioniert mit Händen.
 **M0-Fail ⇒** sofort Devpost/Meta-Support + Forum-Post (nicht basteln), parallel morgen wiederholen.
@@ -104,3 +107,13 @@ Szene 04 startet mit Bauplan-Panel an der **linken Hand** (Papier-Quad, Statusze
 - [ ] Nicht verortbare Objekte fehlen im Plan, stehen aber in der Statuszeile (Ehrlichkeit)
 - [ ] Screenrecording: „Plan wächst in der Hand" — **Video-Beat für docs/08**
 - [ ] Cold Start < 15 s (M4-Kriterium, docs/01 §2) — Stoppuhr ab App-Icon bis Statuszeile
+
+**Zimmer-Umriss (D41, ab 09.11.) —logcat/adb logcat nach `[SceneWallProvider]` filtern:**
+- [ ] **Mit Room Setup** (vorher einmalig machen — brauchen wir eh für Capture-Snap): Log meldet
+  `N Wände via scene` (echte Wände) → Plan zeigt den **echten Raum-Umriss** (dunkle Grundkanten)
+- [ ] **Ohne Room Setup**: Log meldet `via MockRaume_ohneRoomSetup` → Fantasy-Raum 3×3×2,6 m im
+  Plan (Demo-Fallback, bewusst sichtbar geloggt — kein Fake „stille Wände")
+- [ ] Export-Pinch: Log `Export] n Objekte, k Wand-Segmente, …` — k > 0 bei echten Wänden;
+  PDF zeigt Umriss-Linien + Legende
+- [ ] Szene 03 (Capture): zeichnet jetzt auf die **echten Wände** (Snap = Plan-Wände, D36-Pfad);
+  Log `[Bauplan] DrawController auf Wall-Provider gesetzt` ist Editor-Spur, am Gerät egal

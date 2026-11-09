@@ -1,6 +1,6 @@
 # Devpost-Feldvorlage — fertig zum Einfügen (am 17.11.)
 
-Ziel: Am Abgabetag nichts tippen, nur einfügen. Stand 01.11., Sync 08.11.; nach dem Feature-Freeze (13.11.) einmal komplett gegen die Realität prüfen.
+Ziel: Am Abgabetag nichts tippen, nur einfügen. Stand 01.11., Sync 08.11., Sync 09.11. (Zimmer-Umriss D41); nach dem Feature-Freeze (13.11.) einmal komplett gegen die Realität prüfen.
 
 ## Formularfelder
 
@@ -17,7 +17,7 @@ Ziel: Am Abgabetag nichts tippen, nur einfügen. Stand 01.11., Sync 08.11.; nach
 
 ## Beschreibung (≤ 500 Wörter)
 
-→ Finaltext: `docs/09-submission-text-entwurf.md` (v2, 08.11. — Bauplan + BIM-ready enthalten). Nach dem Feature-Freeze einsetzen: echte Werte für „X Tage / Y Neustarts" und die Liste der tatsächlich gebauten Features (Scope-Leiter: docs/01 §5).
+→ Finaltext: `docs/09-submission-text-entwurf.md` (v3, 09.11. — Bauplan + Zimmer-Umriss + BIM-ready enthalten). Nach dem Feature-Freeze einsetzen: echte Werte für „X Tage / Y Neustarts" und die Liste der tatsächlich gebauten Features (Scope-Leiter: docs/01 §5).
 
 ## Hand Interactions (Feld, EN, fertig zum Einfügen)
 
@@ -29,8 +29,8 @@ Hintergewerk is built hands-first end to end — no controllers, no keyboard. Fi
 2. Tiefe-Geste: cm-Wert zwischen den Händen
 3. Recall: Overlay + eskalierende Warnung (gelb → rot)
 4. Detail-Panel: Foto, Tiefe, Konfidenz, Monteur, Datum
-5. Export: PDF-Grundriss mit Legende und Maßstab
-6. Bauplan in der Hand: Live-Top-Down-Plan mit Statuszeile (D39 — das Kopf-Feature zeigen!)
+5. Export: PDF-Grundriss mit Legende, Maßstab **und Raum-Umriss** (D41)
+6. Bauplan in der Hand: Live-Top-Down-Plan **mit echtem Zimmer-Umriss** + Statuszeile (D39/D41 — das Kopf-Feature zeigen!)
 
 ## Checkliste vor dem Absenden
 
