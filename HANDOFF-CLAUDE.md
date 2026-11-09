@@ -10,7 +10,9 @@
   serialisiert). Am Gerät: Room Setup → echte Wände (Log meldet Quelle, z. B. „via MockRaume…").
 - **Beweis:** `docs/beweise/2026-11-09-bauplan-umriss/` (Plan mit Umriss + Statuszeile;
   PDF-Logs „2 Objekte, 3 Wand-Segmente" raum_1 / „2 Wand-Segmente" raum_2). 96/96 Tests,
-  Selbsttest ✓. **Neue APK nötig** (Umriss + Wiring drin → vor M2/M3-Gerätetest bauen!).
+  Selbsttest ✓. **Neue APK GEBUILT + kopiert** (09.11. 14:16, 49 MB →
+  `unity/Builds/hintergewerk.apk`): Umriss + Wiring sind drin — Gerätetest kann direkt
+  mit dieser APK laufen (M2/M3 + §G).
 
 **Fallstricke (gilt für beide Agenten):**
 - `[Serializable]` fehlte an `WallPlane` → Unity serialisierte Mock-Wände NICHT (YAML ohne
