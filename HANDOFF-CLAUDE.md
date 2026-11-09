@@ -19,8 +19,9 @@
 „k Wand-Segmente") · §C/D Invite-URL-Klickfolge + Stolperfalle · docs/09 **v3** · docs/12
 Sync · Website-Tagebuch 09.11.
 
-**APK:** siehe unten (14:16) — **nach dem Nachmittag-Commit ERNEUT bauen** (Szene-03-Wiring
-+ Fixes drin) und `Builds/hintergewerk.apk` aktualisieren. Stand: siehe git log.
+**APK:** **FINALE gebaut + kopiert (09.11. 14:51, 49 MB → `unity/Builds/hintergewerk.apk`)** —
+enthält D41 + Nachmittag-Fixes (Szene-03-Wiring, Alle-Räume, Stale-Fix). Gerätetest kann
+direkt damit laufen.
 
 ## Update 09.11. (Zimmer-Umriss im Bauplan + PDF — D41)
 
