@@ -67,6 +67,40 @@ im Plan (Simulator-Beweis: `docs/beweise/2026-11-08-simulator-m3/m13_zweiRaeume.
 - [ ] Keine Copyright-Musik, keine fremden Marken/logos im Frame (Werkzeug de-branden)
 - [ ] Rohmaterial pro Szene 3 Takes; 3-Minuten-Grenze: 2:40 anpeilen (Puffer)
 
+## Ein-Rutsch-Drehplan (10.11., Replan docs/01 §3.3) — Test-Block = Dreh-Block
+
+Der Headset-Block (Do 13.11. oder Wochenende) läuft mit der **APK 10.11.** und liefert in EINEM
+Durchlauf alle Smoketest-Beweise UND das Video-Rohmaterial. **Meta-Taste halten → „Video
+aufnehmen" in kurzen Clips pro Schritt** (nicht eine lange Rolle) — Passthrough wird mit
+aufgenommen. USB bleibt dran (logcat + Dateien holen). Danach Clips ziehen:
+`adb shell ls /sdcard/Movies/Captures` → `adb pull <pfad> video_material/`.
+
+| # | Schritt (Protokoll) | Dauer | Aufnehmen → landet als | Beat |
+|---|---|---|---|---|
+| 1 | Invite-URL-Flow (§C/D) | 20 min | Clip „Install über Link" (Beweis M0-Weg; optional B-Roll) | — |
+| 2 | **M1 3× Anker-Persistenz** (§M1) | 15 min | je Run 1 kurzer Clip (Würfel deckungsgleich nach Neustart) | Ehrlichkeits-Banner „X days · Y restarts" (0:40) |
+| 3 | **M2 Capture** (§F) mit Stoppuhr | 5 min | 2–3 Takes „Menü → Zeichnen → Snap → Tiefe → Confirm" | Szene 1: 0:14–0:40 |
+| 4 | **M3 Recall** (§E): Korridore, Eskalation, Export | 10 min | Clips: Overlay-Einblendung · Hand→Bernstein→Rot · Export-Pinch | Szene 2: 0:40–1:05 + Szene 3: 1:50 |
+| 5 | **Detail-Panel** (docs/03 §6): Blick+Pinch | 5 min | Clip „Blick + Pinch → Panel mit Foto/Konfidenz" | Szene 2: 1:05–1:25 |
+| 6 | **Bauplan + Räume** (§G + §H, D43): zwei Räume zeichnen, Plan wächst, Export je Raum | 10 min | Clips: „Plan wächst in der Hand" · „zweiter Raum erscheint im selben Plan" · PDF-Stapel | Szene 2b: 0:52–1:20 (**Kopf-Feature, 2–3 Takes**) |
+| 7 | Cold Start (Stoppuhr < 15 s) | 2 min | Clip App-Icon → Statuszeile (M4-Beweis) | — |
+| 8 | **Szene 1 Realfilm** (Handy-Kamera, separates Setup): Bohrer vor geschlossener Wand (STOPP-Moment) · offene Wand mit Leitung · Kopf/Hände im Passthrough | 30 min | 3 Takes je Einstellung | Szene 1: 0:00–0:14 (kritischer Pfad!) |
+| 9 | Screenshots für Devpost (docs/12-Liste, 7 Items) | 10 min | OS-Screenshots (Meta-Taste kurz) | Submission-Bilder |
+
+**Gesamt: ~1 h 40 min.** Danach am Laptop: `adb pull` (Clips + `hgw_export/` JSON/PDF),
+logcat-Transkript sichern (M1-UUIDs, `[SceneWallProvider]`-Zeilen = Beweise für docs/07).
+
+Wenn der Block auf **Donnerstag** fällt: 14./15.11. = nur Schnitt + VO-Einsprechen (docs/14
+Block F schrumpft von 2,5 h auf ~1,5 h). Wenn am **Wochenende**: Montag 16.11. = Schnitt-Tag,
+Probe-Submission 17.11. bleibt — knapp, aber machbar.
+
+## Fertige Video-Assets (10.11., Agent)
+
+In `docs/video-assets/` (1920×1080, PNG): **Endkarte** (Logo-Wortmarke + Tagline, Beat 2:18) ·
+**„What's next"-Folie** (Beat 2:05, passt zum VO in Szene 3) · **Ehrlichkeits-Banner-Vorlage**
+(„captured … · … days · … restarts", Werte am Drehtag echt einsetzen — docs/08-Regel). Stil folgt
+`website/style.css` (dunkel, Papier-Ton).
+
 ## Animatic-Trockenübung (09.11., Agent) — Beats × vorhandene Beweis-Fotos
 
 Ziel: Der Schnitt ist VOR dem Dreh montierbar — jeder Beat hat ein Standbild aus den

@@ -13,6 +13,12 @@ Zweck: Dein Zeitbudget bis zum **18.11.2026, 21:00 CET** — in Zeitboxen geschn
 
 ## Blöcke (Soll)
 
+> **Update 10.11. (Replan docs/01 §3.3):** Die Blöcke C+D+E laufen gebündelt als **EIN
+> Headset-Block (~1 h 40 min)** am **Do 13.11. oder Wochenende** — mit der APK 10.11.
+> (D43 drin) und parallel als Video-Dreh (docs/08 „Ein-Rutsch-Drehplan"): Jeder
+> Testschritt erzeugt zugleich den Clip fürs Video. Block F wird dadurch zum
+> Schnitt-Tag (~1,5 h statt 2,5 h).
+
 ### Block A — Repo anlegen + Push · ✅ ERLEDIGT (04.11. — Mathias hat selbst gepusht)
 1. github.com → privat Repo `hintergewerk` (ohne README)
 2. Settings → SSH keys → Key aus `docs/10 §B` einfügen

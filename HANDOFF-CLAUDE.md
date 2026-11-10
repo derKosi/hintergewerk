@@ -16,13 +16,15 @@
 
 **Neue APK gebaut (10.11. 14:33, 49 MB → `unity/Builds/hintergewerk.apk`) — enthält D41+D42+D43.**
 
-**Sequencing für Mathias (wichtig):**
-1. **Heute:** Headset-Block mit der APK **09.11. 17:14** planen (M1/M2/M3 — das Riskanteste,
-   unverändert testen). Details stehen in meiner Session-Antwort oben (Checkliste §1).
-2. **Danach:** Neue APK **10.11.** installieren → docs/07 **§H** (Raum-Zuordnung, ~5 min):
-   Log `[DrawController] Raum-Anker erstellt: <uuid> (Raum <roomId>)` — je Raum andere UUID,
-   Export liefert je Raum ein PDF. Screenrecording dabei = Video-Material („plan grows",
-   zwei Räume in einem Plan).
+**Sequencing für Mathias (aktualisiert 10.11. Nachmittag — Block verschoben, docs/01 §3.3):**
+Der Headset-Block läuft **Do 13.11. oder Wochenende** — EIN Durchlauf mit der **APK 10.11.**
+(D41+D42+D43 drin), der zugleich der Video-Dreh ist: **docs/08 „Ein-Rutsch-Drehplan"**
+(Schritt-Tabelle: Test ↔ Clip ↔ Video-Beat, ~1 h 40 min, OS-Aufnahme in kurzen Clips).
+Kernreihenfolge im Block: Invite-URL (§C/D) → M1 3× → M2 → M3 → Detail-Panel → §G+§H
+(Bauplan+Räume, 2–3 Takes = Kopf-Feature) → Cold Start → Szene-1-Realfilm → Devpost-
+Screenshots. Video-Assets liegen fertig in `docs/video-assets/` (Endkarte, What's-next,
+Banner-Vorlage). **M1-NO-GO-Fallback ist entscheidungsreif** (docs/07 unten) — falls M1
+kippt, direkt ausführbar statt erst zu entwerfen.
 
 **Fallstrick (2. Vorkommen, Memory-Eintrag aktualisiert):** Editor-Import-Klemme schlägt auch
 MITTEILICH in einer Session zu: `test run` lieferte Ergebnisse gegen eine STALE Assembly

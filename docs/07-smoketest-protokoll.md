@@ -141,3 +141,32 @@ logcat prüfen:
       (`hintergewerk_<uuid>_….pdf`), JSON global mit beiden Räumen
 - [ ] **Ehrlichkeits-Fall:** Wand OHNE Raum-Erkennung → Objekt landet in `raum_1`
       (Standard), Log sagt nicht mehr als es weiß — kein erfundener Raum
+
+---
+
+## M1-NO-GO-Fallback (10.11. entscheidungsreif geschrieben — NUR bei Bedarf aktivieren)
+
+**Trigger:** M1 Run 1 **oder** Run 2 schlägt fehl (Würfel nicht deckungsgleich / Anker lädt
+nicht). Run 3 allein ist KEIN Fail (Raumwechsel darf ≤ 5 cm versetzen). Da der Block erst
+Do/WE läuft (docs/01 §3.3), steht der Fallback VOR dem Test fest — im Fail-Fall sofort
+ausführbar, kein Entwurf mehr nötig.
+
+**Was dann gebaut wird (~0,5–1 Tag Agent-Arbeit, vor Abgabe 18.11. machbar):**
+1. `RecallController`-Fallback: Objekt ohne geladenen Anker-Pose wird nicht mehr nur
+   „nicht verortbar" — es hängt sich an die **Scene-Wand** (SceneWallProvider): Objekt-Punkte
+   werden auf die handnächste Wand projiziert und im **Raum-Bezug** angezeigt (Ersatz-Anker
+   = Raumursprung aus dem Scene-Model). Korridor bleibt, Konfidenz fällt sichtbar auf
+   **estimated** (Ehrlichkeitsregel: der Umweg wird angezeigt, nicht versteckt).
+2. „Anker neu setzen"-Geste (Szene 04): Blick auf die Wand + Pinch = frischer Anker an dieser
+   Stelle; Objekte im Raum werden gegen ihn neu verortet (prov→UUID-Map bleibt, UUIDs ändern
+   sich nicht — nur die Pose-Qualität).
+3. Tests: Fallback-Pfad unit-getestet (Pose fehlt → Wand-Ref her), Regression auf den
+   Normal-Pfad; Story-Anpassung Video (Beat 0:40): „anchored — and if an anchor ever loses
+   its grip, the room itself holds the memory until you re-pin it."
+
+**Was NICHT ändert:** Datenmodell (anker-lokal bleibt — der Fallback ersetzt nur die
+Pose-Quelle bei der Anzeige), Capture-Flow, Export. Schema bleibt v1.
+
+**Story-Satz (ehrlich, für Video/Submission):** „Hintergewerk trusts anchors but verifies:
+if an anchor cannot re-localize, the room's own walls carry the memory — visibly marked
+estimated until re-pinned."

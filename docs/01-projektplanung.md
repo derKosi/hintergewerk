@@ -92,6 +92,27 @@ SnapEngine wiederverwendet) — Risko Winkelauflösung auf kleinem Panel.
 **Statusbilanz 08.11. (ehrlich):** Code dem Plan **voraus** (M3 vorgezogen, 65/65 Tests), Gerät-Verifikation
 **hinterher** (M1 seit 02.11. überfällig — GO/NO-GO D6 noch offen). Der Engpass sind Headset-Stunden, nicht Code.
 
+## 3.3 Replanung 10.11. — Headset-Block verschoben (Do 13.11. oder Wochenende)
+
+Der geplante Headset-Block (war: 08.–10.11.) verschiebt sich auf **Donnerstag 13.11. oder das
+Wochenende 14./15.11.** — Mathias' Kalender, nicht Plan-Drift. Konsequenzen (alle beherrschbar):
+
+1. **Eine APK statt zwei:** Der Block läuft komplett mit der **APK 10.11.** (D41+D42+D43,
+   103/103 Tests) — die Zwei-APK-Sequenz („erst 09.11. testen, dann Upgrade") entfällt.
+2. **Test-Block = Dreh-Block:** Ein Durchlauf liefert BEIDES — Smoketest-Beweise (docs/07 §C–H)
+   **und** das Video-Rohmaterial (docs/08 „Ein-Rutsch-Drehplan": jeder Schritt mappt auf einen
+   Clip + Video-Beat). 14./15.11. werden dann zu **Schnitt-Tagen** (+ Szene-1-Realfilm, der
+   braucht das Headset auch).
+3. **Risiko verschärft — M1-Fallback vorbereitet:** Kippt M1 erst am Wochenende, bleibt kaum
+   Laufweg für einen Umbau. Der R1-Fallback ist deshalb **jetzt entscheidungsreif** geschrieben
+   (docs/07 „M1-NO-GO-Fallback"): Re-Lock über Scene-Wände statt blinder Anker, ~0,5–1 Tag
+   Code, Story-Anpassung im Video/Text. Trigger: M1 Run 1+2 fail.
+4. **Freeze 13.11. bleibt** — er friert CODE ein, nicht Verifikation. D43 ist mit den
+   103/103 Tests freeze-reif; der Gerätetest bestätigt danach nur noch. Kein weiteres Feature
+   vor dem Block (Scope-Leiter gilt).
+5. **Invite-URL (Jury-Pfad) bleibt der erste Schritt im Block** — falls der Flow klemmt, bleibt
+   für Support/Puffer mehr Zeit als bei einem Block am 17.11.
+
 ## 4. Risiko-Register
 
 | # | Risiko | Impact | Gegenmaß | Entscheidung bis |

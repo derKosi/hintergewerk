@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hintergewerk — Video-Assets (1920×1080)</title>
+<style>
+  :root{
+    --bg:#12100d; --paper:#f3ead9; --ink:#1c1712; --accent:#e05a2b; --dim:#8d7f6c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scrollbar-width:none}
+  ::-webkit-scrollbar{display:none}
+  body{background:#000;font-family:Georgia,'Times New Roman',serif;color:var(--paper)}
+  .slide{width:1920px;height:1080px;position:relative;background:var(--bg);overflow:hidden}
+  .grain{position:absolute;inset:0;background:
+    radial-gradient(ellipse at 70% 30%, rgba(224,90,43,.07), transparent 55%),
+    radial-gradient(ellipse at 20% 80%, rgba(243,234,217,.05), transparent 50%)}
+  .frame{position:absolute;inset:64px;border:2px solid rgba(243,234,217,.28)}
+  .frame::after{content:"";position:absolute;inset:10px;border:1px solid rgba(243,234,217,.14)}
+
+  /* ---- Endkarte ---- */
+  .endcard{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center}
+  .wordmark{font-size:128px;letter-spacing:.14em;font-weight:400;color:var(--paper)}
+  .rule{width:420px;height:2px;background:var(--accent);margin:44px 0}
+  .tagline{font-size:44px;font-style:italic;color:var(--paper);opacity:.92}
+  .sub{margin-top:40px;font-size:26px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim)}
+
+  /* ---- What's next ---- */
+  .next{padding:150px 190px;height:100%;display:flex;flex-direction:column;justify-content:center}
+  .kicker{font-size:30px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:34px}
+  .next h1{font-size:76px;font-weight:400;margin-bottom:56px;color:var(--paper)}
+  .list{list-style:none;font-size:42px;line-height:1.75;color:var(--paper)}
+  .list li::before{content:"— ";color:var(--accent)}
+  .list .dim{color:var(--dim)}
+
+  /* ---- Banner-Vorlage ---- */
+  .bannerwrap{display:flex;align-items:center;justify-content:center;height:100%}
+  .banner{background:rgba(18,16,13,.82);border:1px solid rgba(243,234,217,.35);
+    padding:26px 54px;font-family:'Courier New',monospace;font-size:34px;letter-spacing:.06em;color:var(--paper)}
+  .banner .live{display:inline-block;width:16px;height:16px;border-radius:50%;background:var(--accent);
+    margin-right:22px;vertical-align:middle}
+  .label{position:absolute;bottom:88px;left:0;right:0;text-align:center;font-size:22px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+</style>
+</head>
+<body>
+
+<!-- 1 · Endkarte (Beat 2:18) -->
+<div class="slide" id="endcard">
+  <div class="grain"></div><div class="frame"></div>
+  <div class="endcard">
+    <div class="wordmark">HINTERGWERK</div>
+    <div class="rule"></div>
+    <div class="tagline">What your walls once showed, they will always remember.</div>
+    <div class="sub">The work behind the surface</div>
+  </div>
+</div>
+
+<!-- 2 · What's next (Beat 2:05) -->
+<div class="slide" id="next">
+  <div class="grain"></div><div class="frame"></div>
+  <div class="next">
+    <div class="kicker">What's next</div>
+    <h1>The memory grows with the house.</h1>
+    <ul class="list">
+      <li>Scanner readings join the wall memory</li>
+      <li>Whole houses — staircases, floors, gardens</li>
+      <li>LiDAR imports &amp; IFC export for planning firms</li>
+      <li class="dim">Agents that propose routing around what the house already knows</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 3 · Ehrlichkeits-Banner-Vorlage (Beat 0:40 — Werte am Drehtag echt einsetzen) -->
+<div class="slide" id="banner">
+  <div class="grain"></div>
+  <div class="bannerwrap">
+    <div class="banner"><span class="live"></span>captured &lt;date&gt; · &lt;N&gt; days · &lt;M&gt; app restarts</div>
+  </div>
+  <div class="label">Vorlage — Werte aus dem Store-Log, nicht geschätzt (docs/08-Regel)</div>
+</div>
+
+</body>
+</html>
