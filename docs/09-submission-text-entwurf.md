@@ -2,7 +2,8 @@
 
 > Status: ENTWURF vom 01.11., **v2 08.11.** (Bauplan in der Hand D39, BIM-ready D40,
 > zweiter Raum, FoV-Audio), **v3 09.11.** (Zimmer-Umriss aus Scene-API-Wänden in Plan
-> + PDF, D41) — nach Feature-Freeze (13.11.) finalisieren:
+> + PDF, D41), **v4 10.11.** (Auto-Raum-Zuordnung D43: Räume sortieren sich beim Zeichnen
+> selbst) — nach Feature-Freeze (13.11.) finalisieren:
 > Features streichen, die nicht gebaut wurden; „X days / Y restarts" mit echten Werten füllen.
 > Wortlimit 500. Struktur folicht 04-submission.md §3.
 
@@ -42,7 +43,8 @@ corrupt a captured run. Snap points, a 5 cm grid and magnetic endpoints absorb h
 tremor; a ±5–6 cm safety corridor replaces the illusion of millimeter lines. The in-hand floor
 plan is the same top-down projection that renders the exported PDF — one source of truth, live
 instead of on paper — and both draw the real room outline from the Quest Scene API walls.
-Whole houses work: every room gets its own plan, one JSON holds them all.
+Whole houses work: rooms sort themselves — each captured run joins the room whose wall it
+touched, every room gets its own plan, one JSON holds them all.
 Spatial anchors
 persist across app restarts and re-entry (demonstrated, not claimed: X days, Y restarts).
 The PDF export is a dependency-free emitter written from scratch — lines, legend, scale bar.

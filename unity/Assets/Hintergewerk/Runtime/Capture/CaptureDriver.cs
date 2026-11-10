@@ -32,16 +32,22 @@ namespace Hintergewerk.Capture
         readonly Func<IReadOnlyList<(Vector3 pos, string id)>> endpointsSource;
         readonly Func<(string anchorId, Pose pose)> anchorSource;
         readonly string roomId;
+        readonly Func<WallPlane, string> roomIdSource; // D43: Raum aus der gesnappten Wand (Scene/Mock), optional
         bool pinchWasDown;
 
-        // Lazy je Objekt aufgelöst: erster gezeichneter Punkt fixiert Anker + Pose.
+        // Lazy je Objekt aufgelöst: erster gezeichneter Punkt fixiert Anker + Pose + Raum.
         string activeAnchorId;
         Pose? activeAnchorPose;
+        string objectRoomId; // null = noch nicht aufgelöst (Raum wird mit dem ersten Punkt fixiert)
 
         /// <summary>Anker-Pose des laufenden Objekts (nach erstem Punkt) — für die Zeichnen-Vorschau.</summary>
         public Pose? ActiveAnchorPose => activeAnchorPose;
         /// <summary>Anker-Id des laufenden Objekts (leer, bis der erste Punkt gesetzt wurde).</summary>
         public string ActiveAnchorId => activeAnchorId;
+
+        /// <summary>Raum des laufenden Objekts (D43): nach dem ersten Punkt die Wand-Raum-Id,
+        /// vorher der Szenen-Standard. Statuszeilen/Anker-Registrierung lesen das.</summary>
+        public string ActiveRoomId => objectRoomId ?? roomId;
 
         public SnapResult LastSnap { get; private set; }
 
@@ -63,7 +69,8 @@ namespace Hintergewerk.Capture
             Func<WallPlane> planeSource,
             Func<IReadOnlyList<(Vector3 pos, string id)>> endpointsSource,
             Func<(string anchorId, Pose pose)> anchorSource,
-            string roomId)
+            string roomId,
+            Func<WallPlane, string> roomIdSource = null)
         {
             this.session = session ?? throw new ArgumentNullException(nameof(session));
             this.store = store;
@@ -73,6 +80,7 @@ namespace Hintergewerk.Capture
             this.endpointsSource = endpointsSource;
             this.anchorSource = anchorSource;
             this.roomId = roomId ?? "";
+            this.roomIdSource = roomIdSource;
         }
 
         public void Tick(HandFrame right, HandFrame left)
@@ -84,13 +92,16 @@ namespace Hintergewerk.Capture
                 case CapturePhase.Zeichnen:
                     if (pinch && !pinchWasDown)
                     {
-                        ResolveAnchor(); // lazy beim ersten Punkt (danach fixiert fürs Objekt)
+                        // Reihenfolge wichtig (D43): Wand → Raum → Anker. Der Anker wird mit der
+                        // AUFGELOSTEN Raum-Id registriert (DrawController liest ActiveRoomId).
                         var plane = planeSource?.Invoke() ?? new WallPlane
                         {
                             Point = Vector3.zero,
                             Normal = Vector3.forward,
                             Label = "wall"
                         };
+                        ResolveRoom(plane); // lazy beim ersten Punkt (danach fixiert fürs Objekt)
+                        ResolveAnchor();    // lazy beim ersten Punkt (danach fixiert fürs Objekt)
                         var r = snap.Snap(right.IndexTip, plane, endpointsSource?.Invoke());
                         var local = WorldToLocal(activeAnchorPose ?? new Pose(Vector3.zero, Quaternion.identity), r.Point);
                         session.AddPoint(local.x, local.y, local.z);
@@ -109,7 +120,7 @@ namespace Hintergewerk.Capture
                 case CapturePhase.Bestaetigen:
                     if (pinch && !pinchWasDown)
                     {
-                        var o = session.Confirm(activeAnchorId, roomId);
+                        var o = session.Confirm(activeAnchorId, objectRoomId ?? roomId);
                         if (o != null && store != null)
                         {
                             store.AddTracked(o);
@@ -118,6 +129,7 @@ namespace Hintergewerk.Capture
                         }
                         activeAnchorId = null;
                         activeAnchorPose = null; // nächstes Objekt löst frisch auf
+                        objectRoomId = null;     // nächstes Objekt wählt den Raum neu (Raumwechsel beim Umgehen)
                     }
                     break;
             }
@@ -125,6 +137,21 @@ namespace Hintergewerk.Capture
             // Nach JEDER Phase (auch Idle!) buchen — sonst friert die Flanke ein und der
             // erste Pinch nach einem Confirm wird verschluckt (Bug aus Test ZweiObjekte_…).
             pinchWasDown = pinch;
+        }
+
+        /// <summary>
+        /// D43 — automatische Raum-Zuordnung: Die gesnappte Wand trägt RoomId/RoomLabel (Scene API:
+        /// OVRSceneRoom-Zuordnung + semantisches Label; Mock: Mock-Raum). Der Raum wird beim ersten
+        /// Punkt fixiert und im Store angelegt (nur Räume MIT Objekten existieren → kein leerer
+        /// Raum im Export). Ohne RoomId an der Wand gilt der Szenen-Standard-Raum — nichts erfunden.
+        /// </summary>
+        void ResolveRoom(WallPlane plane)
+        {
+            if (objectRoomId != null) return; // einmal pro Objekt fixiert
+            var id = roomIdSource?.Invoke(plane);
+            objectRoomId = string.IsNullOrEmpty(id) ? roomId : id;
+            var label = string.IsNullOrEmpty(plane.RoomLabel) ? objectRoomId : plane.RoomLabel;
+            store?.EnsureRoom(objectRoomId, label, 0); // idempotent; bestehendes Label bleibt
         }
 
         /// <summary>Anker + Pose lazy auflösen (einmal pro Objekt). Ohne Quelle: Identity (Punkte bleiben wie gezeichnet).</summary>

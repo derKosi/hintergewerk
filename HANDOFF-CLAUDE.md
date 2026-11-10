@@ -1,5 +1,43 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## Update 10.11. (D43: Automatische Raum-Zuordnung — „neuer Raum wird erkannt")
+
+**Neu gebaut (Mathias-Frage: „Raum scannen → als neuen Raum im Bauplan eintragen"):**
+- `WallPlane.RoomId/RoomLabel` (SDK-frei, kein Schema-Change) · `SceneWallProvider` leitet die
+  Raum-Zuordnung aus der **OVRSceneRoom-Elternkette** ab (Raum-Id = Room-Anchor-UUID, stabil
+  über Sessions; Label aus der semantischen Raum-Klassifikation, z. B. `LIVING_ROOM`).
+- **Capture sortiert selbst:** `CaptureDriver.ResolveRoom` fixiert den Raum beim ERSTEN Punkt
+  (wie den Anker), `DrawController` registriert Anker + Statuszählung im aufgelösten Raum.
+  Räume existieren nur MIT Objekten → „alle Räume"-Export bleibt ohne leere PDFs.
+- **Ehrliche Fälle:** Wand ohne Raum-Erkennung → Standard `raum_1` (Log sagt es). Mock-Raum
+  trägt `raum_1`/„Mock-Raum" → Simulator verhält sich wie das Gerät. Mehrstock bleibt
+  Roadmap (floor-Feld existiert im Schema, bleibt 0).
+- **103/103 Tests** (7 neue RoomAssignment-Tests) · Selbsttest ✓ · 0 `error CS`.
+
+**Neue APK gebaut (10.11. 14:33, 49 MB → `unity/Builds/hintergewerk.apk`) — enthält D41+D42+D43.**
+
+**Sequencing für Mathias (wichtig):**
+1. **Heute:** Headset-Block mit der APK **09.11. 17:14** planen (M1/M2/M3 — das Riskanteste,
+   unverändert testen). Details stehen in meiner Session-Antwort oben (Checkliste §1).
+2. **Danach:** Neue APK **10.11.** installieren → docs/07 **§H** (Raum-Zuordnung, ~5 min):
+   Log `[DrawController] Raum-Anker erstellt: <uuid> (Raum <roomId>)` — je Raum andere UUID,
+   Export liefert je Raum ein PDF. Screenrecording dabei = Video-Material („plan grows",
+   zwei Räume in einem Plan).
+
+**Fallstrick (2. Vorkommen, Memory-Eintrag aktualisiert):** Editor-Import-Klemme schlägt auch
+MITTEILICH in einer Session zu: `test run` lieferte Ergebnisse gegen eine STALE Assembly
+(gleiche Zeilennummer + gleicher IL-Offset im NUnit-Stacktrace trotz geänderter Datei).
+**Telltale:** Stacktrace-Zeilennummer passt nicht zur Datei. Fix bleibt: Editor sauber
+neustarten (`unity close <pfad>` positional, dann `unity open` + `status --until-ready`).
+
+**Noch offen (Reihenfolge gilt):** Animatic-Gaps rendern · docs/12 final + docs/09 trimmen ·
+Website-Tagebuch · M1-Ergebnis abwarten (NO-GO → R1-Fallback).
+
+**Nicht-committed, Editor-generiert (beim nächsten Commit prüfen, nicht blind übernehmen):**
+`unity/ProjectSettings/ProjectSettings.asset` (2 Preloaded-Asset-Einträge — Meta Setup Tool
+„Required fix") · `unity/Assets/StreamingAssets/` (Input-System RuntimeActionBindings.json).
+Beides harmlos, aber nicht Teil von D43 — bewusst außen gelassen.
+
 ## Update 09.11. — Abend (D42: Der kritische Gerätetest-Fix, Sim-Demo-Räume getestet)
 
 **APK FINALE (09.11. 17:14, 49 MB → `unity/Builds/hintergewerk.apk`):** enthält D41 + D42

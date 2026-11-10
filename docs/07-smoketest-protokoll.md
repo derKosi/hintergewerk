@@ -124,3 +124,20 @@ Scene-Anker — nur das Bild. Für den vollen Sim-Beweis: **Meta-XR-Simulator-Fe
 → Room with Furnitures laden** (Menschen-Klick), dann Log `via scene` mit den 4 WALL_FACE-Wänden
 (nicht-orthogonal! Grundriss muss mitgedreht erscheinen). Ohne Toggle: toter Platzhalter-Anker
 (tracked=False) wird übersprungen → Mock greift — **das ist der erwartete ehrliche Zustand**.
+
+### H. Automatische Raum-Zuordnung (D43, ab 10.11. — ~5 min, im selben Block wie §G)
+
+Szene 03 (Capture) sortiert gezeichnete Objekte jetzt **selbst in den Raum der gesnappten Wand**
+(Scene API: `OVRSceneRoom`-Zuordnung, Raum-Id = Room-Anchor-UUID; Mock: `raum_1`). Zweiter Raum
+im OS-Room-Setup anlegen (oder vorhandenen nutzen) → um die Ecke gehen → dort zeichnen →
+logcat prüfen:
+
+- [ ] Log beim ersten Punkt je Raum: `[DrawController] Raum-Anker erstellt: <uuid> (Raum <roomId>)`
+      — roomId JE Raum unterschiedlich (UUID), im Mock `raum_1`
+- [ ] `[SceneWallProvider] … Räume: <uuid8>(<LABEL>)` — Label aus der Raum-Klassifikation
+      (z. B. LIVING_ROOM); ohne Klassifikation: nur UUID, „keine erkannt" = Fallback aktiv
+- [ ] `[DrawController] Objekt in Raum <roomId> gespeichert` — Objekt A (Raum 1) ≠ Objekt B (Raum 2)
+- [ ] Szene 04: Statuszeile zählt beide Räume; Export-Pinch → **je Raum ein PDF**
+      (`hintergewerk_<uuid>_….pdf`), JSON global mit beiden Räumen
+- [ ] **Ehrlichkeits-Fall:** Wand OHNE Raum-Erkennung → Objekt landet in `raum_1`
+      (Standard), Log sagt nicht mehr als es weiß — kein erfundener Raum

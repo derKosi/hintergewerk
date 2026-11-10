@@ -15,21 +15,24 @@ namespace Hintergewerk.Mocks
         /// <summary>
         /// Rechteckiger Raum (4 Wände mit Maßen) — für Simulator/Demo, wenn kein Room Setup
         /// vorliegt. Origin = Raum-Eckpunkt (min x/z), y = Boden. Wände zeigen ins Innere.
+        /// D43: Alle Wände tragen dieselbe Raum-Zuordnung (raum_1 / „Mock-Raum") — der Capture
+        /// sortiert Mock-Objekte damit genauso automatisch wie Scene-Wände am Gerät.
         /// </summary>
-        public static MockWallProvider Room(Vector3 originMin, float widthX, float depthZ, float heightY)
+        public static MockWallProvider Room(Vector3 originMin, float widthX, float depthZ, float heightY,
+            string roomId = "raum_1", string roomLabel = "Mock-Raum")
         {
             var h = Vector3.up * (heightY * 0.5f);
             var p = new MockWallProvider();
             p.Walls = new List<WallPlane>
             {
                 // Süd (z = min), Normale +z (nach innen); Zentrum = Kantenmitte + halbe Höhe
-                new WallPlane { Point = originMin + new Vector3(widthX * 0.5f, 0f, 0f) + h, Normal = Vector3.forward,  Label = "wall", Size = new Vector2(widthX, heightY) },
+                new WallPlane { Point = originMin + new Vector3(widthX * 0.5f, 0f, 0f) + h, Normal = Vector3.forward,  Label = "wall", Size = new Vector2(widthX, heightY), RoomId = roomId, RoomLabel = roomLabel },
                 // Nord (z = max), Normale −z
-                new WallPlane { Point = originMin + new Vector3(widthX * 0.5f, 0f, depthZ) + h, Normal = Vector3.back,     Label = "wall", Size = new Vector2(widthX, heightY) },
+                new WallPlane { Point = originMin + new Vector3(widthX * 0.5f, 0f, depthZ) + h, Normal = Vector3.back,     Label = "wall", Size = new Vector2(widthX, heightY), RoomId = roomId, RoomLabel = roomLabel },
                 // West (x = min), Normale +x
-                new WallPlane { Point = originMin + new Vector3(0f, 0f, depthZ * 0.5f) + h, Normal = Vector3.right,   Label = "wall", Size = new Vector2(depthZ, heightY) },
+                new WallPlane { Point = originMin + new Vector3(0f, 0f, depthZ * 0.5f) + h, Normal = Vector3.right,   Label = "wall", Size = new Vector2(depthZ, heightY), RoomId = roomId, RoomLabel = roomLabel },
                 // Ost (x = max), Normale −x
-                new WallPlane { Point = originMin + new Vector3(widthX, 0f, depthZ * 0.5f) + h, Normal = Vector3.left,    Label = "wall", Size = new Vector2(depthZ, heightY) },
+                new WallPlane { Point = originMin + new Vector3(widthX, 0f, depthZ * 0.5f) + h, Normal = Vector3.left,    Label = "wall", Size = new Vector2(depthZ, heightY), RoomId = roomId, RoomLabel = roomLabel },
             };
             return p;
         }

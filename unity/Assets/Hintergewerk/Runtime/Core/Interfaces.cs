@@ -22,6 +22,12 @@ namespace Hintergewerk.Core
         /// <summary>Flächenmaße (x = Breite, y = Höhe) in Metern; 0/0 = unbekannt
         /// (dann ist die Ebene unendlich — daraus wird bewusst KEIN Umriss abgeleitet).</summary>
         public Vector2 Size;
+        /// <summary>Raum, zu dem die Ebene gehört (D43) — leer = unbekannt (Capture fällt
+        /// dann auf den Szenen-Standard-Raum zurück; nichts wird erfunden).</summary>
+        public string RoomId;
+        /// <summary>Menschliches Raum-Label (z. B. "LIVING_ROOM" aus der Scene-API-Klassifikation,
+        /// "Mock-Raum") — leer = unbekannt, dann gilt die Raum-Id als Label.</summary>
+        public string RoomLabel;
     }
 
     /// <summary>Ein Hand-Snapshot, pro Frame abgefragt.</summary>

@@ -94,13 +94,16 @@ namespace Hintergewerk.Capture
                 () => (System.Collections.Generic.IReadOnlyList<(Vector3 pos, string id)>)
                     CollectEndpoints(),
                 ResolveAnchor,
-                roomId);
+                roomId,
+                plane => plane.RoomId); // D43: Raum kommt von der gesnappten Wand (Scene/Mock); leer → Standard
 
             // Beweisfoto (D8): nach Confirm anhängen — fehlgeschlagen wird ehrlich gemeldet.
             // (NACH der Driver-Konstruktion — NRE-Fix 07.11.: Subscription saß vorher davor.)
             driver.ObjectConfirmed += o =>
             {
-                var count = store.ObjectsInRoom(roomId).Count;
+                var roomNow = driver.ActiveRoomId; // D43: zählt im Raum des Objekts, nicht im Szenen-Standard
+                Debug.Log("[DrawController] Objekt in Raum " + roomNow + " gespeichert");
+                var count = store.ObjectsInRoom(roomNow).Count;
                 if (evidence == null) { SetStatus(Strings.Format("capture.saved_room", count)); return; }
                 evidence.CaptureFor(o.id, path =>
                 {
@@ -134,7 +137,7 @@ namespace Hintergewerk.Capture
         System.Collections.Generic.IReadOnlyList<(Vector3 pos, string id)> CollectEndpoints()
         {
             var list = new System.Collections.Generic.List<(Vector3, string)>();
-            foreach (var o in store.ObjectsInRoom(roomId))
+            foreach (var o in store.ObjectsInRoom(driver != null ? driver.ActiveRoomId : roomId))
             {
                 if (o.orphaned || o.geometry.Count < 2) continue;
                 if (!anchors.TryGetPose(o.anchor_id, out var pose)) continue;
@@ -191,7 +194,7 @@ namespace Hintergewerk.Capture
             else if (session.Phase == CapturePhase.Zeichnen && driver.LastSnap != null && driver.LastSnap != shownSnap)
             {
                 shownSnap = driver.LastSnap;
-                SetStatus(Strings.Get("capture.point_snapped") + " · " + Strings.Format("list.count", store.ObjectsInRoom(roomId).Count, roomId));
+                SetStatus(Strings.Get("capture.point_snapped") + " · " + Strings.Format("list.count", store.ObjectsInRoom(driver.ActiveRoomId).Count, driver.ActiveRoomId));
             }
 
             FinishFrame(pinchDown, open);
@@ -258,14 +261,16 @@ namespace Hintergewerk.Capture
             menuWasOpen = menuOpen;
         }
 
-        /// <summary>Raum-Anker lazily beim ersten Bedarf (erster Punkt) erzeugen + im Store registrieren.</summary>
+        /// <summary>Raum-Anker lazily beim ersten Bedarf (erster Punkt) erzeugen + im Store registrieren.
+        /// D43: im AUFGELOSTEN Raum des Objekts (driver.ActiveRoomId — ResolveRoom läuft VOR ResolveAnchor).</summary>
         string GetOrCreateAnchorId()
         {
             if (anchors == null) return "";
+            var room = driver != null ? driver.ActiveRoomId : roomId;
             var head = Camera.main != null ? Camera.main.transform : transform;
-            var id = anchors.CreateAnchor(new Pose(head.position, Quaternion.identity), roomId);
-            store.RegisterAnchor(id, roomId);
-            Debug.Log("[DrawController] Raum-Anker erstellt: " + id);
+            var id = anchors.CreateAnchor(new Pose(head.position, Quaternion.identity), room);
+            store.RegisterAnchor(id, room);
+            Debug.Log("[DrawController] Raum-Anker erstellt: " + id + " (Raum " + room + ")");
             return id;
         }
 

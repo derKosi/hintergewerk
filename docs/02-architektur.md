@@ -98,6 +98,7 @@ Wir bauen **keinen** Scan→BIM→Blueprint-Pfad — die Logik ist umgedreht: **
 
 - **Erfassung:** Quest Room Setup / Scene API liefert Wände, Decke, Boden als klassifizierte Ebenen + Scene Mesh. Einmal pro Raum, OS-seitig. Das ist unser kompletter „Scan“.
 - **Verortung:** Objekte werden live an die realen Ebenen gesnappt (SnapEngine) und an Ankern fixiert. Kein vorausgesetztes Bestandsmodell nötig.
+- **Raum-Zuordnung automatisch (D43):** Die gesnappte Wand trägt `RoomId`/`RoomLabel` aus der Scene API (`OVRSceneRoom`-Elternkette, Raum-Id = Room-Anchor-UUID, Label aus der Klassifikation); der erste gezeichnete Punkt sortiert das Objekt in diesen Raum. Ein im Room Setup neu angelegter Raum wird so ohne Bedien-Schritt erfasst. Wände ohne erkannten Raum fallen auf den Standard-Raum (nichts erfunden); Stockwerke: `floor` im Datenmodell vorhanden, Erfassung ist Roadmap (§7.1).
 - **Grundriss als Export:** Erst beim Export erzeugt der `MapRenderer` den Plan — Schnitt durch das Scene Mesh auf ~1 m Höhe → Wandpolygon, Objekte top-down projiziert, Maßstab + Legende → PDF/PNG. Der Plan wächst mit dem Gedächtnis und zeigt nur, was erfasst wurde (Ehrlichkeitsregel).
 - **Grenzen der Hardware:** Depth API = Laufzeit-Tiefe, kein persistenter Raumscan; Passthrough von Apps nicht aufzeichnungsfähig (vgl. R3); keine LiDAR-Hardware auf Quest 3.
 
