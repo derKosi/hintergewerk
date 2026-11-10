@@ -31,6 +31,7 @@ Hintergewerk is built hands-first end to end — no controllers, no keyboard. Fi
 4. Detail-Panel: Foto, Tiefe, Konfidenz, Monteur, Datum
 5. Export: PDF-Grundriss mit Legende, Maßstab **und Raum-Umriss** (D41)
 6. Bauplan in der Hand: Live-Top-Down-Plan **mit echtem Zimmer-Umriss** + Statuszeile (D39/D41 — das Kopf-Feature zeigen!)
+7. Zwei Räume, automatisch sortiert: Objekte aus zwei Räumen im einen Plan (D43 — „rooms sort themselves")
 
 ## Checkliste vor dem Absenden
 
