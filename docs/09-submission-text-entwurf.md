@@ -52,8 +52,8 @@ The PDF export is a dependency-free emitter written from scratch — lines, lege
 **Hand interactions — and why we love the future of VR**
 
 Hands are the honest input for this job: an installer holds nothing but eyes and fingers.
-Our grammar is five gestures — pinch to draw and confirm, two-hand distance to measure depth,
-palm-to-body for the menu, swipe to undo, gaze-plus-pinch to inspect. Nothing else. Hands-first
+Our grammar is four gestures — pinch to draw and confirm, two-hand distance to measure depth,
+palm-to-body for the menu, gaze-plus-pinch to inspect. Nothing else. Hands-first
 forced us to design precision as a system property instead of a motor skill — and that made the
 product better.
 

@@ -29,8 +29,8 @@
   *(Ehrlichkeits-Banner: „captured Nov 2 · 14 days · 9 app restarts")*
 - 0:50 — *(Hand nähert sich dem Korridor: gelb → rot, Audio-Ping)*
   **VO:** „Not a thin line — a safety corridor. As your hand approaches, it escalates. The drill stops before the pipe does."
-- 1:05 — *(Blick + Pinch auf Objekt → Detail-Panel: Foto, Tiefe, „gemessen", Monteur, Datum)*
-  **VO:** „Look and pinch: the original photo, the depth, who documented it, and when. Measured — or estimated. We never guess silently."
+- 1:05 — *(Blick + Pinch auf Objekt → Detail-Panel: Foto-Zustand, Tiefe, Konfidenz, Monteur, Datum)*
+  **VO:** „Look and pinch: the photo state, the depth, who documented it, and when. Estimated until measured — and we say which. We never guess silently."
 - 1:25 — *(Geist-Modus-Moment falls gebaut: Möbel-Ghost wegschieben)*
   **VO:** „Furniture in the way? Push the ghosts aside — the wall is yours again."
 

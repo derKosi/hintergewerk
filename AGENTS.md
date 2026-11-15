@@ -32,7 +32,7 @@ Der Einstieg für jede (neue) Session — Mensch oder Agent. Vor der ersten Änd
 2. Menü **Hintergewerk → PDF-Beispiel erzeugen** → PDF ansehen (Legende, Maßstab, Korridor)
 3. Window → General → **Test Runner** → EditMode → alle Tests grün
 
-Erst danach SDK-Adapter bauen (`Runtime/Adapters/`). Der Simulator reicht für Iteration; das Gerät ist die letzte Wahrheit.
+Erst danach SDK-Adapter bauen (`Adapters/`). Der Simulator reicht für Iteration; das Gerät ist die letzte Wahrheit.
 
 ## Arbeitsspielweise
 
