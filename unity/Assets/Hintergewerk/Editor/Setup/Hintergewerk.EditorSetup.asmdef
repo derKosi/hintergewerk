@@ -3,6 +3,8 @@
   "rootNamespace": "Hintergewerk.EditorTools",
   "references": [
     "Hintergewerk.Runtime",
+    "Oculus.VR",
+    "Oculus.VR.Scripts.Editor",
     "Unity.XR.Management",
     "Unity.XR.Management.Editor",
     "Unity.XR.OpenXR",
