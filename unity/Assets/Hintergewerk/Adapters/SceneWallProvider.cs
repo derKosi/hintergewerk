@@ -133,9 +133,16 @@ namespace Hintergewerk.Adapters
                 walls.Add(wall);
             }
 
-            // Fallback 1: ganzer Provider (Simulator/Demo ohne Room Setup — z. B. Mock-Raum;
-            // dessen Wände tragen SEINE Raum-Id, der Capture sortiert genauso automatisch)
-            if (walls.Count == 0 && fallbackWallProviderBehaviour != null)
+            // Fallback 1: ganzer Provider — NUR im Editor/Simulator (D44, 15.11. Gerätebefund:
+            // am Gerät mit Passthrough snappten Pinches auf unsichtbare Mock-Wände am Tracking-
+            // Ursprung → „Zeichnen geht nicht". Erfundene Wände im echten Raum = Verstoß gegen
+            // die Ehrlichkeitsregel). Am Gerät gilt: ohne Room Setup gibt es KEINE Wände.
+#if UNITY_ANDROID && !UNITY_EDITOR
+            bool mockFallbackErlaubt = false;
+#else
+            bool mockFallbackErlaubt = true;
+#endif
+            if (walls.Count == 0 && mockFallbackErlaubt && fallbackWallProviderBehaviour != null)
             {
                 fallbackProvider = fallbackWallProviderBehaviour as IWallProvider;
                 if (fallbackProvider != null)

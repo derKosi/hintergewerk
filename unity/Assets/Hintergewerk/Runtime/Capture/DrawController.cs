@@ -51,6 +51,11 @@ namespace Hintergewerk.Capture
         SnapResult shownSnap;
         LineRenderer preview;
         GameObject snapMarker;
+        // D44 (15.11., Gerätebefund): ohne Wände (Room Setup fehlt/USE_SCENE verweigert)
+        // zeichnet der Driver auf eine GESCHÄTZTE Ebene vor dem Nutzer — sichtbar als
+        // Ghost-Fläche, einmal pro Capture festgehalten (Punkte dürfen nicht wandern).
+        WallPlane? fallbackPlane;
+        GameObject ghostPlane;
 
         void Start()
         {
@@ -79,7 +84,7 @@ namespace Hintergewerk.Capture
                 {
                     var ws = walls.GetWalls();
                     if (ws == null || ws.Count == 0)
-                        return new WallPlane { Point = Vector3.zero, Normal = Vector3.forward, Label = "default" };
+                        return EnsureFallbackPlane();
                     if (ws.Count == 1) return ws[0];
                     // Mehrere Wände (Scene API): die Ebene mit dem geringsten Abstand zur Hand
                     WallPlane best = ws[0];
@@ -117,6 +122,48 @@ namespace Hintergewerk.Capture
             anchors.LoadAll(ok => SetStatus(ok
                 ? Strings.Format("recall.loaded", store.Data.objects.Count)
                 : Strings.Get("demo.load_failed")));
+        }
+
+        /// <summary>Ehrlicher Fallback ohne Wände (D44): Ebene durch die Handspitze, senkrecht
+        /// zur Blickrichtung — genau DA zeichnet der Nutzer, nichts springt weg. Einmal pro
+        /// Capture festgehalten (sonst wandern Punkte), mit Ghost-Fläche sichtbar gemacht.
+        /// Objekte bleiben „geschätzt" (CaptureSession default) — kein Wand-Anspruch, kein Fake.</summary>
+        WallPlane EnsureFallbackPlane()
+        {
+            if (fallbackPlane.HasValue) return fallbackPlane.Value;
+            var cam = Camera.main;
+            Vector3 fwd = cam != null ? cam.transform.forward : transform.forward;
+            var plane = new WallPlane
+            {
+                Point = lastTip,
+                Normal = (-fwd).normalized, // Normale zeigt in den Raum = zum Nutzer (Konvention SceneWallProvider)
+                Label = "estimated",
+                Size = Vector2.zero, // unbekannt → bewusst kein Umriss
+                RoomId = "", RoomLabel = ""
+            };
+            fallbackPlane = plane;
+            ShowGhostPlane(plane);
+            Debug.Log("[DrawController] Keine Wände — geschätzte Zeichenebene vor dir aktiv (Objekte = geschätzt).");
+            return plane;
+        }
+
+        void ShowGhostPlane(WallPlane p)
+        {
+            HideGhostPlane();
+            ghostPlane = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            Destroy(ghostPlane.GetComponent<Collider>());
+            ghostPlane.name = "GhostZeichenebene";
+            ghostPlane.transform.position = p.Point;
+            ghostPlane.transform.rotation = Quaternion.LookRotation(p.Normal);
+            ghostPlane.transform.localScale = new Vector3(1.6f, 1.6f, 1f);
+            var r = ghostPlane.GetComponent<Renderer>();
+            r.material = new Material(Shader.Find("Sprites/Default"));
+            r.material.color = new Color(1f, 0.72f, 0.25f, 0.16f); // Bernstein, schwach = „geschätzt"
+        }
+
+        void HideGhostPlane()
+        {
+            if (ghostPlane != null) { Destroy(ghostPlane); ghostPlane = null; }
         }
 
         /// <summary>Raum-Anker lazily erzeugen + im Store registrieren; Liefert (Id, Pose) für den Driver.</summary>
@@ -183,6 +230,13 @@ namespace Hintergewerk.Capture
                 autoStarted = true;
                 session.BeginTypwahl();
                 session.SelectType(startType);
+            }
+
+            // Capture beendet → geschätzte Ebene freigeben (nächste Zeichnung fängt neu an)
+            if (session.Phase == CapturePhase.Idle && fallbackPlane.HasValue)
+            {
+                fallbackPlane = null;
+                HideGhostPlane();
             }
 
             driver.Tick(right, left);
