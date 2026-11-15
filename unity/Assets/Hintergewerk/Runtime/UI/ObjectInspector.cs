@@ -15,7 +15,9 @@ namespace Hintergewerk.UI
     {
         [SerializeField] MonoBehaviour anchorProviderBehaviour;  // OvrAnchorProvider (Posen der Korridore)
         [SerializeField] MonoBehaviour handSourceBehaviour;      // OvrHandSource (Pinch)
-        [SerializeField] string roomId = "raum_1";
+        // Leer = alle Räume (Fix 15.11., Befund C): seit D43 tragen Objekte am Gerät die
+        // Scene-Raum-UUID — ein fixierter "raum_1" zeigt am Gerät garantiert nichts.
+        [SerializeField] string roomId = "";
         [SerializeField] TextMesh panelText;                     // Welt-Panel (leer = nur Log)
         [SerializeField] TextMesh statusText;                    // optional: Hinweise
         [SerializeField] float selectRadiusM = 0.15f;            // „Trefferschärfe" des Blicks
@@ -102,7 +104,10 @@ namespace Hintergewerk.UI
         {
             corridorLines.Clear();
             candidates.Clear();
-            foreach (var o in store.ObjectsInRoom(roomId))
+            IEnumerable<TrackedObject> targets = string.IsNullOrEmpty(roomId)
+                ? store.Data.objects
+                : store.ObjectsInRoom(roomId);
+            foreach (var o in targets)
             {
                 if (o.orphaned || !anchors.TryGetPose(o.anchor_id, out var pose)) continue;
                 corridorLines.Add((o.id, CorridorFactory.ToWorld(o, pose)));
