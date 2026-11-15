@@ -1,5 +1,65 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## Update 15.11. — Abend (D44/D45: Passthrough steht · die FAKE-HAND-Falle im Start-Scene · HANDOFF MITTENDRIN)
+
+**NÄCHSTER SCHRITT (Faden direkt aufnehmen, Tool ist schon gebaut):**
+`HandQuelleFix.FixOffeneSzene()` findet in 03/04 KEINE OVRHand — weil die Szenen **gar keine
+Hand-Prefabs haben** (nur das „FakeHands"-Test-GO). Also: Hand-Prefabs in 03/04 instanziieren.
+**Rezept (aus Szene 02 abgeleitet):** Prefab-GUIDs = `OVRCustomHandPrefab_R` =
+`e201a24a09e942042b93390d0444d728`, `OVRCustomHandPrefab_L` =
+`c6a74181d4000004887343fb87b3c53a` (liegen in `Library/PackageCache/com.meta.xr.sdk.core@4c2eac90db2d/Prefabs/`).
+In `HandQuelleFix.FixOffeneSzene()` ergänzen: wenn keine OVRHand gefunden →
+`AssetDatabase.LoadAssetAtPath` geht NICHT (PackageCache) → `AssetDatabase.GetAssetPath` über
+GUID: `AssetDatabase.GUIDToAssetPath("e201a...")` → Prefab laden → unter `LeftHandAnchor` /
+`RightHandAnchor` des Rigs instanziieren (Rig finden über Anchors: `GameObject.Find("LeftHandAnchor")`
+→ `transform.root`). Danach läuft der bestehende Rest des Tools (OvrHandSource-Felder, Fake-Löschung,
+DrawController/SceneSwitcher-Umklemmung) unverändert durch. **Danach `HandBonesFix` auf 03/04
+ausweiten** (Rezept: `skeleton.TryAutoMapBonesByName()`, steht in Editor/Setup/HandBonesFix.cs —
+Methode `FixSzene(path)` generalisieren oder FixSzene03/04 ergänzen) — sonst falsch ausgerichtete
+Hände wie am 15.11. vormittags in Szene 02. Dann Tests (106), Commit, Build, install, launch.
+**Szene 02 ist bereits gefixt und gespeichert** (OvrHandSource am „Meta XR Rig" + SceneSwitcher nachgerüstet).
+
+**Der Tagesfund (D45, noch NICHT im Entscheidungslog):** Szene 03 (jetzt Start-Scene!) ist die
+automatisierte Selbsttest-Szene: `DrawController.handSourceBehaviour` saß am **FakeHandSource**
+(skriptetes DrawSquare-Szenario). Am Gerät liefen dadurch FAKE-Daten („Tiefe 19,56 cm" steigt
+linear +0,027/frame = Fake-PingPong; „Objekt gespeichert · 3" ohne echte Hand), echte Gesten
+wurden ignoriert. Szene 04 hat AUCH FakeHands-GO + keine echten Hand-Prefabs. Szene 03 hatte
+KEINEN SceneSwitcher und KEIN HUD → Nutzer saß fest („ich weiß nichtmal in welcher szene ich bin").
+Handoff 15.11. 21:30 MITTENDRIN: Szene 02 gefixt+gespeichert, 03/04 offen (s. o.).
+
+**Schon fertig und committed heute (APK 20:28 installiert):**
+- **Passthrough läuft am Gerät** (Mathias bestätigt „passthrough ja") — Dreifach-Fix des Nachmittags:
+  ProjektConfig `insightPassthroughSupport=Required` + OVRPassthroughLayer in 03/04 + Augen-Kameras
+  `SolidColor alpha=0` (Skybox clear malt opak ÜBER Passthrough — der Killer).
+- D44: Mock-Fallback nur noch im Editor (`#if UNITY_ANDROID && !UNITY_EDITOR`), am Gerät KEINE
+  erfundenen Wände mehr (vorher snappten Pinches auf unsichtbare Mock-Wände am Tracking-Ursprung
+  → „ich kann nichts zeichnen"). DrawController-Fallback: geschätzte Ebene DURCH die Handspitze,
+  senkrecht zur Blickrichtung, bernsteinfarbene Ghost-Fläche sichtbar, pro Capture festgehalten,
+  Objekte bleiben Konfidenz „geschätzt" (CaptureSession-Default). 106/106 Tests.
+- SceneSwitcher: HUD-Nachlauf (`CreateHud` in Update wenn Camera.main nachkommt) + Start-Log mit
+  Szene (uncommitted — zusammen mit dem Rest von D45 committen).
+- `Editor/Setup/HandQuelleFix.cs` (NEU, uncommitted): FixAlle() öffnet 02/03/04, stellt
+  OvrHandSource am Rig (Reflection — Adapter leben in Assembly-CSharp, aus EditorSetup-asmdef
+  nicht referenzierbar!), löscht FakeHandSources, klemmt DrawController+SceneSwitcher um, rüstet
+  SceneSwitcher nach. v207-Fallstrick: `OVRHand.HandType` existiert NICHT → Seite über
+  Anchor-Namen (LeftHandAnchor/RightHandAnchor) in der Elternkette.
+
+**Gerät-Wissen heute (für den Gerätetest morgen):**
+- USE_SCENE wurde am 15.11. 20:22 ANGEFRAGT (Log: permissioncontroller-Dialog) aber VERWEIGERT
+  (`granted=false`, dumpsys gecheckt). Beim nächsten App-Start kommt der Dialog wieder → **ZULASSEN**.
+- Mathias nutzt **stationäre Begrenzung** → es gibt KEIN OS-Raum-Modell, also keine Wände.
+  Wände gibt es NUR nach **Raum-Setup** (Guardian → Raumeinrichtung, läuft kabellos am Gerät,
+  ~3 Min). Das ist der erste Schritt jedes Gerätetests: USB ab → Raum-Setup → USB an → App
+  starten → USE_SCENE zulassen → Log muss `[SceneWallProvider] N Wände via scene` zeigen.
+- Ohne Wände zeichnet es jetzt ehrlich auf der geschätzten Ebene (Bernstein-Fläche vor dir).
+- Capture-Erfolg-Log: `[DrawController] Objekt in Raum … gespeichert` + `Gespeichert · N Objekte`.
+
+**Menschen-Punkte NICHT vergessen (Sa/So sind Edit-Tage, Abgabe Di 18.11. 21:00 CET):**
+- **Invite-URL** auf dem Meta-Dashboard anlegen (asynchron, 24–48 h Puffer!) — jedes weitere Zögern frisst Puffer.
+- **Video-Material: 0 Min** — JEDER funktionierende Geräteschritt sofort mit OS-Aufnahme drehen
+  (docs/08 Ein-Rutsch-Drehplan). Passthrough läuft jetzt — das ist Drehmaterial!
+- M1-Anker-Persistenz (3×: zeichnen → App killen → Neustart → Korridore deckungsgleich?) — Kern-GO/NO-GO, offen.
+
 ## Update 10.11. (D43: Automatische Raum-Zuordnung — „neuer Raum wird erkannt")
 
 **Neu gebaut (Mathias-Frage: „Raum scannen → als neuen Raum im Bauplan eintragen"):**

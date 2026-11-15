@@ -30,11 +30,16 @@ namespace Hintergewerk.UI
                 enabled = false;
                 return;
             }
+            Debug.Log("[SceneSwitcher] Aktiv in Szene " + SceneName(SceneManager.GetActiveScene().buildIndex) + " (Build-Index " + SceneManager.GetActiveScene().buildIndex + ")");
             CreateHud();
         }
 
         void Update()
         {
+            // HUD-Nachlauf (15.11.): Camera.main kann beim Start noch null sein (XR-Kamera
+            // kommt später) — dann war das HUD stumm weg (kein Fehler, keine Anzeige).
+            if (hud == null && Camera.main != null) CreateHud();
+
             bool palm = hands.PalmFacingBody(left: false);
             palmTimer = palm ? palmTimer + Time.deltaTime : 0f;
 
