@@ -57,8 +57,48 @@ namespace Hintergewerk.Adapters
             var sceneManager = GetComponent<OVRSceneManager>();
             if (sceneManager == null) { Debug.Log("[SceneWallProvider] Kein OVRSceneManager am GO — Scene-Anker bleiben aus."); return; }
             sceneManager.VerboseLogging = true;
+            // Fix 15.11. (Befund A): OVRCameraRig hat requestScenePermissionOnStartup=0 und nichts
+            // sonst fordert USE_SCENE an → LoadSceneModel() scheiterte still, ohne Room-Setup-Daten
+            // griff der Mock-Raum (erfundene Wände — Verstoß gegen die Ehrlichkeitsregel). Jetzt:
+            // fehlende Berechtigung erkennen, ANFRAGEN, bei Erteilung das Scene-Model laden.
+            sceneManager.LoadSceneModelFailedPermissionNotGranted += OnScenePermissionMissing;
             var loaded = sceneManager.LoadSceneModel();
             Debug.Log("[SceneWallProvider] LoadSceneModel(): " + (loaded ? "angefordert" : "abgelehnt"));
+        }
+
+        void OnScenePermissionMissing()
+        {
+            StartCoroutine(RequestScenePermissionThenLoad());
+        }
+
+        System.Collections.IEnumerator RequestScenePermissionThenLoad()
+        {
+            var sceneManager = GetComponent<OVRSceneManager>();
+            if (sceneManager == null) yield break;
+            var permission = OVRPermissionsRequester.ScenePermission;
+#if UNITY_ANDROID && !UNITY_EDITOR
+            if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(permission))
+            {
+                Debug.Log("[SceneWallProvider] USE_SCENE fehlt — Berechtigung wird angefragt …");
+                var granted = false; var done = false;
+                var callbacks = new UnityEngine.Android.PermissionCallbacks();
+                callbacks.PermissionGranted += _ => { granted = true; done = true; };
+                callbacks.PermissionDenied += _ => done = true;
+                UnityEngine.Android.Permission.RequestUserPermission(permission, callbacks);
+                yield return new WaitUntil(() => done);
+                if (!granted)
+                {
+                    // Ehrlich: ohne Scene-Daten bleibt nur der sichtbar geloggte Fallback — kein Fake.
+                    Debug.LogWarning("[SceneWallProvider] USE_SCENE verweigert — Fallback-Ebene aktiv (siehe Log-Quelle).");
+                    yield break;
+                }
+                Debug.Log("[SceneWallProvider] USE_SCENE erteilt.");
+            }
+#else
+            Debug.Log("[SceneWallProvider] Editor/Simulator: USE_SCENE-Anfrage übersprungen.");
+#endif
+            var loaded = sceneManager.LoadSceneModel();
+            Debug.Log("[SceneWallProvider] LoadSceneModel() nach Berechtigung: " + (loaded ? "angefordert" : "abgelehnt"));
         }
 
         public List<WallPlane> GetWalls()

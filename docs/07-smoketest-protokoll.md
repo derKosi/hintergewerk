@@ -109,6 +109,11 @@ Szene 04 startet mit Bauplan-Panel an der **linken Hand** (Papier-Quad, Statusze
 - [ ] Cold Start < 15 s (M4-Kriterium, docs/01 §2) — Stoppuhr ab App-Icon bis Statuszeile
 
 **Zimmer-Umriss (D41/D42, ab 09.11.) — logcat nach `[SceneWallProvider]` filtern:**
+- [ ] **NEU 15.11. (Fix Befund A — USE_SCENE-Berechtigung): Beim ERSTEN App-Start erscheint der
+  System-Dialog „Scene-Berechtigung zulassen"** → zulassen (persistiert). Log danach:
+  `USE_SCENE fehlt — Berechtigung wird angefragt …` → `USE_SCENE erteilt.` → `LoadSceneModel() nach
+  Berechtigung: angefordert`. Ohne den Fix blieb die Berechtigung NIE angefragt (`…OnStartup: 0`)
+  → immer Mock-Fallback, auch MIT Room Setup.
 - [ ] **Mit Room Setup** (vorher einmalig machen — brauchen wir eh für Capture-Snap): Log meldet
   `LoadSceneModel(): angefordert` + danach `N Wände via scene` (echte Wände) → Plan zeigt den
   **echten Raum-Umriss** (dunkle Grundkanten)
