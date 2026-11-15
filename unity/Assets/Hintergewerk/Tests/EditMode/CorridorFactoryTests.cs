@@ -100,5 +100,39 @@ namespace Hintergewerk.Tests
             Assert.Greater(t.Scale, 0f);
             Assert.Less(t.Scale, 10f, "Mindest-Spanne 0,5 m verhindert Extrem-Zoom.");
         }
+
+        // --- NormalForView (Fix 15.11., Befund B: senkrechte Leitungen standen als Kante ab) ---
+
+        static readonly List<Vector3> VertikaleLinie = new()
+        {
+            new Vector3(0f, 0.8f, 0.5f), new Vector3(0f, 1.6f, 0.5f)
+        };
+
+        [Test]
+        public void NormalForView_SenkrechteLinie_NimmtKameraRichtung()
+        {
+            // Kamera vor der Wand (−z): Normale muss horizontal zur Kamera zeigen —
+            // vorher fiel sie auf Welt-X → Band stand senkrecht von der Wand ab.
+            var n = CorridorFactory.NormalForView(VertikaleLinie, new Vector3(1, 0, 0), new Vector3(0f, 1.6f, -2f));
+            Assert.That(n.x, Is.EqualTo(0f).Within(1e-4f));
+            Assert.That(n.z, Is.LessThan(-0.99f), "Normale zur Kamera (−z), nicht Welt-X.");
+        }
+
+        [Test]
+        public void NormalForView_HorizontaleLinie_Unveraendert()
+        {
+            var waende = new Vector3(0, 1, 0);
+            var pts = new List<Vector3> { new Vector3(-0.5f, 1.2f, 0.5f), new Vector3(0.5f, 1.2f, 0.5f) };
+            var n = CorridorFactory.NormalForView(pts, waende, new Vector3(0f, 1.6f, -2f));
+            Assert.That(n, Is.EqualTo(waende), "Nicht-senkrechte Linien: Bewährtes Verhalten bleibt.");
+        }
+
+        [Test]
+        public void NormalForView_OhneKamera_Unveraendert()
+        {
+            var fallback = new Vector3(1, 0, 0);
+            var n = CorridorFactory.NormalForView(VertikaleLinie, fallback, null);
+            Assert.That(n, Is.EqualTo(fallback), "Ohne Kamera (EditMode-Test) kein Verhalten ändern.");
+        }
     }
 }

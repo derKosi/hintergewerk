@@ -87,7 +87,10 @@ namespace Hintergewerk.Recall
                 }
                 var pts = CorridorFactory.ToWorld(o, pose);
                 var half = Mathf.Max(0.01f, (float)o.safety_corridor_cm / 100f);
-                var go = CorridorFactory.CreateOverlay("Corridor_" + o.id, pts, half, PlaneNormalFromPoints(pts), CorridorMaterialFor(o));
+                var nrm = CorridorFactory.NormalForView(
+                    pts, PlaneNormalFromPoints(pts),
+                    Camera.main != null ? Camera.main.transform.position : (Vector3?)null);
+                var go = CorridorFactory.CreateOverlay("Corridor_" + o.id, pts, half, nrm, CorridorMaterialFor(o));
                 corridors.Add((o.id, pts));
                 corridorRenderers[o.id] = (go.GetComponent<MeshRenderer>(), o.type);
                 totalObjects++;

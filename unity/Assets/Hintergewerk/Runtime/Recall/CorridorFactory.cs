@@ -92,6 +92,25 @@ namespace Hintergewerk.Recall
             return n * (sign * eps);
         }
 
+        /// <summary>Ebenen-Normale fürs Band ansehen-korrigieren (Fix 15.11., Befund B): Das
+        /// Capture erzeugt genau 2 Punkte → die Wand-Normale ist aus den Punkten nicht ableitbar.
+        /// Bei senkrechten Leitungen fiel der Fallback auf Welt-X → das Band stand SENKRECHT von
+        /// der Wand ab und war von vorn nur als Kante sichtbar (gerade der Bohrer-Szenen-Fall!).
+        /// Für senkrechte Linien liegt die beste verfügbare Wandnähe in der horizontalen Richtung
+        /// zur Kamera. Nicht-senkrechte Linien bleiben unverändert (Simulator-Beweis 08.11.).
+        /// Reine Geometrie, ohne Kamera-Zugriff — unit-testbar.</summary>
+        public static Vector3 NormalForView(IReadOnlyList<Vector3> pts, Vector3 planeNormal, Vector3? cameraPos)
+        {
+            if (pts == null || pts.Count < 2 || !cameraPos.HasValue) return planeNormal;
+            var dir = pts[pts.Count - 1] - pts[0];
+            if (dir.sqrMagnitude < 1e-8f) return planeNormal;
+            if (Mathf.Abs(Vector3.Dot(dir.normalized, Vector3.up)) <= 0.9f) return planeNormal;
+            var toCam = cameraPos.Value - pts[0];
+            toCam.y = 0f;
+            if (toCam.sqrMagnitude < 1e-6f) return planeNormal;
+            return toCam.normalized;
+        }
+
         /// <summary>Anker-lokale Punkte in Weltpositionen auflösen (Konvention §2 Architektur).</summary>
         public static List<Vector3> ToWorld(Data.TrackedObject o, Pose anchorPose)
         {
