@@ -24,6 +24,7 @@ namespace Hintergewerk.Adapters
         // damit HouseDataStore-Objekte über App-Neustarts hinweg ihren Anker finden.
         readonly Dictionary<string, string> provToUuid = new();
         readonly Dictionary<string, Pose> knownPoses = new();
+        readonly HashSet<Guid> gebundeneUuids = new();
         string MapPath => Path.Combine(Application.persistentDataPath, "anker_map.json");
 
         public IEnumerable<string> KnownAnchorIds => knownPoses.Keys;
@@ -99,13 +100,17 @@ namespace Hintergewerk.Adapters
             int loaded = 0;
             foreach (var u in result.Value)
             {
+                // Fix 16.11. (Simulator-Befund): DrawController UND BauplanPanel rufen LoadAll —
+                // die zweite Bindung warf InvalidOperationException („already bound") und dublte
+                // die Anker-GOs. UUID-Dedupe: wer schon gebunden ist, wird übersprungen.
+                if (!gebundeneUuids.Add(u.Uuid)) continue;
                 var go = new GameObject("Anchor_" + u.Uuid.ToString("N").Substring(0, 12));
                 var component = go.AddComponent<OVRSpatialAnchor>();
                 u.BindTo(component);
                 StartCoroutine(TrackAfterLocalized(component, u.Uuid));
                 loaded++;
             }
-            Debug.Log($"[AnchorProvider] {loaded}/{uuids.Count} Anker gebunden — Posen folgen beim Lokalisieren.");
+            Debug.Log($"[AnchorProvider] {loaded}/{uuids.Count} Anker gebunden ({gebundeneUuids.Count} gesamt) — Posen folgen beim Lokalisieren.");
             onDone?.Invoke(loaded > 0);
         }
 

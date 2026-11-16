@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c42fdf41dd9e984390867c879bf2862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hintergewerk.Adapters.FakeHandSource
-  scenario: DrawSquare
+  scenario: DemoDreiLeitungen
 --- !u!4 &1114815127
 Transform:
   m_ObjectHideFlags: 0
@@ -519,6 +519,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1927531237}
   - component: {fileID: 1927531236}
+  - component: {fileID: 1927531238}
   m_Layer: 0
   m_Name: HGW_Walls
   m_TagString: Untagged
@@ -558,6 +559,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1927531238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927531235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2253d75e3ddc644b8153409c62dd74e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.VR::OVRSceneManager
+  PlanePrefab: {fileID: 0}
+  VolumePrefab: {fileID: 0}
+  PrefabOverrides: []
+  ActiveRoomsOnly: 1
+  VerboseLogging: 0
+  MaxSceneAnchorUpdatesPerFrame: 3
+  _initialAnchorParent: {fileID: 0}
 --- !u!1001 &2027450067
 PrefabInstance:
   m_ObjectHideFlags: 0

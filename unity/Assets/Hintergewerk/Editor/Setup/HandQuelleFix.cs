@@ -21,6 +21,9 @@ namespace Hintergewerk.EditorTools
     public static class HandQuelleFix
     {
         const string SzeneOrdner = "Assets/Hintergewerk/Scenes/";
+        // Hand-Prefabs aus dem SDK (PackageCache — GUID ist die stabile Adresse)
+        const string PrefabGuidLinks = "c6a74181d4000004887343fb87b3c53a"; // OVRCustomHandPrefab_L
+        const string PrefabGuidRechts = "e201a24a09e942042b93390d0444d728"; // OVRCustomHandPrefab_R
         static readonly string[] Szenen = { "02_AnkerTest.unity", "03_CaptureAutoTest.unity", "04_Recall.unity" };
 
         public static string FixAlle()
@@ -45,7 +48,14 @@ namespace Hintergewerk.EditorTools
             var ohsType = Type.GetType("Hintergewerk.Adapters.OvrHandSource, Assembly-CSharp")
                 ?? throw new InvalidOperationException("OvrHandSource nicht gefunden (Assembly-CSharp).");
             var hands = UnityEngine.Object.FindObjectsOfType<OVRHand>(true);
-            if (hands.Length == 0) return "KEINE OVRHand gefunden — Rig vorhanden?";
+            if (hands.Length == 0)
+            {
+                // 0) Szenen 03/04 haben KEINE Hand-Prefabs (nur „FakeHands"-Test-GO) —
+                //    SDK-Hand-Prefabs unter die Rig-Anchors instanziieren (D45-Nachtrag 16.11.)
+                var neu = HandPrefabsInstanziieren(bericht);
+                if (!neu) return "KEINE OVRHand und keine Hand-Anchors gefunden — Rig fehlt?";
+                hands = UnityEngine.Object.FindObjectsOfType<OVRHand>(true);
+            }
 
             OVRHand links = null, rechts = null;
             foreach (var h in hands)
@@ -96,7 +106,43 @@ namespace Hintergewerk.EditorTools
             soS.ApplyModifiedPropertiesWithoutUndo();
             bericht.AppendLine("SceneSwitcher " + (ssWarDa ? "verkabelt" : "nachgerüstet") + " → echte Hand-Quelle");
 
+            // 4) Bone-Bindings der Skeletons nachziehen (Rezept HandBonesFix: das SDK-Prefab
+            //    liefert UNGBUNDEN aus — sonst schräge/„dritte" Hände wie am 15.11. vormittags)
+            foreach (var skel in UnityEngine.Object.FindObjectsByType<OVRCustomSkeleton>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                skel.TryAutoMapBonesByName();
+                EditorUtility.SetDirty(skel);
+                int mapped = 0;
+                foreach (var b in skel.CustomBones) if (b != null) mapped++;
+                bericht.AppendLine($"Bones {skel.gameObject.name}: {mapped}/{skel.CustomBones.Count}");
+            }
+
             return bericht.ToString();
+        }
+
+        /// <summary>Hand-Prefabs unter LeftHandAnchor/RightHandAnchor instanziieren.
+        /// True, wenn mindestens ein Anchor da war und bestückt wurde.</summary>
+        static bool HandPrefabsInstanziieren(System.Text.StringBuilder bericht)
+        {
+            bool irgendein = false;
+            Instanziieren("LeftHandAnchor", PrefabGuidLinks, bericht, ref irgendein);
+            Instanziieren("RightHandAnchor", PrefabGuidRechts, bericht, ref irgendein);
+            return irgendein;
+        }
+
+        static void Instanziieren(string anchorName, string prefabGuid, System.Text.StringBuilder bericht, ref bool irgendein)
+        {
+            var anchor = GameObject.Find(anchorName);
+            if (anchor == null) { bericht.AppendLine("Anchor fehlt: " + anchorName); return; }
+            var pfad = AssetDatabase.GUIDToAssetPath(prefabGuid);
+            if (string.IsNullOrEmpty(pfad)) { bericht.AppendLine("Prefab-Pfad nicht gefunden (GUID " + prefabGuid + ")"); return; }
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(pfad);
+            if (prefab == null) { bericht.AppendLine("Prefab nicht ladbar: " + pfad); return; }
+            var instanz = (GameObject)PrefabUtility.InstantiatePrefab(prefab, anchor.transform);
+            instanz.name = prefab.name; // ohne "(Clone)" — IstSeite() muss über die Elternkette laufen
+            bericht.AppendLine("Instanziiert: " + prefab.name + " unter " + anchorName);
+            irgendein = true;
         }
 
         static bool IstSeite(Transform t, string seite)
