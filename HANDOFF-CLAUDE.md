@@ -1,5 +1,50 @@
 # HANDOFF für Claude (Windows · Unity · RTX 3090)
 
+## Update 16.11. — Nachmittag (D46: Simulator-Session — Capture-Flow bewiesen, 5 Bugs gefixt, Video-Montage steht)
+
+**Wo wir stehen:** 109/109 Tests grün. Der komplette Capture-Flow läuft im Meta XR Simulator
+(Furniture-filled Room) reproduzierbar: Drag-Zeichnen → Menü-Typwechsel → Tiefe → Confirm →
+3 Objekte (Elektro/Wasser/Heizung, je 17 Punkte) → Szene 04: 3 Korridore in Typfarben →
+Export PDF+JSON (per eval ausgelöst — gleicher Code-Pfad wie die Geste). Beweise:
+`docs/beweise/2026-11-16-simulator-flow/` · Video-Montage: `docs/video-assets/hintergewerk_sim_demo_en.mp4`
+(Skript: `sim-demo-script-2026-11-16.md`, edge-tts en-US-AndrewNeural).
+
+**NÄCHSTE SCHRITTE (Reihenfolge):**
+1. **Gerätetest M2/M3** (Mathias, docs/07): USE_SCENE zulassen + Raum-Setup → echte Wände
+   snappen statt geschätzte Ebene. Szene 03 hat jetzt OVRSceneManager (D42-Lücke zu).
+2. **Export-Geste klären:** linker Pinch feuerte in der Sim-Session NICHT (Szene 04 hat 3×
+   RecallApproach-FakeHands — welche Instanz sitzt am ExportController?). Am Gerät haben echte
+   Hände Vorrang — der eval-Export beweist den Code-Pfad.
+3. **Bauplan-Statuszeile stale?** Im Sim zeigte das Panel „0 verortbar · 3 nicht verortbar",
+   während der RecallController 3 Korridore baute (Log „0 nicht verortbar"). Panel-Zähler
+   prüfen (evtl. persistiertes orphaned-Flag vs. späte Anker-Lokalisierung).
+4. **Video:** Beats stehen — Gerätetakes ersetzen die Sim-Bilder 1:1 (Skript-Tabelle in
+   `sim-demo-script-2026-11-16.md`, Drehplan docs/08). DE-Version (KatjaNeural) auf Wunsch.
+
+**Simulator-Wissen (spart Stunden):**
+- Frontend = eigene App `MetaXRSimulator.exe` (WinUI). „Choose environment" →
+  **Furniture-filled Room** (GUI-Automation: `_hgw_unity_tmp/sim/klick.ps1` x/y + Screenshot
+  `shot_frontend.ps1` — GDI CopyFromScreen funktioniert, gdigrab NICHT (Hardware-Overlay
+  bleibt schwarz!)). Für Live-Clips: `ffmpeg -f gdigrab -offset_x 0 -offset_y 0 -video_size 926x718 -i desktop`.
+- Scene-API-Anker sind im Sim v207.1 NICHT erreichbar (`xrRequestSceneCaptureFB` unsupported,
+  `scene_anchor_data`-Key wirkungslos) → D44 „geschätzte Ebene" ist der Sim-Weg, echt ist nur
+  das Gerät mit Room Setup.
+- `META_XRSIM_CONFIG_JSON` (Env-Var, User-Scope gesetzt) → schreibbare Config in
+  `_hgw_unity_tmp/sim/sim_core_configuration.json` (log_location umgeleitet).
+- Sim-Anker persistieren ÜBER Sessions (ankers in der Sim-DB) — `anker_map.json` +
+  `hintergewerk.json` in LocalLow/DefaultCompany/Hintergewerk/ vor Demo-Runs löschen.
+- Editor-Import-Klemme (5. Vorkommen): nach .cs-Edits meldete der Editor „35 s"-Log der ALTEN
+  Assembly. Fix bleibt: Editor sauber neustarten. Run-in-Background für Play-Modus erzwingen:
+  `unity command editor.playmode set_run_in_background --enabled true`.
+- **Während Sim-Demo-Runs NICHTS an den Editor schicken** (capture/console) — Frame-Freezes
+  fressen 0,4-s-Pinch-Fenster der FakeHand-Timeline.
+
+**Uncommitted aus der PARALLEL-Session (Morgen 15:19–15:20, nicht von dieser Session):**
+`HandQuelleFix.cs` (+48: Hand-Prefab-Instanziierung per GUID + TryAutoMapBonesByName — der
+D45-Nachtrag laut altem HANDOFF, plausibel aber UNBEGUTACHTET von hier) und der
+SetStatus-Nachrüstungsteil in `DrawController.cs` (+19, EnsureStatusText — funktioniert,
+war in den heutigen Runs aktiv). Beim Commit prüfen/nirnehmen — hier mitcommitted in B.
+
 ## Update 15.11. — Abend (D44/D45: Passthrough steht · die FAKE-HAND-Falle im Start-Scene · HANDOFF MITTENDRIN)
 
 **NÄCHSTER SCHRITT (Faden direkt aufnehmen, Tool ist schon gebaut):**
