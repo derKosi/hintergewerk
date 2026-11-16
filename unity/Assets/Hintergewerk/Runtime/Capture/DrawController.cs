@@ -210,18 +210,22 @@ namespace Hintergewerk.Capture
             if (open)
             {
                 if (rising) menu.Cycle(1); // Pinch im Menü = nächster Typ
+                // Fix 16.11. (Simulator-Befund): Typwahl IN der Fall-Flanke konsumieren — das
+                // frühere Close() lief einen Frame später und traf IsOpen schon wieder false
+                // → Auswahl nie übernommen (Menü startete nie einen Capture).
+                var gewaehlt = menu.ConsumeCloseSelection();
+                if (gewaehlt.HasValue && session.Phase == CapturePhase.Idle)
+                {
+                    session.BeginTypwahl();
+                    session.SelectType(gewaehlt.Value);
+                }
                 SetStatus(Strings.Get("menu.cycle_hint") + " — " + (menu.CurrentType.HasValue ? Strings.Get("type." + menu.CurrentType.Value.ToKey()) : ""));
                 FinishFrame(pinchDown, open);
                 return;
             }
             if (menuWasOpen)
             {
-                var t = menu.Close(); // Handfläche weg = Typ wählen
-                if (t.HasValue && session.Phase == CapturePhase.Idle)
-                {
-                    session.BeginTypwahl();
-                    session.SelectType(t.Value);
-                }
+                menu.Cancel(); // Sicherheitsnetz (Tracking-Lücke): Menü zu, ohne Auswahl zu erfinden
             }
 
             // Auto-Start EINMAL beim Start mit Standard-Typ (danach: Menü startet jeden Capture)
@@ -244,7 +248,7 @@ namespace Hintergewerk.Capture
             UpdatePreview(right);
 
             if (session.Phase == CapturePhase.Tiefe)
-                SetStatus(Strings.Format("phase.tiefe", session.DepthCm));
+                SetStatus(Strings.Format("phase.tiefe", Mathf.Round((float)session.DepthCm))); // ganze cm — sonst flutet der Frame-Log die Konsole (16.11.-Befund)
             else if (session.Phase == CapturePhase.Zeichnen && driver.LastSnap != null && driver.LastSnap != shownSnap)
             {
                 shownSnap = driver.LastSnap;
@@ -340,10 +344,31 @@ namespace Hintergewerk.Capture
             }
         }
 
+        string lastLoggedStatus;
+
         void SetStatus(string s)
         {
+            // Status-Nachrüstung (16.11.): Szenen ohne verdrahteten StatusText (Szene 03!)
+            // zeigten am Gerät GAR NICHTS an — der Text folgt jetzt dem Kopf wie das HUD.
+            if (statusText == null) statusText = EnsureStatusText();
             if (statusText != null) statusText.text = s;
-            Debug.Log("[DrawController] " + s);
+            if (s != lastLoggedStatus) { lastLoggedStatus = s; Debug.Log("[DrawController] " + s); } // Log nur bei Änderung (16.11.-Befund: 72-fps-Spam flutete den Puffer)
+        }
+
+        TextMesh EnsureStatusText()
+        {
+            var cam = Camera.main;
+            if (cam == null) return null;
+            var go = new GameObject("CaptureStatusText");
+            go.transform.SetParent(cam.transform, false);
+            go.transform.localPosition = new Vector3(0f, -0.20f, 0.6f); // unter dem SceneSwitcher-HUD
+            var tm = go.AddComponent<TextMesh>();
+            tm.fontSize = 48;
+            tm.characterSize = 0.0022f;
+            tm.anchor = TextAnchor.MiddleCenter;
+            tm.alignment = TextAlignment.Center;
+            tm.color = new Color(1f, 1f, 1f, 0.75f);
+            return tm;
         }
     }
 }

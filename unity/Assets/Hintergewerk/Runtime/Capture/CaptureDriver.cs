@@ -34,6 +34,31 @@ namespace Hintergewerk.Capture
         readonly string roomId;
         readonly Func<WallPlane, string> roomIdSource; // D43: Raum aus der gesnappten Wand (Scene/Mock), optional
         bool pinchWasDown;
+        Vector3 letzterWeltPunkt;
+
+        /// <summary>Abstand, nach dem ein gehaltener Pinch den nächsten Punkt nachschiebt
+        /// (= Rasterweite; doc03 „Linie folgt der Hand", Snap glättet).</summary>
+        public float DragSchwelleM { get; set; } = 0.05f;
+
+        void PunktSetzen(Vector3 tipWelt)
+        {
+            // Reihenfolge wichtig (D43): Wand → Raum → Anker. Der Anker wird mit der
+            // AUFGELOSTEN Raum-Id registriert (DrawController liest ActiveRoomId).
+            var plane = planeSource?.Invoke() ?? new WallPlane
+            {
+                Point = Vector3.zero,
+                Normal = Vector3.forward,
+                Label = "wall"
+            };
+            ResolveRoom(plane); // lazy beim ersten Punkt (danach fixiert fürs Objekt)
+            ResolveAnchor();    // lazy beim ersten Punkt (danach fixiert fürs Objekt)
+            var r = snap.Snap(tipWelt, plane, endpointsSource?.Invoke());
+            var local = WorldToLocal(activeAnchorPose ?? new Pose(Vector3.zero, Quaternion.identity), r.Point);
+            session.AddPoint(local.x, local.y, local.z);
+            LastSnap = r;
+            letzterWeltPunkt = tipWelt;
+            undo?.Push("Punkt entfernen", () => session.UndoLastPoint());
+        }
 
         // Lazy je Objekt aufgelöst: erster gezeichneter Punkt fixiert Anker + Pose + Raum.
         string activeAnchorId;
@@ -92,21 +117,15 @@ namespace Hintergewerk.Capture
                 case CapturePhase.Zeichnen:
                     if (pinch && !pinchWasDown)
                     {
-                        // Reihenfolge wichtig (D43): Wand → Raum → Anker. Der Anker wird mit der
-                        // AUFGELOSTEN Raum-Id registriert (DrawController liest ActiveRoomId).
-                        var plane = planeSource?.Invoke() ?? new WallPlane
-                        {
-                            Point = Vector3.zero,
-                            Normal = Vector3.forward,
-                            Label = "wall"
-                        };
-                        ResolveRoom(plane); // lazy beim ersten Punkt (danach fixiert fürs Objekt)
-                        ResolveAnchor();    // lazy beim ersten Punkt (danach fixiert fürs Objekt)
-                        var r = snap.Snap(right.IndexTip, plane, endpointsSource?.Invoke());
-                        var local = WorldToLocal(activeAnchorPose ?? new Pose(Vector3.zero, Quaternion.identity), r.Point);
-                        session.AddPoint(local.x, local.y, local.z);
-                        LastSnap = r;
-                        undo?.Push("Punkt entfernen", () => session.UndoLastPoint());
+                        PunktSetzen(right.IndexTip);
+                    }
+                    else if (pinch && (Vector3.Distance(right.IndexTip, letzterWeltPunkt) >= DragSchwelleM))
+                    {
+                        // Fix 16.11. (Simulator-Befund): Die Tap-Grammatik alone erzwang 2-Punkte-
+                        // Objekte — die fallende Flanke des 2. Taps endete den Draw, bevor Ecke 3
+                        // kommen konnte (docs/03: „Linie folgt der Hand" = Drag ist der Hauptweg).
+                        // Jetzt: gehaltener Pinch fügt alle DragSchwelleM Punkte nach (snappt weiter).
+                        PunktSetzen(right.IndexTip);
                     }
                     if (!pinch && pinchWasDown) session.EndDraw();
                     break;

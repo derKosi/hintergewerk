@@ -51,6 +51,30 @@ namespace Hintergewerk.Tests
         }
 
         [Test]
+        public void FallendeFlanke_AuswahlNochImSelbenFrame()
+        {
+            // Fix 16.11. (Simulator-Befund): Close() lief einen Frame nach der Fall-Flanke und
+            // traf IsOpen schon wieder false → Auswahl immer null. ConsumeCloseSelection liefert
+            // den Typ IN der Fall-Flanke, genau einmal.
+            var m = new HandMenuLogic();
+            m.UpdatePalm(true);  // öffnet
+            m.Cycle(2);          // Heating
+            Assert.IsTrue(m.UpdatePalm(false)); // fallend: Rückgabe bleibt Vorher-Frame (true)
+            Assert.AreEqual(ObjectType.Heating, m.ConsumeCloseSelection().Value);
+            Assert.IsFalse(m.ConsumeCloseSelection().HasValue); // nur einmal konsumierbar
+        }
+
+        [Test]
+        public void IndexBleibtBeimSchliessenErhalten()
+        {
+            var m = new HandMenuLogic();
+            m.UpdatePalm(true);
+            m.Cycle(1);          // Water
+            m.UpdatePalm(false); // fallend
+            Assert.AreEqual(ObjectType.Water, m.ConsumeCloseSelection().Value); // Fix 16.11.: kein Reset mehr
+        }
+
+        [Test]
         public void Cycle_Geschlossen_MachtNichts()
         {
             var m = new HandMenuLogic();

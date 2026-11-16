@@ -12,6 +12,7 @@ namespace Hintergewerk.UI
         public bool IsOpen { get; private set; }
         public int Index { get; private set; }
         bool palmWas;
+        bool geschlossenDieserFrame;
 
         public ObjectType? CurrentType => IsOpen ? Types[Index] : null;
 
@@ -23,9 +24,29 @@ namespace Hintergewerk.UI
         public bool UpdatePalm(bool palmFacingBody)
         {
             var before = IsOpen;
-            if (palmFacingBody != palmWas) { IsOpen = !IsOpen; Index = 0; }
+            if (palmFacingBody != palmWas)
+            {
+                IsOpen = !IsOpen;
+                if (IsOpen) Index = 0; // nur beim ÖFFNEN zurücksetzen (Fix 16.11.: bei Schließen
+                                       // löschte der Reset die Auswahl, bevor sie gelesen wurde)
+                geschlossenDieserFrame = before && !IsOpen; // fallende Flanke = Auswahl JETZT
+            }
+            else geschlossenDieserFrame = false;
             palmWas = palmFacingBody;
             return before;
+        }
+
+        /// <summary>
+        /// Fix 16.11. (Simulator-Befund): Der bisherige Weg — Close() im Frame NACH der
+        /// Fall-Flanke — traf IsOpen bereits wieder zu (UpdatePalm hat den Flip ein Frame
+        /// früher gemacht) und lieferte IMMER null → Menü-Auswahl war komplett tot. Die Wahl
+        /// wird deshalb IN der Fall-Flanke konsumiert; einmalig pro Flanke.
+        /// </summary>
+        public ObjectType? ConsumeCloseSelection()
+        {
+            if (!geschlossenDieserFrame) return null;
+            geschlossenDieserFrame = false;
+            return Types[Index];
         }
 
         /// <summary>Typ weiterblättern (Pinch im Menü). Nur wirksam, wenn offen.</summary>

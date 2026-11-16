@@ -78,18 +78,17 @@ namespace Hintergewerk.Tests
             Assert.AreEqual(0.15, session.Punkte[0][1], 1e-4);
             Assert.AreEqual(0.0, session.Punkte[0][2], 1e-4);
 
-            // Pinch gehalten, Hand bewegt: KEIN neuer Punkt (nur steigende Flanke addet)
+            // Pinch gehalten, Hand bewegt ≥ 5 cm: Punkt kommt nach (Drag-Zeichnen, Fix 16.11. —
+            // vorher endete die Fall-Flanke des 2. Taps den Draw: mehr als 2 Punkte war unmöglich)
             driver.Tick(Right(new Vector3(0.5f, 0.5f, 0.4f), true), Left(Vector3.zero));
-            Assert.AreEqual(1, session.Punkte.Count);
-
-            // Pinch fallend: EndDraw bricht ab (nur 1 Punkt) — Phase bleibt Zeichnen
-            driver.Tick(Right(new Vector3(0.5f, 0.5f, 0.4f), false), Left(Vector3.zero));
-            Assert.AreEqual(CapturePhase.Zeichnen, session.Phase);
-
-            // Zweiter Pinch: Punkt 2 → danach EndDraw → Tiefe
-            driver.Tick(Right(new Vector3(0.52f, 0.53f, 0.4f), true), Left(Vector3.zero));
             Assert.AreEqual(2, session.Punkte.Count);
-            driver.Tick(Right(new Vector3(0.52f, 0.53f, 0.4f), false), Left(Vector3.zero));
+
+            // Kleine Bewegung (< DragSchwelleM): kein weiterer Punkt
+            driver.Tick(Right(new Vector3(0.52f, 0.51f, 0.4f), true), Left(Vector3.zero));
+            Assert.AreEqual(2, session.Punkte.Count);
+
+            // Pinch fallend: EndDraw → Tiefe
+            driver.Tick(Right(new Vector3(0.52f, 0.51f, 0.4f), false), Left(Vector3.zero));
             Assert.AreEqual(CapturePhase.Tiefe, session.Phase);
 
             // Zwei-Hand-Distanz setzt Tiefe: 12 cm
@@ -111,6 +110,24 @@ namespace Hintergewerk.Tests
             Assert.AreEqual(12.0, o.geometry.depth_cm, 1e-9);
             Assert.AreEqual(2, o.geometry.Count);
             Assert.AreEqual(0.10, o.geometry.Point(0)[0], 1e-6);
+        }
+
+        [Test]
+        public void DragDraw_GehaltenerPinch_SchiebtPunkteNach()
+        {
+            // Fix 16.11. (Simulator-Befund): Die reine Tap-Grammatik erzwang 2-Punkte-Objekte —
+            // die fallende Flanke des 2. Taps endete den Draw. docs/03 „Linie folgt der Hand":
+            // gehaltener Pinch schiebt alle 5 cm einen Punkt nach (DragSchwelleM).
+            driver.Tick(Right(new Vector3(0f, 0f, 0.5f), true), Left(Vector3.zero));     // Punkt 1
+            driver.Tick(Right(new Vector3(0.02f, 0f, 0.5f), true), Left(Vector3.zero));  // < 5 cm — kein Punkt
+            Assert.AreEqual(1, session.Punkte.Count);
+            driver.Tick(Right(new Vector3(0.12f, 0f, 0.5f), true), Left(Vector3.zero));  // ≥ 5 cm — Punkt 2
+            driver.Tick(Right(new Vector3(0.24f, 0f, 0.5f), true), Left(Vector3.zero));  // Punkt 3
+            Assert.AreEqual(3, session.Punkte.Count);
+            driver.Tick(Right(new Vector3(0.24f, 0f, 0.5f), false), Left(Vector3.zero)); // Release → EndDraw
+            Assert.AreEqual(CapturePhase.Tiefe, session.Phase);
+            Assert.AreEqual(3, session.Punkte.Count);
+            Assert.AreEqual(0.10, session.Punkte[1][0], 1e-4); // gesnappt aufs 5-cm-Raster
         }
 
         [Test]
