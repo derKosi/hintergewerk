@@ -1,74 +1,115 @@
 # Hintergewerk
 
-> **Das Wissen hinter der Oberfläche.** Was einmal sichtbar war, bleibt wiederfindbar —
-> räumlich verankert, mit Tiefe, Typ, Zeitstempel und Monteur.
->
-> Englisch gelesen: *the work behind the surface* — der Name trägt in beiden Sprachen.
+> **Das Wissen hinter der Oberfläche.**
+> *The work behind the surface — what your walls once showed, they will always remember.*
 
-| | |
+Hintergewerk ist ein VR-Werkzeug für Meta Quest, das verdeckte Installationen dokumentiert, solange die Wand offen ist — und Monate später als Sicherheitskorridor zurückbringt. Eingereicht bei der [Meta VR Start Developer Competition 2026](https://start-developer-competition-26.devpost.com/) · Track Productivity · Division New Experience.
+
+## Die goldene Stunde
+
+Jede renovierte Wand sagt die Wahrheit genau einmal: solange sie offen ist. Danach sieht der Monteur das Rohr nie wieder — und Monate später bohrt jemand hinein, weil das Gebäude vergessen hat. BIM-Modelle lösen das für Neubauten. Der Bestand — Millionen Altbauten — hat kein Modell. Er hat nichts.
+
+Unsere Vision: Das Gebäude bekommt ein Gedächtnis. Der Monteur erfasst es mit der Hand, in unter 30 Sekunden pro Objekt. Wer später bohrt, sieht den Warnkorridor, bevor es teuer wird. Wer das Gebäude übernimmt, bekommt PDF und Daten-Export — den Beweis, den Bauherr und nächste Firma annehmen.
+
+## So funktioniert es
+
+Mit den Händen, ohne Controller — fünf Gesten, nichts sonst:
+
+| Geste | Wirkung |
 |---|---|
-| **Wettbewerb** | [Meta VR Start Developer Competition 2026](https://start-developer-competition-26.devpost.com/) |
-| **Track / Division** | Productivity · New Experience |
-| **Abgabe** | **Mi, 18.11.2026, 12:00 PST = 21:00 CET** (hart, danach gesperrt) |
-| **Team** | Mathias — Gerät, Dashboard, Video, Submission · AutoClaw — Code, Szenen (Unity MCP), Doku |
+| Pinch + ziehen | Leitung auf der offenen Wand zeichnen |
+| Zwei Hände auseinander | Einbautiefe festlegen |
+| Handfläche zur Brust | Menü öffnen |
+| Streichen | Rückgängig |
+| Ansehen + Pinch | Objekt inspizieren: Foto, Tiefe, Monteur, Datum, Konfidenz |
 
-## Die Ehrlichkeitsregel (trägt das ganze Produkt)
+Während der Monteur zeichnet, wächst in der anderen Hand der **Bauplan** — der echte Top-Down-Plan des Raums, live, mit jedem bestätigten Korridor. Hand-Tracking zittert ein bis zwei Zentimeter? Deshalb ist Präzision hier ein System-Feature: Raycast-Snapping auf Wandebenen, 5-cm-Raster, magnetische Endpunkte — und statt einer Haarlinie ein ehrlicher Sicherheitskorridor von ±5–6 cm, der beim Herannahen eskaliert (Farbe, Helligkeit, richtungsbehafteter Audio-Ping).
 
-Wir behaupten **nicht**, durch Wände zu sehen. Wir erinnern, was dokumentiert wurde.
-Jedes Objekt trägt eine Konfidenz — `gemessen` / `geschätzt` / `Sucher`.
-**„Nicht gefunden" heißt nie „nicht vorhanden".**
+## Architektur
 
-## Status (täglich aktualisieren)
+Der Kern ist absichtlich SDK-frei: die Assembly `Hintergewerk.Runtime` enthält kein einziges `OVR*`-Symbol. Alles, was das Headset kann, fließt über schmale Interfaces; die Adapter liegen außerhalb und sind austauschbar. Dadurch läuft die gesamte Logik im Meta-XR-Simulator und in 109 Unit-Tests — ohne Gerät.
 
-| Gate | Frist | Status |
-|---|---|---|
-| Start-Programm-Mitgliedschaft | 31.10. | ✅ **bestätigt** |
-| SDK-freier C#-Kern vorbereitet | 01.11. | ✅ **geschrieben** (Kompilierung folgt 02.11.) |
-| Setup Unity + SDK + MCP + Repo | 02.11. | ✅ **06.11. (Windows)**: 6000.6.8f1 · Projekthülle im Repo · **Meta XR Core SDK 207.0.1** · Adapter kompilieren gegen v207 · **51/51 Tests** · Selbsttest/PDF · Szenen 01/02 gebaut (Simulator-MSI wartet auf Menschen-Klick, D29) |
-| Smoketest: APK → Channel → Invite-URL → Quest | 02.11. | ✅ **APK läuft am Gerät** (07.11. Quest 3S: Hände getrackt, Greif-Demo) · 🟡 offen: **Invite-URL-Flow als Jury-Pfad** vor M5 nochmal testen |
-| Anker-Persistenz über Neustart | 02.11. | 🔴 **überfällig** — 3 Runs im nächsten Headset-Block (docs/07); App startet bereits in Szene 02 · GO/NO-GO D6 offen · **15.11. Fix-Paket gebaut**: USE_SCENE-Berechtigung (Befund A), Hand-Bones Szene 02, senkrechte Korridore, Inspector-Raumfilter — 106/106 Tests |
-| Capture-Flow < 30 s pro Objekt | 07.11. | ✅ **16.11. Simulator-Beweis (D46)**: kompletter Flow reproduzierbar — Drag-Zeichnen (17 Punkte/Objekt!), Typwechsel über echte Menü-Geste (Elektro→Wasser→Heizung), Tiefe+Confirm, Bauplan wächst live · 5 Bugs gefixt (u. a. Menü-Auswahl war tot, >2 Punkte unmöglich) · **offen: Gerätetest M2** |
-| Recall-Overlay + Export (JSON/PDF) | 10.11. | ✅ **16.11. mit echten Capture-Daten**: 3/3 Anker lokalisiert, 3 Korridore in Typfarben (gelb/blau/rot-orange), Export PDF+JSON (14:40-Dateien im Beweis-Ordner) · Anker-Doppel-Bindung gefixt (D46-C) · **offen: Gerätetest M3 + Export-Geste** |
-| Politur + **Bauplan in der Hand** | 13.11. | ✅ **08.11. Code-seitig KOMPLETT** (vor Freeze!): Bauplan-Panel live beim Zeichnen, zweiter Raum (4 Korridore über 2 Räume), FoV-Audio (`panStereo` bewiesen), Export je Raum · ✅ **09.11. Zimmer-Umriss (D41)** in Plan + PDF + **Szene 03 verdrahtet** (Snap = Plan-Wände) + Animatic-Shotlist (docs/08) · ✅ **10.11. Auto-Raum-Zuordnung (D43)**: gesnappte Wand bestimmt den Raum (Scene-API-UUID + Label), Räume entstehen nur mit Objekten · Rest: Gerätetest (M1–M3 + §G/§H) + Invite-URL vor M5 |
-| Video + 500-Wörter-Text + Screenshots | 15.11. | 🟡 **16.11. Simulator-Vorab-Montage fertig** (EN, ~70 s, edge-tts): `docs/video-assets/sim-demo-script-2026-11-16.md` + `hintergewerk_sim_demo_en.mp4` · Beats stehen — Gerätetakes ersetzen die Sim-Bilder 1:1 (docs/08 Drehplan) · Text docs/09 v3 liegt bereit |
-| Probe-Submission komplett | 17.11. | ⏳ |
-| **Abgabe** | **18.11. vormittags** | ⏳ |
+```mermaid
+flowchart LR
+    subgraph adapters["Adapters (Assembly-CSharp) — hier ist das Meta XR SDK erlaubt"]
+        HAND["Hand-Tracking"]
+        ANK["Spatial Anchors"]
+        SCENE["Scene API<br/>(Wände aus Room Setup)"]
+    end
+
+    subgraph runtime["Hintergewerk.Runtime — SDK-freier Kern"]
+        IF["Core/Interfaces<br/>IAnchorStore · IHandInput · IWallProvider"]
+        CAP["Capture<br/>Draw · SnapEngine · Tiefe · Undo"]
+        DATA["Data<br/>HouseModel · anker-lokales JSON · Schema v1"]
+        REC["Recall<br/>Korridore · Bauplan · Warnung + Audio"]
+        EXP["Export<br/>PDF-Emitter · JSON"]
+    end
+
+    HAND --> IF
+    ANK --> IF
+    SCENE --> IF
+    IF --> CAP
+    CAP -->|"Punkt_welt = AnkerPose × Punkt_lokal"| DATA
+    DATA --> REC
+    DATA --> EXP
+    REC --> BAUPLAN["Bauplan in der Hand"]
+    EXP --> OUT["PDF je Raum + BIM-ready JSON"]
+```
+
+Vier Invarianten tragen alles (Details: [AGENTS.md](AGENTS.md), [docs/02-architektur.md](docs/02-architektur.md)):
+
+1. **Geometrie ist anker-lokal gespeichert** — nie Weltkoordinaten. Anker-Drift und Re-Lokalisierung können einen erfassten Verlauf nicht korrumpieren.
+2. **Schema-Versionierung** — jede Datenmodell-Änderung migriert; der Parser überspringt unbekannte Keys (Forward-Kompatibilität).
+3. **Auto-Save** — jede Mutation persistiert sofort. Es gibt keinen Speichern-Knopf, weil es keinen „fertig"-Moment gibt.
+4. **Der PDF-Export ist ein selbst geschriebener Emitter** ohne Abhängigkeiten — derselbe Top-Down-Projektor, der auch den Bauplan in der Hand rendert. Eine Quelle der Wahrheit, live statt auf Papier.
+
+## Die Ehrlichkeitsregel
+
+> Wir behaupten nicht, durch Wände zu sehen. Wir erinnern, was dokumentiert wurde.
+
+Jedes Objekt trägt eine sichtbare Konfidenz (`gemessen` / `geschätzt` / `Sucher`). „Nicht gefunden" heißt nie „nicht vorhanden" — ein leerer Raum heißt: hier wurde nichts dokumentiert. Verwaiste Objekte (Anker nicht mehr auffindbar) bleiben als „nicht verortbar" in der Liste, sie werden nie stillschweigend gelöscht.
+
+## Stand (ehrlich, zum Abgabezeitpunkt)
+
+- ✅ **109/109 Unit-Tests grün**; kompletter Capture-Flow (Zeichnen → Typ → Tiefe → Foto → Confirm → Bauplan → Export) als durchgehender Beweislauf im Meta-XR-Simulator reproduziert
+- ✅ Korridore in Typfarben, Auto-Raum-Zuordnung über mehrere Räume, PDF+JSON-Export mit echten Capture-Daten
+- 🟡 **Gerätetests M1–M3** (Anker-Persistenz über echten Neustart, echtes Room-Setup) offen — das Abgabe-Video zeigt den Simulator und kennzeichnet das ab Sekunde eins
+- ✅ Persistence so, wie wir sie zeigen können: gespeicherte Verläufe überleben komplette App-Neustarts. Wie viele Tage und Neustarts es am Gerät sind, messen wir, bevor wir es behaupten.
+
+## Projekt-Tagebuch (Blog, 4 Sprachen)
+
+| Version | Link |
+|---|---|
+| Deutsch | [docs/blog/hintergewerk.de.md](docs/blog/hintergewerk.de.md) |
+| English | [docs/blog/hintergewerk.en.md](docs/blog/hintergewerk.en.md) |
+| Leichte Sprache | [docs/blog/hintergewerk.de-einfach.md](docs/blog/hintergewerk.de-einfach.md) |
+| Simple English | [docs/blog/hintergewerk.en-simple.md](docs/blog/hintergewerk.en-simple.md) |
 
 ## Dokumentation
 
 | Doc | Inhalt |
 |---|---|
-| [docs/01-projektplanung.md](docs/01-projektplanung.md) | Timeline, Meilensteine, Risiken, Scope-Leiter, Human-Punkte |
-| [docs/02-architektur.md](docs/02-architektur.md) | Stack, Module, Datenmodell, Persistenz, Export, Raumerfassung (D15/D16) |
+| [docs/02-architektur.md](docs/02-architektur.md) | Stack, Module, Datenmodell, Persistenz, Export |
 | [docs/03-interaktion.md](docs/03-interaktion.md) | Hand-Grammatik, Snap/Korridor, Flows, Testkriterien |
-| [docs/04-submission.md](docs/04-submission.md) | Einreichungs-Checkliste, Video-Storyboard, Text-Gerüst, Judging-Map |
-| [docs/05-entscheidungslog.md](docs/05-entscheidungslog.md) | Alle Entscheidungen, datiert, mit Konsequenz |
-| [docs/06-setup-guide.md](docs/06-setup-guide.md) | Klickpfad-Setup 02.11.: Unity, SDK, MCP, Quest, Repo (Zeitbox 90 min) |
-| [docs/07-smoketest-protokoll.md](docs/07-smoketest-protokoll.md) | M0-Pipeline + M1-Anker-Persistenz: Schritte, Beweise, Fallbacks |
-| [docs/08-video-voiceover.md](docs/08-video-voiceover.md) | Video-Sprechtext v1 (EN, 2:40) + Dreh-Checkliste |
-| [docs/09-submission-text-entwurf.md](docs/09-submission-text-entwurf.md) | Devpost-Text v1 (EN, ~430 Wörter, bis Feature-Freeze pflegen) |
-| [docs/10-windows-buildserver.md](docs/10-windows-buildserver.md) | Windows-Zweitmaschine (3090): Git, OpenSSH, Remote-Build, Fernsteuerung, Security |
-| [docs/11-szene-spec-smoketest.md](docs/11-szene-spec-smoketest.md) | Exakte Szenen-Spec für M0/M1: Hierarchy, Verhalten, Pass-Kriterien |
-| [docs/12-devpost-felder.md](docs/12-devpost-felder.md) | Formularfelder fertig zum Einfügen (17.11.) + Hand-Interactions-Text |
-| [docs/13-vorjahres-analyse.md](docs/13-vorjahres-analyse.md) | Was die Vorjahres-Referenzen gewinnen ließ — Muster + Ableitungen für Video/Text |
-| [docs/14-timesheet.md](docs/14-timesheet.md) | **Dein Zeitbudget** in Zeitboxen (Blöcke A–G, Notfall-Modus, Ist-Tracking) |
-| [website/impressum.html](website/impressum.html) | Impressum/Datenschutz-Entwurf (Platzhalter vor Deploy ausfüllen) |
-| [website/index.html](website/index.html) | Promo-Site **4-sprachig** (DE / EN / DE-leicht / EN-simple) + Tagebuch, deploy-ready |
-| [docs/adr/](docs/adr/README.md) | ADRs 0001–0004: die großen Weichen im Detail |
-| [AGENTS.md](AGENTS.md) | Konventionen für jede Agent-Session: Invarianten, Struktur, Verifikation |
-| [unity/Assets/Hintergewerk/](unity/Assets/Hintergewerk/README.md) | **C#-Kern, SDK-frei** (Runtime/Editor/Tests, asmdefs) + Selbsttest |
-| [testdata/beispielhaus.json](testdata/beispielhaus.json) | Beispieldaten im Schema v1 (für Import-/Export-Tests) |
+| [docs/05-entscheidungslog.md](docs/05-entscheidungslog.md) | Jede Entscheidung, datiert, mit Konsequenz |
+| [docs/adr/](docs/adr/) | ADRs: die großen Weichen im Detail |
+| [docs/07-smoketest-protokoll.md](docs/07-smoketest-protokoll.md) | Gerätests M0–M3: Schritte, Beweise, Fallbacks |
+| [docs/15-abgabe-final.md](docs/15-abgabe-final.md) | Devpost-Felder final (Name, Tagline, Beschreibung) |
+| [AGENTS.md](AGENTS.md) | Konventionen + Invarianten für jede Session |
+| [testdata/beispielhaus.json](testdata/beispielhaus.json) | Beispieldaten im Schema v1 |
 
-## Kernidee in drei Sätzen
+## Selbst bauen
 
-Beim Öffnen einer Wand zeichnet der Monteur Leitungen und Träger **mit der Hand in die Szene** —
-der **Bauplan in der anderen Hand** (Live-Top-Down des Raums) wächst sichtbar mit.
-Snap-Punkte und Sicherheitskorridore gleichen das Hand-Zittern aus, unter 30 Sekunden pro Objekt.
-Monate später erscheint das Overlay: **Warnkorridor statt Haarlinie**, mit Foto, Tiefe und Monteur.
-Export als **BIM-ready-JSON + PDF-Grundriss** (ehrlich: kein BIM, aber der Anschluss für die Bauplanung — ADR-0005) macht daraus einen Beweis, den Bauherr und nächste Firma annehmen.
+Unity 6 LTS + Android Build Support, Projektordner `unity/`:
+
+```
+"C:\Pfad\zu\Unity.exe" -batchmode -quit -projectPath <repo>\unity ^
+  -executeMethod Hintergewerk.EditorTools.BuildScript.BuildAndroid -logFile build.log
+```
+
+Ergebnis: `unity/Builds/hintergewerk.apk` (ARM64). Ohne Gerät verifizieren: Unity-Menü **Hintergewerk → Kern-Selbsttest (JSON-Roundtrip)** und EditMode-Tests im Test Runner. Der Meta-XR-Simulator reicht für Iteration — das Gerät ist die letzte Wahrheit.
 
 ## Links
 
 - Wettbewerb: https://start-developer-competition-26.devpost.com/
-- Meta VR Developers: https://developers.meta.com/vr/
-- Developer Forum (Start Lounge, Support): https://communityforums.atmeta.com/
+- Devpost-Video: `docs/video-assets/hintergewerk_sim_demo_de.mp4` (DE) / `..._en.mp4` (EN)
