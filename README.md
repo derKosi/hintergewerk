@@ -56,7 +56,7 @@ flowchart LR
     EXP --> OUT["PDF je Raum + BIM-ready JSON"]
 ```
 
-Vier Invarianten tragen alles (Details: [AGENTS.md](AGENTS.md), [docs/02-architektur.md](docs/02-architektur.md)):
+Vier Invarianten tragen alles (Details: [AGENTS.md](AGENTS.md)):
 
 1. **Geometrie ist anker-lokal gespeichert** — nie Weltkoordinaten. Anker-Drift und Re-Lokalisierung können einen erfassten Verlauf nicht korrumpieren.
 2. **Schema-Versionierung** — jede Datenmodell-Änderung migriert; der Parser überspringt unbekannte Keys (Forward-Kompatibilität).
@@ -87,15 +87,13 @@ Jedes Objekt trägt eine sichtbare Konfidenz (`gemessen` / `geschätzt` / `Suche
 
 ## Dokumentation
 
+Die Arbeit hat hier ein öffentliches Gesicht; die internen Planungs-Docs (Zeitpläne, Checklisten, Feldvorlagen) liegen bewusst außerhalb des Repos.
+
 | Doc | Inhalt |
 |---|---|
-| [docs/02-architektur.md](docs/02-architektur.md) | Stack, Module, Datenmodell, Persistenz, Export |
-| [docs/03-interaktion.md](docs/03-interaktion.md) | Hand-Grammatik, Snap/Korridor, Flows, Testkriterien |
-| [docs/05-entscheidungslog.md](docs/05-entscheidungslog.md) | Jede Entscheidung, datiert, mit Konsequenz |
-| [docs/adr/](docs/adr/) | ADRs: die großen Weichen im Detail |
-| [docs/07-smoketest-protokoll.md](docs/07-smoketest-protokoll.md) | Gerätests M0–M3: Schritte, Beweise, Fallbacks |
-| [docs/15-abgabe-final.md](docs/15-abgabe-final.md) | Devpost-Felder final (Name, Tagline, Beschreibung) |
+| [docs/adr/](docs/adr/) | ADRs: die großen Architektur-Weichen im Detail |
 | [AGENTS.md](AGENTS.md) | Konventionen + Invarianten für jede Session |
+| [docs/blog/](docs/blog/) | Projekt-Tagebuch in 4 Sprachen (siehe oben) |
 | [testdata/beispielhaus.json](testdata/beispielhaus.json) | Beispieldaten im Schema v1 |
 
 ## Selbst bauen

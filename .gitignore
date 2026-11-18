@@ -45,3 +45,6 @@ TestShots/
 
 # Meta SDK generiert Token-Asset — nie wieder einchecken (siehe docs/13)
 unity/Assets/Resources/DevAgentSettings.asset
+
+# Interne Planungs-Docs — nicht öffentlich (Git-History bleibt; Blog in docs/blog/ bleibt)
+docs/*.md
